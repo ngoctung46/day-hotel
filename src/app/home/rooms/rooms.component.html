@@ -1,0 +1,8 @@
+<div class="row">
+  <ng-container *ngFor="let room of rooms; let i = index">
+    <div class="col">
+      <home-room [room]="room" />
+    </div>
+    <div *ngIf="(i + 1) % 4 === 0" class="w-100"></div>
+  </ng-container>
+</div>
