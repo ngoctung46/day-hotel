@@ -2,7 +2,6 @@
   <customer-form
     [room]="room"
     [customer]="customer"
-    (submittedCustomer)="saveCustomer($event)"
+    (submittedCustomer)="saveCustomerAsync($event)"
   ></customer-form>
 </div>
-{{ this.customer | json }}

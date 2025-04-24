@@ -14,9 +14,9 @@ import {
   FormsModule,
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
-import { NgbDateAdapter, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -37,6 +37,7 @@ import { OrderLineService } from '../../services/order-line.service';
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
+    AsyncPipe,
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
@@ -64,7 +65,8 @@ export class CustomerFormComponent {
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
-
+  customers$: Promise<Customer[]> = this.customerService.getItems();
+  customerIds: string[] = [];
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -106,7 +108,7 @@ export class CustomerFormComponent {
       issuedDate: [this.customer?.issuedDate],
       birthDate: [this.customer?.birthDate],
       birthPlace: [this.customer?.birthPlace],
-      nationality: [this.customer?.nationality],
+      nationality: [this.customer?.nationality ?? 'Việt Nam'],
       addressLine1: [this.customer?.addressLine1],
       addressLine2: [this.customer?.addressLine2],
       city: [this.customer?.city],
@@ -114,26 +116,20 @@ export class CustomerFormComponent {
       phone: [this.customer?.phone],
     });
   }
-
-  addOrder() {
-    // const checkInTime = new Date().getTime();
-    // this.orderService
-    //   .addItem({
-    //     roomId: this.room.id,
-    //     customerId: this.customer?.id,
-    //     checkInTime,
-    //     orderLineIds: [],
-    //   })
-    //   .then((orderId) => {
-    //     this.orderLineService.addItem({});
-    //   });
-  }
-  updateRoom() {
-    // this.fs.updateRoom(this.roomId, {
-    //   customerId: this.customer.idNumber,
-    //   orderId: this.orderId,
-    //   occupied: true,
-    //   status: RoomStatus.Clean,
-    // });
+  onChangeIdNumber() {
+    let idNumber = this.customerForm.get('idNumber')?.value;
+    if (idNumber && idNumber.length > 8) {
+      this.customerService.getCustomerByIdNumber(idNumber).then((customer) => {
+        if (customer) {
+          this.customer = customer;
+          this.customer.issuedDate = this.customer.issuedDate.toDate();
+          this.customer.birthDate = this.customer.birthDate.toDate();
+          this.customer.expiredDate = this.customer.expiredDate.toDate();
+          //  this.setForm();
+          this.customerForm.patchValue(this.customer);
+          this.customerForm.disable();
+        }
+      });
+    }
   }
 }

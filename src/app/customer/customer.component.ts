@@ -37,27 +37,41 @@ export class CustomerComponent {
 
   constructor(private router: Router) {}
   ngOnInit() {}
-  saveCustomer($event: Customer) {
-    this.customer = $event;
-    this.customerService.addItem(this.customer).then((id) => {
-      this.productService.getHourlyRate().then((p) => {
-        this.orderLineService
-          .addItem({
-            productId: p?.id,
-            customerId: id,
-            product: p,
-            quantity: 1,
-          })
-          .then((olId) => {
-            this.orderService.addItem({
-              roomId: this.room.id,
-              checkInTime: Date.now(),
-              orderLineIds: [olId],
-              customerId: id,
-            });
-          });
-      });
+  async saveCustomerAsync($event: Customer) {
+    let customerRef = this.customerService.createDoc();
+    let orderLineRef = this.orderLineService.createDoc();
+    let orderRef = this.orderService.createDoc();
+    this.productService.getHourlyRate().then(async (p) => {
+      await this.orderLineService.addItem(
+        {
+          orderId: orderRef.id,
+          productId: p?.id,
+          quantity: 1,
+          product: p,
+          total: 1 * p?.price!,
+        },
+        orderLineRef
+      );
     });
-    this.router.navigate(['/home']);
+    await this.orderService.addItem(
+      {
+        customerId: customerRef.id,
+        roomId: this.room.id,
+        checkInTime: Date.now(),
+        orderLineIds: [orderLineRef.id],
+      },
+      orderRef
+    );
+    await this.customerService.addItem($event, customerRef);
+    this.roomService
+      .updateItem({
+        id: this.room.id,
+        customerId: customerRef.id,
+        orderId: orderRef.id,
+        status: RoomStatus.CHECKED_IN,
+      })
+      .then(() => {
+        this.router.navigate(['/home']);
+      });
   }
 }

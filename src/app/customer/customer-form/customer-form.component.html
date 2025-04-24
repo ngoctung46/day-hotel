@@ -9,12 +9,11 @@
       <div class="input-group">
         <input
           id="idNumber"
-          type="number"
+          type="text"
           class="form-control"
           placeholder="CCCD số"
           formControlName="idNumber"
-          typeaheadOptionField="idNumber"
-          (typeaheadOnSelect)="onSelect($event)"
+          (change)="onChangeIdNumber()"
           autofocus
         />
         @if(customerForm.get('idNumber')?.valid) {
@@ -59,7 +58,6 @@
           class="form-control"
           placeholder="Họ và Tên"
           formControlName="name"
-          typeaheadOptionField="name"
         />
         @if(customerForm.get('name')?.valid) {
         <div class="input-group-text text-success">
@@ -170,3 +168,4 @@
 </form>
 {{ customerForm.value | json }}
 {{ customerForm.status }}
+{{ customers$ | async | json }}

@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentReference,
   Firestore,
   getDocs,
   setDoc,
@@ -17,10 +18,14 @@ import { ModelBase } from '../models/model-base';
 export abstract class CloudFirestoreService<T extends ModelBase> {
   firestore = inject(Firestore);
   constructor(private collectionName: string) {}
-  async addItem(item: T): Promise<string> {
-    const itemsCollection = collection(this.firestore, this.collectionName);
-    const docRef = await addDoc(itemsCollection, item);
-    return docRef.id;
+  createDoc(): DocumentReference {
+    return doc(collection(this.firestore, this.collectionName));
+  }
+  async addItem(
+    item: T,
+    docRef: DocumentReference = this.createDoc()
+  ): Promise<void> {
+    await setDoc(docRef, item);
   }
 
   async getItems(): Promise<T[]> {
