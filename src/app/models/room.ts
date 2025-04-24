@@ -8,5 +8,4 @@ export interface Room extends ModelBase {
   status?: RoomStatus;
   orderId?: string;
   customerId?: string;
-  occupied?: boolean;
 }

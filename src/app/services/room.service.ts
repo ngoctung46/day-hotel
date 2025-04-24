@@ -17,21 +17,25 @@ export class RoomService extends CloudFirestoreService<Room> {
     this.seedData();
   }
 
-  private seedData() {
-    this.getItems().then((rooms) => {
-      if (rooms.length <= 0) {
-        for (let i = 1; i <= 2; i++) {
-          for (let j = 1; j <= 3; j++) {
-            this.addItem({
-              number: i * 100 + j,
-              rate: RoomRate.DELUXE,
-              type: RoomType.NORMAL,
-              occupied: false,
-              status: RoomStatus.AVAILABLE,
-            }).then();
-          }
-        }
-      }
+  private async seedData() {
+    const rooms = await this.getItems();
+    if (rooms.length > 0) {
+      return;
+    }
+    const newRooms: Room[] = [
+      { number: 101, rate: RoomRate.DELUXE, type: RoomType.DELUXE, status: RoomStatus.AVAILABLE },
+      { number: 102, rate: RoomRate.NORMAL, type: RoomType.NORMAL, status: RoomStatus.AVAILABLE },
+      { number: 103, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
+      { number: 201, rate: RoomRate.DELUXE, type: RoomType.DELUXE,  status: RoomStatus.AVAILABLE },
+      { number: 202, rate: RoomRate.NORMAL, type: RoomType.NORMAL, status: RoomStatus.AVAILABLE },
+      { number: 203, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
+      { number: 301, rate: RoomRate.NORMAL, type: RoomType.DELUXE, status: RoomStatus.AVAILABLE },
+      { number: 302, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
+    ];
+    newRooms.forEach((room) => {
+      this.addItem(room).catch((error) => {
+        console.error('Error seeding data:', error);
+      });
     });
   }
 }

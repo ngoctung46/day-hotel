@@ -12,6 +12,10 @@ export class HomeComponent {
   rooms: Room[] = [];
   roomService = inject(RoomService);
   constructor() {
-    this.roomService.getItems().then((rooms) => (this.rooms = rooms));
+    this.roomService
+      .getItems()
+      .then(
+        (rooms) => (this.rooms = rooms.sort((a, b) => a.number! - b.number!))
+      );
   }
 }

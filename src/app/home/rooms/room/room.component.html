@@ -1,86 +1,81 @@
 <div class="card text-center" style="margin: 8px">
   <div class="card-header bg-info">
-    {{ room.type }}
+    <b>{{ room.type | RoomType }}</b>
   </div>
   <div
     class="card-body"
-    [style]="{ background: room.occupied ? 'coral' : 'white' }"
     [class]="{
-      'bg-secondary': room.status == 'checked_in',
-      'bg-success': room.status == 'available'
+      occupied: room.status == 1,
+      'bg-light': room.status == 0
     }"
   >
     <h1 class="card-title">{{ room.number }}</h1>
-    <p class="card-text">
-      <span>{{ room.occupied ? "Có Khách" : "Trống" }}</span>
-      <span>- {{ room.status }}</span>
+    <p
+      class="card-text"
+      [ngClass]="room.status == 1 ? 'text-light' : 'text-success'"
+    >
+      <span
+        ><b>{{ room.status | RoomStatus }}</b></span
+      >
     </p>
   </div>
-  <div class="card-footer" style="padding: 0px">
+  <div
+    class="card-footer"
+    [class]="{
+      'bg-primary': room.status == 0,
+      'bg-light': room.status == 1
+    }"
+    style="padding: 0px"
+  >
     <button
       tooltip="Nhận Phòng"
-      *ngIf="!room.occupied && room.status == 'available'"
-      class="btn btn-block btn-outline-danger"
-      [routerLink]="['/customer/room', room.id]"
+      *ngIf="room.status == 0"
+      class="btn btn-primary w-100"
+      [routerLink]="['/customer/room/', room.id]"
     >
-      <mat-icon>launch</mat-icon>
+      <i class="bi bi-vector-pen"></i>
     </button>
-    <button
-      tooltip="Dọn phòng xong"
-      *ngIf="!room.occupied && room.status == 'checked_in'"
-      class="btn btn-block btn-outline-secondary"
-      (click)="updateStatus()"
-    >
-      <mat-icon>done_outline</mat-icon>
-    </button>
-    <div *ngIf="room.occupied">
-      <div class="btn-group btn-block" role="group">
-        <button
-          tooltip="Thông tin khách lưu trú"
-          type="button"
-          class="btn btn-outline-primary"
-          [routerLink]="['/customer', room.customerId]"
-        >
-          <mat-icon>face</mat-icon>
-        </button>
-        <button
-          type="button"
-          tooltip="Thêm dịch vụ"
-          class="btn btn-outline-info"
-          [routerLink]="['/order', room.orderId]"
-          routerLinkActive="router-link-active"
-        >
-          <mat-icon>add_shopping_cart</mat-icon>
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-info"
-          tooltip="Báo cần dọn phòng, đã dọn phòng"
-          (click)="updateStatus(true)"
-        >
-          <mat-icon>format_paint</mat-icon>
-        </button>
-        <!-- <button
-          type="button"
-          class="btn btn-outline-info"
-          tooltip="Khách trong phòng, đi ra ngoài"
-          (click)="updateStatus()"
-        >
-          <mat-icon>transfer_within_a_station</mat-icon>
-        </button> -->
-        <button type="button" class="btn btn-outline-info" tooltip="Đổi phòng">
-          <mat-icon>refresh</mat-icon>
-        </button>
-
-        <button
-          type="button"
-          tooltip="Trả phòng"
-          class="btn btn-outline-success"
-          [routerLink]="['/receipt', room.orderId]"
-        >
-          <mat-icon>receipt</mat-icon>
-        </button>
-      </div>
+    <div *ngIf="room.status == 1" class="btn-group w-100" role="group">
+      <button
+        tooltip="Đổi phòng"
+        class="btn btn-success"
+        (click)="updateRoomStatus()"
+      >
+        <i class="bi bi-arrow-left-right"></i>
+      </button>
+      <button
+        tooltip="Thông tin khách lưu trú"
+        type="button"
+        class="btn btn-primary"
+        [routerLink]="['/customer', room.customerId]"
+      >
+        <i class="bi bi-person-badge-fill"></i>
+      </button>
+      <button
+        type="button"
+        tooltip="Thêm dịch vụ"
+        class="btn btn-warning"
+        [routerLink]="['/order', room.orderId]"
+        routerLinkActive="router-link-active"
+      >
+        <i class="bi bi-cart-plus-fill"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-info"
+        tooltip="Báo cần dọn phòng, đã dọn phòng"
+        (click)="updateRoomStatus()"
+      >
+        <i class="bi bi-stars"></i>
+      </button>
+      <button
+        type="button"
+        tooltip="Trả phòng"
+        class="btn btn-danger"
+        [routerLink]="['/receipt', room.orderId]"
+      >
+        <i class="bi bi-receipt"></i>
+      </button>
     </div>
   </div>
 </div>
@@ -97,7 +92,7 @@
       <div class="col">
         <ng-container *ngFor="let room of rooms; let i = index">
           <label
-            *ngIf="!room.occupied && room.status === 'available'"
+            *ngIf="room.status !== 0"
             class="btn btn-primary"
             btnCheckbox
             style="margin-left: 10px; margin-right: 10px"

@@ -1,0 +1,150 @@
+<h1 class="text-center text-danger">Thông tin khách lưu trú</h1>
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <label class="my-1 mr-2 text-primary">Giấy tờ tùy thân</label>
+  <div class="row row-cols-auto g-1">
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="CCCD số"
+        formControlName="idNumber"
+        typeaheadOptionField="idNumber"
+        (typeaheadOnSelect)="onSelect($event)"
+        autofocus
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Cấp"
+        formControlName="issuedDate"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Hết Hạn"
+        formControlName="expiredDate"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nơi cấp"
+        formControlName="issuedPlace"
+        [ngbTypeahead]="search"
+      />
+    </div>
+  </div>
+  <label class="my-1 mr-2 text-info">Thông tin cá nhân</label>
+  <div class="row row-cols-auto g-1">
+    <div class="col">
+      <input
+        type="text"
+        name="lastName"
+        class="form-control"
+        placeholder="Họ"
+        formControlName="lastName"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tên"
+        formControlName="firstName"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ngày Sinh"
+        formControlName="birthDate"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nơi Sinh"
+        formControlName="birthPlace"
+        [ngbTypeahead]="search"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Quốc Tịch"
+        formControlName="nationality"
+      />
+    </div>
+  </div>
+  <label class="my-1 mr-2 text-success">Thông tin liên hệ</label>
+  <div class="row row-cols-auto g-1">
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Số nhà, đường"
+        formControlName="addressLine1"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Xã, Huyện"
+        formControlName="addressLine2"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Tỉnh"
+        formControlName="city"
+        [ngbTypeahead]="search"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Quốc Gia"
+        formControlName="country"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Số ĐT"
+        formControlName="phone"
+      />
+    </div>
+  </div>
+  <br />
+  <div class="d-flex justify-content-center">
+    <button
+      class="btn btn-primary mx-2"
+      [disabled]="!customerForm.valid"
+      type="submit"
+      aria-label="Submit customer information"
+    >
+      Nhận khách
+    </button>
+    <button
+      class="btn btn-danger mx-2"
+      (click)="onClear()"
+      aria-label="Clear form"
+    >
+      Hủy
+    </button>
+  </div>
+</form>
+{{ customerForm.value | json }}

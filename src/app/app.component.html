@@ -1,9 +1,2 @@
-<ul>
-  @for (item of (rooms$ | async); track room) {
-  <li>
-    {{ item.id }} - {{ item.number }} - {{ item.rate }} - {{ item.status }} -
-    {{ item.type }}
-  </li>
-  }
-</ul>
+
 <router-outlet></router-outlet>
