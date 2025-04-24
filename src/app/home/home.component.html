@@ -1,4 +1,4 @@
 <div class="container">
   <h1 class="text-danger text-center">QUẢN LÝ NHÀ NGHỈ ĐẠT Ý</h1>
-  <home-rooms [rooms]="rooms" />
+  <home-rooms *ngIf="rooms$ | async as rooms" [rooms]="rooms" />
 </div>

@@ -1,8 +1,8 @@
 import { ModelBase } from './model-base';
 
 export interface Customer extends ModelBase {
-  name: string;
-  idNumber: string;
+  name?: string;
+  idNumber?: string;
   issuedDate?: any;
   expiredDate?: any;
   issuedPlace?: string;

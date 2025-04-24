@@ -33,7 +33,11 @@
       class="btn btn-primary bi bi-vector-pen w-100"
       [routerLink]="['/customer/room/', room.id]"
     ></button>
-    <div *ngIf="room.status == 1" class="btn-group w-100" role="group">
+    <div
+      *ngIf="room.status !== 0"
+      class="btn-group w-100 bg-danger"
+      role="group"
+    >
       <button
         tooltip="Đổi phòng"
         class="btn btn-success bi bi-arrow-left-right"
@@ -51,12 +55,6 @@
         class="btn btn-warning bi bi-cart-plus-fill"
         [routerLink]="['/order', room.orderId]"
         routerLinkActive="router-link-active"
-      ></button>
-      <button
-        type="button"
-        class="btn btn-info bi bi-stars"
-        tooltip="Báo cần dọn phòng, đã dọn phòng"
-        (click)="updateRoomStatus()"
       ></button>
       <button
         type="button"

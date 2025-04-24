@@ -1,7 +1,4 @@
-<h1 class="text-center text-danger">
-  THÔNG TIN KHÁCH LƯU TRÚ
-  <span class="text-success">PHÒNG {{ room.number }}</span>
-</h1>
+<h1 class="text-center text-success">THÔNG TIN KHÁCH LƯU TRÚ</h1>
 <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
   <label class="my-1 mr-2 text-primary"><h4>Giấy tờ tùy thân</h4></label>
   <div class="row row-cols-auto g-1">
@@ -13,7 +10,6 @@
           class="form-control"
           placeholder="CCCD số"
           formControlName="idNumber"
-          (change)="onChangeIdNumber()"
           autofocus
         />
         @if(customerForm.get('idNumber')?.valid) {
@@ -148,12 +144,13 @@
     <button
       type="button"
       class="btn btn-outline-primary btn-lg mx-1 bi bi-floppy"
-      [disabled]="!customerForm.valid"
+      [disabled]="!customerForm.valid || customerForm.disabled"
       type="submit"
       aria-label="Submit customer information"
     ></button>
     <button
       type="button"
+      [disabled]="customerForm.disabled"
       class="btn btn-outline-info btn-lg mx-0 bi bi-arrow-repeat"
       (click)="onClear()"
       aria-label="Clear form"
@@ -166,6 +163,3 @@
     ></button>
   </div>
 </form>
-{{ customerForm.value | json }}
-{{ customerForm.status }}
-{{ customers$ | async | json }}

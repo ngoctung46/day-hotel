@@ -6,7 +6,6 @@ export enum RoomType {
 export enum RoomStatus {
   AVAILABLE = 0,
   CHECKED_IN,
-  CHECKED_OUT,
   NEED_CLEANING,
   CUSTOMER_OUT,
   BOOKED,

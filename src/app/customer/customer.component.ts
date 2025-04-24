@@ -2,7 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { CustomerFormComponent } from './customer-form/customer-form.component';
 import { RoomService } from '../services/room.service';
 import { Room } from '../models/room';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Customer } from '../models/customer';
 import { CustomerService } from '../services/customer.service';
 import { Router, RouterModule } from '@angular/router';
@@ -12,7 +12,7 @@ import { ProductService } from '../services/product.service';
 import { RoomStatus } from '../models/const';
 @Component({
   selector: 'app-customer',
-  imports: [CustomerFormComponent, JsonPipe],
+  imports: [CustomerFormComponent, CommonModule],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css',
 })

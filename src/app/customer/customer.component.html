@@ -1,5 +1,6 @@
 <div class="container">
   <customer-form
+    *ngIf="room"
     [room]="room"
     [customer]="customer"
     (submittedCustomer)="saveCustomerAsync($event)"

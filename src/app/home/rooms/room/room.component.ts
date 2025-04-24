@@ -29,14 +29,14 @@ export class RoomComponent implements OnInit {
     if (this.room.status === RoomStatus.AVAILABLE) {
       this.room.status = RoomStatus.CHECKED_IN;
     } else if (this.room.status === RoomStatus.CHECKED_IN) {
-      this.room.status = RoomStatus.CHECKED_OUT;
-    } else if (this.room.status === RoomStatus.CHECKED_OUT) {
+      this.room.status = RoomStatus.NEED_CLEANING;
+    } else if (this.room.status === RoomStatus.NEED_CLEANING) {
       this.room.status = RoomStatus.AVAILABLE;
     }
   }
 
   updateStatus() {
-    if (this.room.status === RoomStatus.CHECKED_OUT) {
+    if (this.room.status === RoomStatus.NEED_CLEANING) {
       this.room.status = RoomStatus.NEED_CLEANING;
     } else {
       this.room.status = RoomStatus.AVAILABLE;
