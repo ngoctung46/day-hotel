@@ -18,6 +18,13 @@ export enum RoomRate {
   VIP = 300_000,
 }
 
+export enum ProductType {
+  HOURLY_RATE = 0,
+  BEVERAGES,
+  FOOD,
+  ROOM_SERVICE,
+}
+
 export enum CollectionName {
   ROOM = 'rooms',
   CUSTOMER = 'customers',
@@ -27,6 +34,7 @@ export enum CollectionName {
 }
 
 export const PROVINCES = [
+  'Cục Cảnh sát',
   'An Giang',
   'Bà Rịa - Vũng Tàu',
   'Bắc Giang',
@@ -40,7 +48,6 @@ export const PROVINCES = [
   'Bình Thuận',
   'Cà Mau',
   'Cao Bằng',
-  'Cục Cảnh sát',
   'Đắk Lắk',
   'Đắk Nông',
   'Điện Biên',

@@ -8,7 +8,13 @@ import { RoomStatusPipe } from '../../../pipes/room-status.pipe';
 import { RoomTypePipe } from '../../../pipes/room-type.pipe';
 @Component({
   selector: 'home-room',
-  imports: [CommonModule, SharedModule, RouterModule, RoomStatusPipe, RoomTypePipe],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule,
+    RoomStatusPipe,
+    RoomTypePipe,
+  ],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
 })
@@ -47,5 +53,4 @@ export class RoomComponent implements OnInit {
       this.room.status = RoomStatus.AVAILABLE;
     }
   }
-
 }

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RoomsComponent } from './rooms/rooms.component';
 import { RoomService } from '../services/room.service';
 import { Room } from '../models/room';
+import { ProductService } from '../services/product.service';
 @Component({
   selector: 'app-home',
   imports: [RoomsComponent],
@@ -11,6 +12,7 @@ import { Room } from '../models/room';
 export class HomeComponent {
   rooms: Room[] = [];
   roomService = inject(RoomService);
+  productService = inject(ProductService);
   constructor() {
     this.roomService
       .getItems()

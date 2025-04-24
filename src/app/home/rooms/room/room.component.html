@@ -1,5 +1,5 @@
 <div class="card text-center" style="margin: 8px">
-  <div class="card-header bg-info">
+  <div class="card-header bg-success text-light">
     <b>{{ room.type | RoomType }}</b>
   </div>
   <div
@@ -30,80 +30,40 @@
     <button
       tooltip="Nhận Phòng"
       *ngIf="room.status == 0"
-      class="btn btn-primary w-100"
+      class="btn btn-primary bi bi-vector-pen w-100"
       [routerLink]="['/customer/room/', room.id]"
-    >
-      <i class="bi bi-vector-pen"></i>
-    </button>
+    ></button>
     <div *ngIf="room.status == 1" class="btn-group w-100" role="group">
       <button
         tooltip="Đổi phòng"
-        class="btn btn-success"
+        class="btn btn-success bi bi-arrow-left-right"
         (click)="updateRoomStatus()"
-      >
-        <i class="bi bi-arrow-left-right"></i>
-      </button>
+      ></button>
       <button
         tooltip="Thông tin khách lưu trú"
         type="button"
-        class="btn btn-primary"
+        class="btn btn-primary bi bi-person-badge-fill"
         [routerLink]="['/customer', room.customerId]"
-      >
-        <i class="bi bi-person-badge-fill"></i>
-      </button>
+      ></button>
       <button
         type="button"
         tooltip="Thêm dịch vụ"
-        class="btn btn-warning"
+        class="btn btn-warning bi bi-cart-plus-fill"
         [routerLink]="['/order', room.orderId]"
         routerLinkActive="router-link-active"
-      >
-        <i class="bi bi-cart-plus-fill"></i>
-      </button>
+      ></button>
       <button
         type="button"
-        class="btn btn-info"
+        class="btn btn-info bi bi-stars"
         tooltip="Báo cần dọn phòng, đã dọn phòng"
         (click)="updateRoomStatus()"
-      >
-        <i class="bi bi-stars"></i>
-      </button>
+      ></button>
       <button
         type="button"
         tooltip="Trả phòng"
-        class="btn btn-danger"
+        class="btn btn-danger bi bi-receipt"
         [routerLink]="['/receipt', room.orderId]"
-      >
-        <i class="bi bi-receipt"></i>
-      </button>
+      ></button>
     </div>
   </div>
 </div>
-
-<ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Chọn phòng muốn đổi</h4>
-    <button type="button" class="close pull-right" aria-label="Hủy">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body text-center">
-    <div class="btn-group">
-      <div class="col">
-        <ng-container *ngFor="let room of rooms; let i = index">
-          <label
-            *ngIf="room.status !== 0"
-            class="btn btn-primary"
-            btnCheckbox
-            style="margin-left: 10px; margin-right: 10px"
-            [tabindex]="i"
-            (click)="changeRoom(room)"
-            role="button"
-            >{{ room.number }}
-          </label>
-          <div *ngIf="(i + 1) % 4 === 0" class="w-100"></div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</ng-template>

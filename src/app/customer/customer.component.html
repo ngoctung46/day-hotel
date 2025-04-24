@@ -1,2 +1,8 @@
-<customer-form [room]="room" [customer]="customer"></customer-form>
-<p>{{ room | json }}</p>
+<div class="container">
+  <customer-form
+    [room]="room"
+    [customer]="customer"
+    (submittedCustomer)="saveCustomer($event)"
+  ></customer-form>
+</div>
+{{ this.customer | json }}

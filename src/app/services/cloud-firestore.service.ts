@@ -6,6 +6,7 @@ import {
   doc,
   Firestore,
   getDocs,
+  setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
 import { ModelBase } from '../models/model-base';
@@ -31,12 +32,12 @@ export abstract class CloudFirestoreService<T extends ModelBase> {
     return items;
   }
 
-  async updateItem(item: any): Promise<void> {
+  async updateItem(item: T): Promise<void> {
     if (!item.id) {
       throw new Error('Item must have an id to be updated.');
     }
     const itemDocRef = doc(this.firestore, this.collectionName, item.id);
-    await updateDoc(itemDocRef, item);
+    await setDoc(itemDocRef, item, { merge: true });
   }
 
   async deleteItem(id: string): Promise<void> {

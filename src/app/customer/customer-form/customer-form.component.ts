@@ -2,20 +2,21 @@ import {
   Component,
   EventEmitter,
   inject,
+  Injectable,
   Input,
   Output,
-  ViewChild,
 } from '@angular/core';
 import {
   Validators,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
-import { JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -23,6 +24,7 @@ import {
   Observable,
   OperatorFunction,
 } from 'rxjs';
+import { RouterModule } from '@angular/router';
 import { PROVINCES } from '../../models/const';
 import { CustomerService } from '../../services/customer.service';
 import { OrderService } from '../../services/order.service';
@@ -30,16 +32,20 @@ import { OrderLineService } from '../../services/order-line.service';
 
 @Component({
   selector: 'customer-form',
-  imports: [NgbTypeaheadModule, ReactiveFormsModule, JsonPipe],
+  imports: [
+    NgbTypeaheadModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+  ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
 })
 export class CustomerFormComponent {
-  @Output() finished: EventEmitter<boolean> = new EventEmitter();
+  @Output() submittedCustomer: EventEmitter<Customer> = new EventEmitter();
   @Input() room: Room = {};
   @Input() customer: Customer | undefined = {
-    firstName: '',
-    lastName: '',
+    name: '',
     idNumber: '',
     issuedDate: '',
     expiredDate: '',
@@ -58,6 +64,7 @@ export class CustomerFormComponent {
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -79,10 +86,7 @@ export class CustomerFormComponent {
     );
   onSubmit() {
     this.customer = this.customerForm.value as Customer;
-    this.addCustomer();
-    this.addOrder();
-    this.updateRoom();
-    this.finished.emit(true);
+    this.submittedCustomer.emit(this.customer);
   }
   onSelect(event: any): void {
     this.customer = event.item as unknown as Customer;
@@ -92,40 +96,37 @@ export class CustomerFormComponent {
     this.setForm();
   }
   onClear() {
-    this.finished.emit(true);
+    this.customerForm.reset();
   }
   private setForm() {
     this.customerForm = this.fb.group({
-      firstName: [this.customer?.firstName, Validators.required],
-      lastName: [this.customer?.lastName, Validators.required],
+      name: [this.customer?.name, Validators.required],
       idNumber: [this.customer?.idNumber, Validators.required],
-      issuedDate: [this.customer?.issuedDate, Validators.required],
-      expiredDate: [this.customer?.expiredDate, Validators.required],
-      issuedPlace: [this.customer?.issuedPlace, Validators.required],
-      birthDate: [this.customer?.birthDate, Validators.required],
-      birthPlace: [this.customer?.birthPlace, Validators.required],
-      nationality: [this.customer?.nationality, Validators.required],
+      issuedPlace: [this.customer?.issuedPlace ?? 'Cục Cảnh sát'],
+      issuedDate: [this.customer?.issuedDate],
+      birthDate: [this.customer?.birthDate],
+      birthPlace: [this.customer?.birthPlace],
+      nationality: [this.customer?.nationality],
       addressLine1: [this.customer?.addressLine1],
       addressLine2: [this.customer?.addressLine2],
       city: [this.customer?.city],
-      country: [this.customer?.country],
+      country: [this.customer?.country ?? 'Việt Nam'],
       phone: [this.customer?.phone],
     });
   }
 
-  addCustomer() {}
   addOrder() {
-    const checkInTime = new Date().getTime();
-    this.orderService.addItem({
-      roomId: this.room.id,
-      customerId: this.customer?.id,
-      checkInTime,
-      orderLineIds: [],
-    }).then((orderId) => {
-      this.orderLineService.addItem({
-        
-      })
-    });
+    // const checkInTime = new Date().getTime();
+    // this.orderService
+    //   .addItem({
+    //     roomId: this.room.id,
+    //     customerId: this.customer?.id,
+    //     checkInTime,
+    //     orderLineIds: [],
+    //   })
+    //   .then((orderId) => {
+    //     this.orderLineService.addItem({});
+    //   });
   }
   updateRoom() {
     // this.fs.updateRoom(this.roomId, {

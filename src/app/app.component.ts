@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
