@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared.module';
 import { Room } from '../../../models/room';
@@ -20,6 +20,7 @@ import { RoomTypePipe } from '../../../pipes/room-type.pipe';
 })
 export class RoomComponent implements OnInit {
   @Input() room: Room = {};
+  @Output() changeRoom = new EventEmitter<Room>();
   rooms: Room[] = [];
   constructor() {}
 
@@ -43,14 +44,14 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  changeRoom(newRoom: Room) {
-    if (newRoom) {
-      newRoom.customerId = this.room.customerId;
-      newRoom.orderId = this.room.orderId;
-      newRoom.status = RoomStatus.CHECKED_IN;
-      this.room.customerId = undefined;
-      this.room.orderId = undefined;
-      this.room.status = RoomStatus.AVAILABLE;
-    }
-  }
+  // changeRoom(newRoom: Room) {
+  //   if (newRoom) {
+  //     newRoom.customerId = this.room.customerId;
+  //     newRoom.orderId = this.room.orderId;
+  //     newRoom.status = RoomStatus.CHECKED_IN;
+  //     this.room.customerId = undefined;
+  //     this.room.orderId = undefined;
+  //     this.room.status = RoomStatus.AVAILABLE;
+  //   }
+  // }
 }

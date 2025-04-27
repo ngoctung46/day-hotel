@@ -1,8 +1,49 @@
 <div class="row">
   <ng-container *ngFor="let room of rooms; let i = index">
     <div class="col-4">
-      <home-room [room]="room" />
+      <home-room
+        [room]="room"
+        (changeRoom)="setRoom(room); openModal(content)"
+      />
     </div>
     <div *ngIf="(i + 1) % 3 === 0" class="w-100"></div>
   </ng-container>
 </div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title text-danger" id="modal-basic-title">Chuyển phòng</h6>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.close()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="room-number">Chọn phòng muốn chuyển</label>
+        <select
+          name="rooms"
+          class="form-select"
+          id="room-number"
+          aria-label="room-number"
+          [(ngModel)]="changedRoom"
+        >
+          @for (room of availableRooms; track $index) {
+          <option [ngValue]="room">{{ room.number }}</option>
+          }
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-primary bi bi-floppy-fill"
+      (click)="changeRoom(); modal.close()"
+    ></button>
+  </div>
+</ng-template>
+
+<hr />

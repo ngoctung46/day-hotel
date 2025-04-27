@@ -1,1 +1,9 @@
-<p>products works!</p>
+<h1 class="text-center">Quản lý hàng hóa, dịch vụ, phụ thu</h1>
+
+<product-edit (added)="loadProducts()"></product-edit>
+<br />
+<product-list
+  *ngIf="products.length > 0"
+  [products]="products"
+  (edited)="loadProducts()"
+></product-list>

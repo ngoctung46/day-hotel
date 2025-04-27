@@ -14,6 +14,14 @@ export class HomeComponent {
   rooms: Room[] = [];
   roomService = inject(RoomService);
   productService = inject(ProductService);
-  rooms$: Promise<Room[]> = this.roomService.getItems();
+  rooms$: Promise<Room[]> = this.roomService
+    .getItems()
+    .then((rooms) => rooms.sort((a, b) => a.number! - b.number!));
   constructor() {}
+
+  getRooms() {
+    this.roomService
+      .getItems()
+      .then((rooms) => rooms.sort((a, b) => a.number! - b.number!));
+  }
 }

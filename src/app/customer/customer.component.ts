@@ -22,17 +22,14 @@ export class CustomerComponent {
   orderLineService = inject(OrderLineService);
   orderService = inject(OrderService);
   productService = inject(ProductService);
-  room: Room = {} as Room;
-  customer: Customer | undefined;
+  rId = '';
+  cId = '';
   @Input() set roomId(id: string) {
-    this.roomService.getItemById(id).then((room) => {
-      this.room = room || ({} as Room);
-    });
+    this.rId = id;
   }
+
   @Input() set id(id: string) {
-    this.customerService.getItemById(id).then((customer) => {
-      this.customer = customer || undefined;
-    });
+    this.cId = id;
   }
 
   constructor(private router: Router) {}
@@ -56,7 +53,7 @@ export class CustomerComponent {
     await this.orderService.addItem(
       {
         customerId: customerRef.id,
-        roomId: this.room.id,
+        roomId: this.rId,
         checkInTime: Date.now(),
         orderLineIds: [orderLineRef.id],
       },
@@ -65,7 +62,7 @@ export class CustomerComponent {
     await this.customerService.addItem($event, customerRef);
     this.roomService
       .updateItem({
-        id: this.room.id,
+        id: this.rId,
         customerId: customerRef.id,
         orderId: orderRef.id,
         status: RoomStatus.CHECKED_IN,

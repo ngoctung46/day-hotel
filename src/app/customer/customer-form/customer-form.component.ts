@@ -10,6 +10,7 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
+  concatWith,
   debounceTime,
   distinctUntilChanged,
   map,
@@ -35,18 +36,28 @@ import { OrderLineService } from '../../services/order-line.service';
 })
 export class CustomerFormComponent {
   @Output() submittedCustomer: EventEmitter<Customer> = new EventEmitter();
-  @Input() room: Room = {};
-  @Input() customer: Customer | undefined = {};
+  @Input() roomId: string = '';
+  @Input() customerId: string = '';
+  customer: Customer | undefined;
+  room: Room | undefined;
   orderId = '';
   customerForm: FormGroup = new FormGroup({});
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
   customers$: Promise<Customer[]> = this.customerService.getItems();
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.inintForm();
+    this.customerService
+      .getItemById(this.customerId)
+      .then((c) => (this.customer = c));
+  }
 
   ngOnInit() {
-    this.initData();
+    this.customerService.getItemById(this.customerId).then((c) => {
+      this.customer = c;
+      this.initData();
+    });
   }
   search: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
@@ -69,38 +80,37 @@ export class CustomerFormComponent {
   onClear() {
     this.customerForm.reset();
   }
+  private inintForm() {
+    this.customerForm = this.fb.group({
+      name: ['', Validators.required],
+      idNumber: ['', Validators.required],
+      issuedPlace: ['Cục Cảnh sát'],
+      issuedDate: [''],
+      birthDate: [''],
+      birthPlace: [''],
+      nationality: ['Việt Nam'],
+      addressLine1: [''],
+      addressLine2: [''],
+      city: [''],
+      country: ['Việt Nam'],
+      phone: [''],
+    });
+  }
   private initData() {
-    if (this.customer) {
-      this.customerForm = this.fb.group({
-        name: [this.customer?.name, Validators.required],
-        idNumber: [this.customer?.idNumber, Validators.required],
-        issuedPlace: [this.customer?.issuedPlace ?? 'Cục Cảnh sát'],
-        issuedDate: [this.customer?.issuedDate],
-        birthDate: [this.customer?.birthDate],
-        birthPlace: [this.customer?.birthPlace],
-        nationality: [this.customer?.nationality ?? 'Việt Nam'],
-        addressLine1: [this.customer?.addressLine1],
-        addressLine2: [this.customer?.addressLine2],
-        city: [this.customer?.city],
-        country: [this.customer?.country ?? 'Việt Nam'],
-        phone: [this.customer?.phone],
-      });
-      this.customerForm.disable();
-    } else {
-      this.customerForm = this.fb.group({
-        name: ['', Validators.required],
-        idNumber: ['', Validators.required],
-        issuedPlace: ['Cục Cảnh sát'],
-        issuedDate: [''],
-        birthDate: [''],
-        birthPlace: [''],
-        nationality: ['Việt Nam'],
-        addressLine1: [''],
-        addressLine2: [''],
-        city: [''],
-        country: ['Việt Nam'],
-        phone: [''],
-      });
-    }
+    this.customerForm = this.fb.group({
+      name: [this.customer?.name, Validators.required],
+      idNumber: [this.customer?.idNumber, Validators.required],
+      issuedPlace: [this.customer?.issuedPlace ?? 'Cục Cảnh sát'],
+      issuedDate: [this.customer?.issuedDate],
+      birthDate: [this.customer?.birthDate],
+      birthPlace: [this.customer?.birthPlace],
+      nationality: [this.customer?.nationality ?? 'Việt Nam'],
+      addressLine1: [this.customer?.addressLine1],
+      addressLine2: [this.customer?.addressLine2],
+      city: [this.customer?.city],
+      country: [this.customer?.country ?? 'Việt Nam'],
+      phone: [this.customer?.phone],
+    });
+    if (this.customer != undefined) this.customerForm.disable();
   }
 }

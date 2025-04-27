@@ -1,0 +1,65 @@
+<div class="table-responsive d-flex justify-content-center">
+  <table *ngIf="products" class="table table-bordered w-auto rounded-2">
+    <thead>
+      <tr class="table-primary">
+        <th scope="col">#</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Loại</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let product of products; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td scope="row">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="name"
+            aria-label="name"
+            aria-describedby="name-description"
+            [(ngModel)]="product.name"
+          />
+        </td>
+        <td scope="row">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="price"
+            aria-label="price"
+            aria-describedby="price-description"
+            [(ngModel)]="product.price"
+          />
+        </td>
+        <td scope="row">
+          <select
+            class="form-select"
+            id="product-type"
+            aria-label="product-type"
+            [(ngModel)]="product.type"
+          >
+            <option value="0" selected>Thức uống</option>
+            <option value="1">Thức ăn</option>
+            <option value="2">Dịch vụ phòng</option>
+            <option value="3">Giá giờ</option>
+            <option value="4">Phụ thu</option>
+            <option value="5">Giảm giá</option>
+          </select>
+        </td>
+        <td scope="row">
+          <div class="input-group">
+            <button
+              class="btn btn-warning bi bi-pencil-fill"
+              (click)="updateProductAsync(product)"
+            ></button>
+            <button
+              class="btn btn-danger bi bi-trash-fill"
+              (click)="deleteProductAsync(product)"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,4 +1,6 @@
-<div class="container">
-  <h1 class="text-danger text-center">QUẢN LÝ NHÀ NGHỈ ĐẠT Ý</h1>
-  <home-rooms *ngIf="rooms$ | async as rooms" [rooms]="rooms" />
-</div>
+<h1 class="text-danger text-center text-danger">QUẢN LÝ PHÒNG</h1>
+<home-rooms
+  *ngIf="rooms$ | async as rooms"
+  [rooms]="rooms"
+  (changed)="getRooms()"
+/>

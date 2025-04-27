@@ -1,12 +1,12 @@
 <div class="card text-center" style="margin: 8px">
-  <div class="card-header bg-success text-light">
+  <div class="card-header bg-primary text-light">
     <b>{{ room.type | RoomType }}</b>
   </div>
   <div
     class="card-body"
     [class]="{
-      occupied: room.status == 1,
-      'bg-light': room.status == 0
+      'bg-light': room.status == 0,
+      'occupied-room': room.status == 1
     }"
   >
     <h1 class="card-title">{{ room.number }}</h1>
@@ -22,7 +22,7 @@
   <div
     class="card-footer"
     [class]="{
-      'bg-primary': room.status == 0,
+      'bg-success': room.status == 0,
       'bg-light': room.status == 1
     }"
     style="padding: 0px"
@@ -41,7 +41,7 @@
       <button
         tooltip="Đổi phòng"
         class="btn btn-success bi bi-arrow-left-right"
-        (click)="updateRoomStatus()"
+        (click)="changeRoom.emit(room)"
       ></button>
       <button
         tooltip="Thông tin khách lưu trú"
@@ -53,7 +53,7 @@
         type="button"
         tooltip="Thêm dịch vụ"
         class="btn btn-warning bi bi-cart-plus-fill"
-        [routerLink]="['/order', room.orderId]"
+        [routerLink]="['/orders', room.orderId]"
         routerLinkActive="router-link-active"
       ></button>
       <button

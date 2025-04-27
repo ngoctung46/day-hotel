@@ -1,0 +1,73 @@
+<h3 class="text-center text-danger">Thêm dịch vụ phòng</h3>
+<p></p>
+<orders-order-line
+  [orderId]="orderId"
+  (added)="getOrderLines()"
+></orders-order-line>
+<p></p>
+<p></p>
+<h2 class="text-warning text-center">HÓA ĐƠN</h2>
+<p></p>
+<div class="table-responsive d-flex justify-content-center align-middle">
+  <table
+    class="table table-striped table-bordered w-auto rounded-2 align-middle"
+  >
+    <thead>
+      <tr class="table-danger">
+        <th scope="col" class="text-center">STT</th>
+        <th scope="col">Tên</th>
+        <th scope="col" class="text-end">Giá</th>
+        <th scope="col" class="text-end">SL</th>
+        <th scope="col" class="text-end">Thành tiền</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (ol of orderLines; track $index) {
+      <tr>
+        <th scope="row" class="text-center">{{ $index + 1 }}</th>
+        <td>{{ ol.product?.name }}</td>
+        <td class="text-end">{{ ol.product?.price | number }}</td>
+        <td class="text-end">
+          <input
+            type="number"
+            class="form-control"
+            style="width: 50px !important"
+            placeholder="Số lượng"
+            aria-label="quantity"
+            [(ngModel)]="ol.quantity"
+          />
+        </td>
+        <th class="text-end">
+          {{ ol.product?.price! * ol.quantity! | number }}
+        </th>
+        <th class="text-center">
+          <div class="input-group">
+            <button
+              class="btn btn-outline-info bi bi-floppy-fill"
+              (click)="update(ol)"
+            ></button>
+            <button
+              class="btn btn-outline-danger bi bi-trash-fill"
+              (click)="remove(ol)"
+            ></button>
+          </div>
+        </th>
+      </tr>
+      }
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <th class="text-end text-danger">Tổng</th>
+        <th class="text-end text-danger">{{ total | number }}</th>
+        <th class="w-20 text-end">
+          <button
+            class="btn btn-outline-danger bi bi-arrow-left"
+            (click)="goBack()"
+          ></button>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>

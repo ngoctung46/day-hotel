@@ -18,10 +18,12 @@ export enum RoomRate {
 }
 
 export enum ProductType {
-  HOURLY_RATE = 0,
-  BEVERAGES,
+  BEVERAGES = 0,
   FOOD,
   ROOM_SERVICE,
+  HOURLY_RATE,
+  EXTRA_FEE,
+  DISCOUNT,
 }
 
 export enum CollectionName {
