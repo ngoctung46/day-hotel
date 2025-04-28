@@ -11,9 +11,9 @@ export class CustomerService extends CloudFirestoreService<Customer> {
     super(CollectionName.CUSTOMER);
   }
   async getCustomerByIdNumber(idNumber: string): Promise<Customer | undefined> {
-    const customers = await this.getItems();
-    return (
-      customers.find((customer) => customer.idNumber === idNumber) ?? undefined
+    const customer = await this.getItems().then((customers) =>
+      customers.find((c) => c.idNumber == idNumber)
     );
+    return customer;
   }
 }

@@ -34,7 +34,7 @@ export class CustomerComponent {
 
   constructor(private router: Router) {}
   ngOnInit() {}
-  async saveCustomerAsync($event: Customer) {
+  async saveCustomerAsync(customer: Customer) {
     let customerRef = this.customerService.createDoc();
     let orderLineRef = this.orderLineService.createDoc();
     let orderRef = this.orderService.createDoc();
@@ -59,11 +59,16 @@ export class CustomerComponent {
       },
       orderRef
     );
-    await this.customerService.addItem($event, customerRef);
+    if (!customer.id) {
+      await this.customerService
+        .addItem(customer, customerRef)
+        .then((_) => (customer.id = customerRef.id));
+    }
+
     this.roomService
       .updateItem({
         id: this.rId,
-        customerId: customerRef.id,
+        customerId: customer.id,
         orderId: orderRef.id,
         status: RoomStatus.CHECKED_IN,
       })

@@ -55,12 +55,10 @@ export class CustomerFormComponent implements OnInit {
   orderLineService = inject(OrderLineService);
   constructor(private fb: FormBuilder) {
     this.inintForm();
-    this.customerService
-      .getItemById(this.customerId)
-      .then((c) => (this.customer = c));
   }
 
   ngOnInit() {
+    if (!this.customerId) return;
     this.customerService.getItemById(this.customerId).then((c) => {
       this.customer = c;
       this.initData();
@@ -81,11 +79,22 @@ export class CustomerFormComponent implements OnInit {
       )
     );
   onSubmit() {
-    this.customer = this.customerForm.value as Customer;
+    if (!this.customer?.id) this.customer = this.customerForm.value as Customer;
     this.submittedCustomer.emit(this.customer);
   }
   onClear() {
     this.customerForm.reset();
+  }
+
+  valueChange(newValue: string) {
+    if (newValue.length < 12) return;
+    this.customerService.getCustomerByIdNumber(newValue).then((c) => {
+      if (c) {
+        this.customer = c;
+        this.initData();
+        this.customerForm.disable();
+      }
+    });
   }
   private inintForm() {
     this.customerForm = this.fb.group({

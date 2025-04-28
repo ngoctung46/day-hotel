@@ -7,9 +7,11 @@
         <input
           id="idNumber"
           type="text"
+          maxlength="12"
           class="form-control"
           placeholder="CCCD số"
           formControlName="idNumber"
+          (ngModelChange)="valueChange($event)"
           autofocus
         />
         @if(customerForm.get('idNumber')?.valid) {
@@ -144,7 +146,6 @@
     <button
       type="button"
       class="btn btn-outline-primary btn-lg mx-1 bi bi-floppy"
-      [disabled]="!customerForm.valid || customerForm.disabled"
       type="submit"
       aria-label="Submit customer information"
     ></button>
