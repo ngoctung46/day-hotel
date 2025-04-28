@@ -6,15 +6,21 @@ export enum RoomType {
 export enum RoomStatus {
   AVAILABLE = 0,
   CHECKED_IN,
-  NEED_CLEANING,
   CUSTOMER_OUT,
+  NEED_CLEANING_CUSTOMER_IN,
+  NEED_CLEANING_CUSTOMER_OUT,
   BOOKED,
   UNDER_MAINTENANCE,
 }
 export enum RoomRate {
-  NORMAL = 200_000,
-  DELUXE = 250_000,
-  VIP = 300_000,
+  NORMAL = 160_000,
+  DELUXE = 200_000,
+  VIP = 250_000,
+}
+
+export enum HourlyRate {
+  NORMAL_OR_DELUXE = 80_000,
+  VIP = 100_000,
 }
 
 export enum ProductType {

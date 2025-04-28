@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared.module';
 import { Room } from '../../../models/room';
@@ -6,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { RoomStatus } from '../../../models/const';
 import { RoomStatusPipe } from '../../../pipes/room-status.pipe';
 import { RoomTypePipe } from '../../../pipes/room-type.pipe';
+import { RoomService } from '../../../services/room.service';
 @Component({
   selector: 'home-room',
   imports: [
@@ -21,26 +29,26 @@ import { RoomTypePipe } from '../../../pipes/room-type.pipe';
 export class RoomComponent implements OnInit {
   @Input() room: Room = {};
   @Output() changeRoom = new EventEmitter<Room>();
+  roomService = inject(RoomService);
   rooms: Room[] = [];
   constructor() {}
 
   ngOnInit() {}
 
-  updateRoomStatus() {
-    if (this.room.status === RoomStatus.AVAILABLE) {
-      this.room.status = RoomStatus.CHECKED_IN;
-    } else if (this.room.status === RoomStatus.CHECKED_IN) {
-      this.room.status = RoomStatus.NEED_CLEANING;
-    } else if (this.room.status === RoomStatus.NEED_CLEANING) {
-      this.room.status = RoomStatus.AVAILABLE;
-    }
-  }
-
-  updateStatus() {
-    if (this.room.status === RoomStatus.NEED_CLEANING) {
-      this.room.status = RoomStatus.NEED_CLEANING;
-    } else {
-      this.room.status = RoomStatus.AVAILABLE;
+  updateCleaningStatus() {
+    switch (this.room.status) {
+      case RoomStatus.CHECKED_IN:
+        this.room.status = RoomStatus.NEED_CLEANING_CUSTOMER_IN;
+        this.roomService.updateItem(this.room);
+        break;
+      case RoomStatus.NEED_CLEANING_CUSTOMER_IN:
+        this.room.status = RoomStatus.CHECKED_IN;
+        this.roomService.updateItem(this.room);
+        break;
+      case RoomStatus.NEED_CLEANING_CUSTOMER_OUT:
+        this.room.status = RoomStatus.AVAILABLE;
+        this.roomService.updateItem(this.room);
+        break;
     }
   }
 

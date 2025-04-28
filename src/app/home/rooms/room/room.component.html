@@ -6,7 +6,8 @@
     class="card-body"
     [class]="{
       'bg-light': room.status == 0,
-      'occupied-room': room.status == 1
+      'occupied-room': room.status == 1,
+      'bg-warning': room.status == 3 || room.status == 4
     }"
   >
     <h1 class="card-title">{{ room.number }}</h1>
@@ -23,14 +24,14 @@
     class="card-footer"
     [class]="{
       'bg-success': room.status == 0,
-      'bg-light': room.status == 1
+      'bg-light': room.status == 1,
     }"
     style="padding: 0px"
   >
     <button
       tooltip="Nhận Phòng"
       *ngIf="room.status == 0"
-      class="btn btn-primary bi bi-vector-pen w-100"
+      class="btn btn-primary btn-lg bi bi-box-arrow-in-right w-100"
       [routerLink]="['/customer/room/', room.id]"
     ></button>
     <div
@@ -40,27 +41,31 @@
     >
       <button
         tooltip="Đổi phòng"
-        class="btn btn-success bi bi-arrow-left-right"
+        class="btn btn-success btn-lg bi bi-arrow-left-right"
+        [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
       ></button>
       <button
         tooltip="Thông tin khách lưu trú"
         type="button"
-        class="btn btn-primary bi bi-person-badge-fill"
+        [hidden]="room.status == 4"
+        class="btn btn-primary btn-lg bi bi-person-badge-fill"
         [routerLink]="['/customer', room.customerId]"
       ></button>
       <button
         type="button"
-        tooltip="Thêm dịch vụ"
-        class="btn btn-warning bi bi-cart-plus-fill"
-        [routerLink]="['/orders', room.orderId]"
-        routerLinkActive="router-link-active"
+        tooltip="Phòng dơ"
+        class="btn btn-danger bi bi-stars"
+        [class]="{ 'w-100': room.status == 4 }"
+        (click)="updateCleaningStatus()"
       ></button>
       <button
         type="button"
-        tooltip="Trả phòng"
-        class="btn btn-danger bi bi-receipt"
-        [routerLink]="['/receipt', room.orderId]"
+        tooltip="Check out"
+        [hidden]="room.status == 4"
+        class="btn btn-warning btn-lg bi bi-cart-check-fill"
+        [routerLink]="['/orders', room.orderId]"
+        routerLinkActive="router-link-active"
       ></button>
     </div>
   </div>

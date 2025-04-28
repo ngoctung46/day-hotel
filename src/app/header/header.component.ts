@@ -12,7 +12,7 @@ export class HeaderComponent {
   menuItems = [
     { displayName: 'Danh sách Phòng', path: '/home', order: 1 },
     { displayName: 'Báo cáo', path: '/reports', order: 3 },
-    { displayName: 'Sản phẩm', path: '/products', order: 2 },
-    { displayName: 'Đặt phòng', path: '/bookings', order: 4 },
+    { displayName: 'Dịch vụ', path: '/products', order: 2 },
+    // { displayName: 'Đặt phòng', path: '/bookings', order: 4 },
   ];
 }

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   Validators,
   FormBuilder,
@@ -34,7 +42,7 @@ import { OrderLineService } from '../../services/order-line.service';
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
 })
-export class CustomerFormComponent {
+export class CustomerFormComponent implements OnInit {
   @Output() submittedCustomer: EventEmitter<Customer> = new EventEmitter();
   @Input() roomId: string = '';
   @Input() customerId: string = '';
@@ -45,7 +53,6 @@ export class CustomerFormComponent {
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
-  customers$: Promise<Customer[]> = this.customerService.getItems();
   constructor(private fb: FormBuilder) {
     this.inintForm();
     this.customerService

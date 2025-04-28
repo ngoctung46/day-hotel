@@ -28,6 +28,6 @@ export class EditComponent {
     }
   }
   get valid() {
-    return this.product.name?.length! > 1 && this.product?.price! > 0;
+    return this.product.name?.length! > 1 && this.product?.price! != 0;
   }
 }
