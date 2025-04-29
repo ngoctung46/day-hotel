@@ -1,3 +1,6 @@
 .occupied-room {
   background-color: #dd8080;
 }
+.btn {
+  border-radius: 0;
+}

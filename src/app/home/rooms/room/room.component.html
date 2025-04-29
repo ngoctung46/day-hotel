@@ -36,14 +36,19 @@
     >
       Nhận khách <span class="bi bi-box-arrow-in-right"></span>
     </button>
+    <!-- <div class="d-flex flex-row mb-3 justify-content-center">
+      <div class="p-1">Flex item 1</div>
+      <div class="p-1">Flex item 2</div>
+      <div class="p-1">Flex item 3</div>
+    </div> -->
     <div
       *ngIf="room.status !== 0"
-      class="btn-group w-100 bg-danger"
+      class="d-flex flex-row mb-0 justify-content-center"
       role="group"
     >
       <button
         tooltip="Đổi phòng"
-        class="btn btn-success btn-lg bi bi-arrow-left-right"
+        class="btn btn-success btn-lg bi bi-arrow-left-right w-25"
         [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
       ></button>
@@ -51,13 +56,13 @@
         tooltip="Thông tin khách lưu trú"
         type="button"
         [hidden]="room.status == 4"
-        class="btn btn-primary btn-lg bi bi-person-badge-fill"
+        class="btn btn-primary btn-lg bi bi-person-badge-fill w-25"
         [routerLink]="['/customer', room.customerId]"
       ></button>
       <button
         type="button"
         tooltip="Phòng dơ"
-        class="btn btn-danger bi bi-stars"
+        class="btn btn-danger bi bi-stars w-25"
         [class]="{ 'w-100': room.status == 4 }"
         (click)="updateCleaningStatus()"
       ></button>
@@ -65,7 +70,7 @@
         type="button"
         tooltip="Check out"
         [hidden]="room.status == 4"
-        class="btn btn-warning btn-lg bi bi-cart-check text-light"
+        class="btn btn-warning btn-lg bi bi-cart-check text-light w-25"
         [routerLink]="['/orders', room.orderId]"
         routerLinkActive="router-link-active"
       ></button>
