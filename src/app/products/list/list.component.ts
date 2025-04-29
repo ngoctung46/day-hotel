@@ -11,6 +11,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { ProductTypePipe } from '../../pipes/product-type.pipe';
 import { ProductService } from '../../services/product.service';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'product-list',
@@ -22,6 +23,7 @@ export class ListComponent implements OnInit {
   productService = inject(ProductService);
   @Input() products: Product[] = [];
   @Output() edited: EventEmitter<boolean>;
+  router = inject(Router);
   constructor() {
     this.edited = new EventEmitter();
   }
@@ -39,5 +41,9 @@ export class ListComponent implements OnInit {
         .updateItem(p)
         .then(() => this.edited.emit(true));
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

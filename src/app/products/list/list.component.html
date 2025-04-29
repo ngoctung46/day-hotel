@@ -1,7 +1,7 @@
 <div class="table-responsive d-flex justify-content-center">
   <table *ngIf="products" class="table table-bordered w-auto rounded-2">
     <thead>
-      <tr class="table-primary">
+      <tr class="table-success">
         <th scope="col">#</th>
         <th scope="col">Tên</th>
         <th scope="col">Giá</th>
@@ -62,4 +62,14 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="d-flex justify-content-center">
+  <div class="btn-group">
+    <button
+      class="btn btn-outline-primary bi bi-caret-left-fill"
+      (click)="goBack()"
+    >
+      Quay lại
+    </button>
+  </div>
 </div>

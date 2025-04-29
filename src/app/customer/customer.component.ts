@@ -41,7 +41,7 @@ export class CustomerComponent {
       {
         customerId: customerRef.id,
         roomId: this.rId,
-        checkInTime: Date.now(),
+        checkInTime: customer.checkInTime,
         orderLineIds: [],
       },
       orderRef

@@ -19,6 +19,7 @@ import { OrderLineService } from '../services/order-line.service';
 import { RoomService } from '../services/room.service';
 import { Room } from '../models/room';
 import { or } from '@angular/fire/firestore';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
@@ -35,6 +36,7 @@ import { or } from '@angular/fire/firestore';
   styleUrl: './reports.component.css',
 })
 export class ReportsComponent implements OnInit {
+  router = inject(Router);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
   roomService = inject(RoomService);
@@ -109,5 +111,8 @@ export class ReportsComponent implements OnInit {
   getRoomNumber(id: string) {
     let room = this.rooms.find((r) => r.id == id) ?? {};
     return room.number ?? '';
+  }
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

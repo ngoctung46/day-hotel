@@ -161,7 +161,7 @@ export class OrdersComponent {
         },
       ];
     }
-    if (timeDiff.minutes! > 30 && timeDiff.hours! >= 0) {
+    if (timeDiff.minutes! > 15 && timeDiff.hours! >= 0) {
       index++;
     }
 

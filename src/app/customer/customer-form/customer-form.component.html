@@ -1,13 +1,11 @@
 <h1 class="text-center text-success">THÔNG TIN KHÁCH LƯU TRÚ</h1>
-<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="customerForm">
   <label class="my-1 mr-2 text-primary"><h4>Giấy tờ tùy thân</h4></label>
   <div class="row row-cols-auto g-1">
     <div class="col">
       <div class="input-group">
         <input
-          id="idNumber"
           type="text"
-          maxlength="12"
           class="form-control"
           placeholder="CCCD số"
           formControlName="idNumber"
@@ -141,26 +139,53 @@
       />
     </div>
   </div>
-  <br />
-  <div class="d-flex justify-content-center">
-    <button
-      type="button"
-      class="btn btn-outline-primary btn-lg mx-1 bi bi-floppy"
-      type="submit"
-      aria-label="Submit customer information"
-    ></button>
-    <button
-      type="button"
-      [disabled]="customerForm.disabled"
-      class="btn btn-outline-info btn-lg mx-0 bi bi-arrow-repeat"
-      (click)="onClear()"
-      aria-label="Clear form"
-    ></button>
-    <button
-      type="button"
-      [routerLink]="['/']"
-      class="btn btn-outline-danger btn-lg mx-1 bi bi-x-lg"
-      aria-label="Clear form"
-    ></button>
-  </div>
 </form>
+@if (this.isNew) {
+<label class="my-1 mr-2 text-info"><h4>Thông tin nhận phòng</h4></label>
+<div class="row row-cols-auto g-1">
+  <div class="col">
+    <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
+    <input
+      type="date"
+      class="form-control"
+      placeholder="Ngày nhận phòng"
+      [(ngModel)]="checkInDate"
+      [value]="checkInDate"
+    />
+  </div>
+  <div class="col">
+    <label for="checkInTime" class="form-label">Giờ nhận phòng</label>
+    <input
+      type="time"
+      class="form-control"
+      placeholder="Giờ nhận phòng"
+      [(ngModel)]="checkInTime"
+      [value]="checkInTime"
+    />
+  </div>
+</div>
+}
+
+<br />
+
+<div class="d-flex justify-content-center">
+  <button
+    type="button"
+    class="btn btn-outline-primary btn-lg mx-1 bi bi-floppy"
+    (click)="onSubmit()"
+    aria-label="Submit customer information"
+  ></button>
+  <button
+    type="button"
+    [disabled]="customerForm.disabled"
+    class="btn btn-outline-info btn-lg mx-0 bi bi-arrow-repeat"
+    (click)="onClear()"
+    aria-label="Clear form"
+  ></button>
+  <button
+    type="button"
+    [routerLink]="['/']"
+    class="btn btn-outline-danger btn-lg mx-1 bi bi-x-lg"
+    aria-label="Clear form"
+  ></button>
+</div>

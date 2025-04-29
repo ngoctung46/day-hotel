@@ -14,4 +14,5 @@ export interface Customer extends ModelBase {
   city?: string;
   country?: string;
   phone?: string;
+  checkInTime?: number;
 }

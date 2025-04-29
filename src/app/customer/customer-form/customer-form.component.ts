@@ -16,13 +16,12 @@ import {
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
 import {
-  NgbTimepickerModule,
+  NgbDatepickerModule,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
-  concatWith,
   debounceTime,
   distinctUntilChanged,
   map,
@@ -38,12 +37,12 @@ import { OrderLineService } from '../../services/order-line.service';
 @Component({
   selector: 'customer-form',
   imports: [
-    NgbTypeaheadModule,
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
-    NgbTimepickerModule,
     FormsModule,
+    NgbTypeaheadModule,
+    NgbDatepickerModule,
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
@@ -52,27 +51,51 @@ export class CustomerFormComponent implements OnInit {
   @Output() submittedCustomer: EventEmitter<Customer> = new EventEmitter();
   @Input() roomId: string = '';
   @Input() customerId: string = '';
+  checkInDate: any;
+  checkInTime: any;
   customer: Customer | undefined;
   room: Room | undefined;
   orderId = '';
-  customerForm: FormGroup = new FormGroup({});
+  customerForm: FormGroup;
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
-  time = {};
+  isNew = true;
   constructor(private fb: FormBuilder) {
-    let current = new Date(Date.now());
-    this.time = { hour: current.getHours, minute: current.getMinutes };
-    this.inintForm();
+    this.customerForm = this.fb.group({
+      name: ['', Validators.required],
+      idNumber: ['', Validators.required],
+      issuedPlace: ['Cục Cảnh sát'],
+      issuedDate: [''],
+      birthDate: [''],
+      birthPlace: [''],
+      nationality: ['Việt Nam'],
+      addressLine1: [''],
+      addressLine2: [''],
+      city: [''],
+      country: ['Việt Nam'],
+      phone: [''],
+    });
+    const today = new Date(Date.now());
+    const month =
+      today.getMonth() + 1 < 10
+        ? `0${today.getMonth() + 1}`
+        : `${today.getMonth() + 1}`;
+    this.checkInDate = `${today.getFullYear()}-${month}-${today.getDate()}`;
+    this.checkInTime = `${today.getHours()}:${today.getMinutes()}`;
   }
 
   ngOnInit() {
-    if (!this.customerId) return;
-    this.customerService.getItemById(this.customerId).then((c) => {
-      this.customer = c;
-      this.initData();
-    });
+    if (this.customerId) {
+      this.customerService.getItemById(this.customerId).then((c) => {
+        this.customer = c;
+        this.initData();
+      });
+    } else {
+      this.isNew = true;
+    }
   }
+
   search: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) =>
@@ -89,6 +112,9 @@ export class CustomerFormComponent implements OnInit {
     );
   onSubmit() {
     if (!this.customer?.id) this.customer = this.customerForm.value as Customer;
+    this.customer.checkInTime = new Date(
+      `${this.checkInDate}T${this.checkInTime}:00`
+    ).getTime();
     this.submittedCustomer.emit(this.customer);
   }
   onClear() {
@@ -135,7 +161,6 @@ export class CustomerFormComponent implements OnInit {
       city: [this.customer?.city],
       country: [this.customer?.country ?? 'Việt Nam'],
       phone: [this.customer?.phone],
-      checkInTime: [this.time],
     });
     if (this.customer != undefined) this.customerForm.disable();
   }
