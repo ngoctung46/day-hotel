@@ -7,7 +7,7 @@ import { ProductType } from '../models/const';
 export class ProductTypePipe implements PipeTransform {
   transform(value: ProductType | undefined, ...args: unknown[]): string {
     switch (value) {
-      case ProductType.HOURLY_RATE:
+      case ProductType.ROOM_RATE:
         return 'Giá phòng';
       case ProductType.FOOD:
         return 'Đồ ăn';

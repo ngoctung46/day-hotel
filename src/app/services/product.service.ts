@@ -2,6 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { CloudFirestoreService } from './cloud-firestore.service';
 import { Product } from '../models/product';
 import { CollectionName, ProductType } from '../models/const';
+import {
+  collection,
+  getDoc,
+  getDocs,
+  limit,
+  query,
+  where,
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +20,18 @@ export class ProductService extends CloudFirestoreService<Product> {
     this.seedData();
   }
 
-  async getHourlyRate(): Promise<Product | undefined> {
-    return (await this.getItems()).find(
-      (x) => x.type == ProductType.HOURLY_RATE
+  async getRoomRateOrderLine(): Promise<Product[]> {
+    const productRef = collection(this.firestore, this.collectionName);
+    const q = query(
+      productRef,
+      where('type', '==', ProductType.ROOM_RATE),
+      limit(1)
     );
+    const querySnapshot = await getDocs(q);
+    const items: Product[] = querySnapshot.docs.map(
+      (doc) => ({ id: doc.id, ...doc.data() } as Product)
+    );
+    return items;
   }
   private async seedData() {
     const products = await this.getItems();
@@ -26,8 +42,8 @@ export class ProductService extends CloudFirestoreService<Product> {
       {
         name: 'Giá phòng',
         price: 80_000,
-        description: 'Giá phòng giờ',
-        type: ProductType.HOURLY_RATE,
+        description: 'Giá phòng giờ/ngày',
+        type: ProductType.ROOM_RATE,
       },
       {
         name: 'Nước suối ',

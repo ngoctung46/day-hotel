@@ -18,7 +18,7 @@ import { ModelBase } from '../models/model-base';
 })
 export abstract class CloudFirestoreService<T extends ModelBase> {
   firestore = inject(Firestore);
-  constructor(private collectionName: string) {}
+  constructor(protected collectionName: string) {}
   createDoc(): DocumentReference {
     return doc(collection(this.firestore, this.collectionName));
   }

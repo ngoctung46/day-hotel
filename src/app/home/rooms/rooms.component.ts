@@ -60,4 +60,8 @@ export class RoomsComponent {
   setRoom(room: Room) {
     this.changingRoom = room;
   }
+
+  get availableCount() {
+    return this.rooms.filter((r) => r.status == RoomStatus.CHECKED_IN).length;
+  }
 }

@@ -17,6 +17,8 @@ import {
   RoomStatus,
   RoomType,
 } from '../models/const';
+import { ProductService } from '../services/product.service';
+import { Rate } from '../models/rate';
 
 @Component({
   selector: 'app-orders',
@@ -35,22 +37,20 @@ export class OrdersComponent {
   orderLineService = inject(OrderLineService);
   orderService = inject(OrderService);
   roomService = inject(RoomService);
+  productService = inject(ProductService);
   orderLines: OrderLine[] = [];
   room: Room = {};
   router = inject(Router);
   discount = 0;
   extraFee = 0;
-  constructor() {
-    this.getOrderLines();
-  }
+  checkOutTime: number = Date.now();
+  constructor() {}
 
   getOrderLines() {
-    this.orderLineService
-      .getItems()
-      .then(
-        (ols) =>
-          (this.orderLines = ols.filter((x) => x.orderId == this.orderId))
-      );
+    this.orderLineService.getOrderLinesByOrderId(this.orderId).then((ols) => {
+      this.orderLines = ols;
+      this.addHourlyRateOrderLine();
+    });
   }
 
   getOrder() {
@@ -59,6 +59,7 @@ export class OrdersComponent {
       this.roomService
         .getItemById(order?.roomId!)
         .then((r) => (this.room = r ?? {}));
+      this.getOrderLines();
     });
   }
 
@@ -70,10 +71,6 @@ export class OrdersComponent {
 
   get remainingFee() {
     return this.total - this.discount + this.extraFee;
-  }
-
-  get checkOutTime() {
-    return Date.now;
   }
 
   goBack() {
@@ -89,7 +86,7 @@ export class OrdersComponent {
 
   updateOrder() {
     if (this.order) {
-      this.order.checkOutTime = this.checkOutTime();
+      this.order.checkOutTime = this.checkOutTime;
       let total = 0;
       this.orderLines.forEach((ol) => {
         total += ol.total!;
@@ -100,19 +97,31 @@ export class OrdersComponent {
       this.orderService.updateItem(this.order);
     }
   }
-  updateOrderLine(): OrderLine | undefined {
-    let rate = this.getRate();
-    let ol = this.orderLines.find(
-      (ol) => ol.product?.type == ProductType.HOURLY_RATE
-    );
-    if (ol?.product) {
-      ol.product.price = rate;
-      ol.quantity = 0;
-      ol.total = rate;
-      this.orderLineService.updateItem(ol).then();
-      this.getOrderLines();
-    }
-    return ol;
+  addHourlyRateOrderLine(persistent: boolean = false) {
+    let rates = this.getRates();
+    rates = this.roomService.sumRates(rates);
+    const orderLineRef = this.orderLineService.createDoc();
+    this.productService.getRoomRateOrderLine().then(async (p) => {
+      if (!p) return;
+      if (p.length > 1) return;
+      rates.forEach(async (rate) => {
+        p[0].price = rate.rate;
+        const newOrderLine = {
+          orderId: this.orderId,
+          productId: p[0].id,
+          quantity: rate.quantity,
+          product: p[0],
+          total: rate.quantity * rate.rate,
+        };
+        if (persistent) {
+          await this.orderLineService
+            .addItem(newOrderLine, orderLineRef)
+            .then((_) => this.orderLines.unshift(newOrderLine));
+        } else {
+          this.orderLines.unshift(newOrderLine);
+        }
+      });
+    });
   }
   update(ol: OrderLine) {
     ol.total = ol.quantity! * ol.product?.price!;
@@ -125,32 +134,45 @@ export class OrdersComponent {
     this.getOrderLines();
   }
   checkOut() {
-    this.updateOrderLine();
+    this.addHourlyRateOrderLine(true);
     this.updateOrder();
     this.updateRoom();
     this.router.navigate(['/home']);
   }
 
-  getRate(): number {
+  getRates(): Rate[] {
     var timeDiff = this.orderService.getTimeDiff(this.order?.checkInTime!);
     if (timeDiff.hours! <= 5 && timeDiff.days === 0) {
-      return this.getHourlyRate(timeDiff);
+      return this.getHourlyRates(timeDiff);
     }
-    return this.getDailyRate();
+    return this.getDailyRates();
   }
-  getHourlyRate(timeDiff: TimeDiff): number {
+  getHourlyRates(timeDiff: TimeDiff): Rate[] {
     let index = timeDiff.hours === 0 ? 0 : timeDiff.hours! - 1;
+    const rate =
+      this.room.type === RoomType.NORMAL || RoomType.DELUXE
+        ? (HourlyRate.NORMAL_OR_DELUXE as number)
+        : (HourlyRate.VIP as number);
     if (timeDiff.hours! >= 4) {
-      return this.room.rate!;
+      return [
+        {
+          rate: this.room.rate!,
+          quantity: 1,
+        },
+      ];
     }
-    if (timeDiff.minutes! > 30 && timeDiff.hours! > 0) {
+    if (timeDiff.minutes! > 30 && timeDiff.hours! >= 0) {
       index++;
     }
-    return this.room.type === RoomType.NORMAL || RoomType.DELUXE
-      ? HourlyRate.NORMAL_OR_DELUXE
-      : HourlyRate.VIP;
+
+    return [
+      {
+        rate: rate,
+        quantity: index,
+      },
+    ];
   }
-  getDailyRate(): number {
+  getDailyRates(): Rate[] {
     let checkInTime = new Date(this.order?.checkInTime!);
     const year = checkInTime.getFullYear()!;
     const month = checkInTime.getMonth();
@@ -161,7 +183,7 @@ export class OrdersComponent {
     }
     const start = new Date(year, month, date, 12, 0, 0).getTime();
     const diff = this.orderService.getTimeDiff(start);
-    const extra = this.getHourlyRate(diff);
-    return diff.days! * this.room.rate! + extra;
+    const extra = this.getHourlyRates(diff).pop()!;
+    return [{ rate: this.room.rate!, quantity: diff.days! }, extra];
   }
 }

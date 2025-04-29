@@ -31,31 +31,18 @@ export class CustomerComponent {
   @Input() set id(id: string) {
     this.cId = id;
   }
-
   constructor(private router: Router) {}
   ngOnInit() {}
   async saveCustomerAsync(customer: Customer) {
     let customerRef = this.customerService.createDoc();
-    let orderLineRef = this.orderLineService.createDoc();
     let orderRef = this.orderService.createDoc();
-    this.productService.getHourlyRate().then(async (p) => {
-      await this.orderLineService.addItem(
-        {
-          orderId: orderRef.id,
-          productId: p?.id,
-          quantity: 1,
-          product: p,
-          total: 1 * p?.price!,
-        },
-        orderLineRef
-      );
-    });
+
     await this.orderService.addItem(
       {
         customerId: customerRef.id,
         roomId: this.rId,
         checkInTime: Date.now(),
-        orderLineIds: [orderLineRef.id],
+        orderLineIds: [],
       },
       orderRef
     );

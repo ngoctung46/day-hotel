@@ -8,4 +8,5 @@ export interface OrderLine extends ModelBase {
   product?: Product;
   quantity?: number;
   total?: number;
+  name?: string;
 }

@@ -12,9 +12,13 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbTimepickerModule,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
@@ -38,6 +42,8 @@ import { OrderLineService } from '../../services/order-line.service';
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
+    NgbTimepickerModule,
+    FormsModule,
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
@@ -53,7 +59,10 @@ export class CustomerFormComponent implements OnInit {
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
+  time = {};
   constructor(private fb: FormBuilder) {
+    let current = new Date(Date.now());
+    this.time = { hour: current.getHours, minute: current.getMinutes };
     this.inintForm();
   }
 
@@ -126,6 +135,7 @@ export class CustomerFormComponent implements OnInit {
       city: [this.customer?.city],
       country: [this.customer?.country ?? 'Việt Nam'],
       phone: [this.customer?.phone],
+      checkInTime: [this.time],
     });
     if (this.customer != undefined) this.customerForm.disable();
   }

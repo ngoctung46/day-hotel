@@ -27,7 +27,7 @@ export enum ProductType {
   BEVERAGES = 0,
   FOOD,
   ROOM_SERVICE,
-  HOURLY_RATE,
+  ROOM_RATE,
   EXTRA_FEE,
   DISCOUNT,
 }

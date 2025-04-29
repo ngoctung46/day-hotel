@@ -33,7 +33,7 @@ export class OrderLineComponent {
             if (a?.name!.toUpperCase() < b?.name!.toUpperCase()) return -1;
             return 0;
           })
-          .filter((x) => x.type != ProductType.HOURLY_RATE))
+          .filter((x) => x.type != ProductType.ROOM_RATE))
     );
   }
   addOrderLine() {

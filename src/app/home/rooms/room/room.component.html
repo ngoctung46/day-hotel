@@ -31,9 +31,11 @@
     <button
       tooltip="Nhận Phòng"
       *ngIf="room.status == 0"
-      class="btn btn-primary btn-lg bi bi-box-arrow-in-right w-100"
+      class="btn btn-success btn-lg w-100"
       [routerLink]="['/customer/room/', room.id]"
-    ></button>
+    >
+      Nhận khách <span class="bi bi-box-arrow-in-right"></span>
+    </button>
     <div
       *ngIf="room.status !== 0"
       class="btn-group w-100 bg-danger"

@@ -7,6 +7,7 @@ import {
   RoomStatus,
   RoomType,
 } from '../models/const';
+import { Rate } from '../models/rate';
 
 @Injectable({
   providedIn: 'root',
@@ -23,19 +24,71 @@ export class RoomService extends CloudFirestoreService<Room> {
       return;
     }
     const newRooms: Room[] = [
-      { number: 101, rate: RoomRate.DELUXE, type: RoomType.DELUXE, status: RoomStatus.AVAILABLE },
-      { number: 102, rate: RoomRate.NORMAL, type: RoomType.NORMAL, status: RoomStatus.AVAILABLE },
-      { number: 103, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
-      { number: 201, rate: RoomRate.DELUXE, type: RoomType.DELUXE,  status: RoomStatus.AVAILABLE },
-      { number: 202, rate: RoomRate.NORMAL, type: RoomType.NORMAL, status: RoomStatus.AVAILABLE },
-      { number: 203, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
-      { number: 301, rate: RoomRate.NORMAL, type: RoomType.DELUXE, status: RoomStatus.AVAILABLE },
-      { number: 302, rate: RoomRate.VIP, type: RoomType.VIP, status: RoomStatus.AVAILABLE },
+      {
+        number: 101,
+        rate: RoomRate.DELUXE,
+        type: RoomType.DELUXE,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 102,
+        rate: RoomRate.NORMAL,
+        type: RoomType.NORMAL,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 103,
+        rate: RoomRate.VIP,
+        type: RoomType.VIP,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 201,
+        rate: RoomRate.DELUXE,
+        type: RoomType.DELUXE,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 202,
+        rate: RoomRate.NORMAL,
+        type: RoomType.NORMAL,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 203,
+        rate: RoomRate.VIP,
+        type: RoomType.VIP,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 301,
+        rate: RoomRate.NORMAL,
+        type: RoomType.DELUXE,
+        status: RoomStatus.AVAILABLE,
+      },
+      {
+        number: 302,
+        rate: RoomRate.VIP,
+        type: RoomType.VIP,
+        status: RoomStatus.AVAILABLE,
+      },
     ];
     newRooms.forEach((room) => {
       this.addItem(room).catch((error) => {
         console.error('Error seeding data:', error);
       });
     });
+  }
+  sumRates(rates: Rate[]): Rate[] {
+    const rateMap = new Map<number, number>();
+
+    for (const rateItem of rates) {
+      rateMap.set(
+        rateItem.rate,
+        (rateMap.get(rateItem.rate) || 0) + rateItem.quantity
+      );
+    }
+
+    return Array.from(rateMap, ([rate, quantity]) => ({ rate, quantity }));
   }
 }
