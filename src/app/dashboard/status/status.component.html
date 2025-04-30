@@ -1,0 +1,29 @@
+<h1 class="text-danger text-center">TÌNH TRẠNG PHÒNG</h1>
+<div class="container text-center">
+  <div class="row">
+    <h4 class="col text-success">
+      <div class="card col">
+        <div class="card-header bg-danger text-light">CÓ KHÁCH</div>
+        <div class="card-body">
+          {{ rooms.length - availableCount }}
+        </div>
+      </div>
+    </h4>
+    <h4 class="col text-success">
+      <div class="card col">
+        <div class="card-header bg-success text-light">TRỐNG</div>
+        <div class="card-body">
+          {{ availableCount }}
+        </div>
+      </div>
+    </h4>
+    <h4 class="col text-warning">
+      <div class="card col">
+        <div class="card-header bg-warning text-light">DƠ</div>
+        <div class="card-body">
+          {{ needCleaningCount }}
+        </div>
+      </div>
+    </h4>
+  </div>
+</div>

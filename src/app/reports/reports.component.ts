@@ -18,7 +18,6 @@ import { Order } from '../models/order';
 import { OrderLineService } from '../services/order-line.service';
 import { RoomService } from '../services/room.service';
 import { Room } from '../models/room';
-import { or } from '@angular/fire/firestore';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
