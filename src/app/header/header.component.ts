@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   menuItems = [
+    { displayName: 'Quản lý', path: '/', order: 1 },
     { displayName: 'Danh sách Phòng', path: '/home', order: 1 },
     { displayName: 'Báo cáo', path: '/reports', order: 3 },
     { displayName: 'Dịch vụ', path: '/products', order: 2 },

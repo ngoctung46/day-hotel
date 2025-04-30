@@ -16,12 +16,14 @@ import {
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
 import {
+  NgbDateParserFormatter,
   NgbDatepickerModule,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import {
+  concatWith,
   debounceTime,
   distinctUntilChanged,
   map,
@@ -81,8 +83,19 @@ export class CustomerFormComponent implements OnInit {
       today.getMonth() + 1 < 10
         ? `0${today.getMonth() + 1}`
         : `${today.getMonth() + 1}`;
+    const day =
+      today.getDate() + 1 < 10
+        ? `0${today.getDate() + 1}`
+        : `${today.getDate() + 1}`;
+    const hour =
+      today.getHours() > 10 ? `${today.getHours()}` : `0${today.getHours()}`;
+    const min =
+      today.getMinutes() > 10
+        ? `${today.getMinutes()}`
+        : `0${today.getMinutes()}`;
+
     this.checkInDate = `${today.getFullYear()}-${month}-${today.getDate()}`;
-    this.checkInTime = `${today.getHours()}:${today.getMinutes()}`;
+    this.checkInTime = `${hour}:${min}`;
   }
 
   ngOnInit() {
@@ -91,8 +104,7 @@ export class CustomerFormComponent implements OnInit {
         this.customer = c;
         this.initData();
       });
-    } else {
-      this.isNew = true;
+      if ((this.roomId = '')) this.isNew = true;
     }
   }
 
@@ -131,22 +143,7 @@ export class CustomerFormComponent implements OnInit {
       }
     });
   }
-  private inintForm() {
-    this.customerForm = this.fb.group({
-      name: ['', Validators.required],
-      idNumber: ['', Validators.required],
-      issuedPlace: ['Cục Cảnh sát'],
-      issuedDate: [''],
-      birthDate: [''],
-      birthPlace: [''],
-      nationality: ['Việt Nam'],
-      addressLine1: [''],
-      addressLine2: [''],
-      city: [''],
-      country: ['Việt Nam'],
-      phone: [''],
-    });
-  }
+
   private initData() {
     this.customerForm = this.fb.group({
       name: [this.customer?.name, Validators.required],

@@ -60,17 +60,4 @@ export class RoomsComponent {
   setRoom(room: Room) {
     this.changingRoom = room;
   }
-
-  get availableCount() {
-    return this.rooms.filter((r) => r.status == RoomStatus.AVAILABLE).length;
-  }
-
-  getNeedCleaningCount() {
-    return this.rooms.filter(
-      (r) =>
-        r.status ==
-        (RoomStatus.NEED_CLEANING_CUSTOMER_IN ||
-          RoomStatus.NEED_CLEANING_CUSTOMER_OUT)
-    ).length;
-  }
 }

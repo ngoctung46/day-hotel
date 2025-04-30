@@ -17,7 +17,7 @@ import {
 export class ProductService extends CloudFirestoreService<Product> {
   constructor() {
     super(CollectionName.PRODUCT);
-    this.seedData();
+    // this.seedData();
   }
 
   async getRoomRateOrderLine(): Promise<Product[]> {

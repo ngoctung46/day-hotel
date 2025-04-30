@@ -19,6 +19,8 @@ export class ProductTypePipe implements PipeTransform {
         return 'Giảm giá';
       case ProductType.EXTRA_FEE:
         return 'Phụ thu';
+      case ProductType.PREPAID:
+        return 'Thanh toán';
       default:
         return '';
     }

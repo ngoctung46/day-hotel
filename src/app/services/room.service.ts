@@ -15,7 +15,7 @@ import { Rate } from '../models/rate';
 export class RoomService extends CloudFirestoreService<Room> {
   constructor() {
     super(CollectionName.ROOM);
-    this.seedData();
+    // this.seedData();
   }
 
   private async seedData() {

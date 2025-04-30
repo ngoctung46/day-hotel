@@ -30,6 +30,7 @@ export enum ProductType {
   ROOM_RATE,
   EXTRA_FEE,
   DISCOUNT,
+  PREPAID,
 }
 
 export enum CollectionName {
