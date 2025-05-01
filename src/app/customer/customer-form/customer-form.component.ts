@@ -94,7 +94,7 @@ export class CustomerFormComponent implements OnInit {
         ? `${today.getMinutes()}`
         : `0${today.getMinutes()}`;
 
-    this.checkInDate = `${today.getFullYear()}-${month}-${today.getDate()}`;
+    this.checkInDate = `${today.getFullYear()}-${month}-${day}`;
     this.checkInTime = `${hour}:${min}`;
   }
 
