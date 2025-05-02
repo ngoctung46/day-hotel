@@ -39,6 +39,12 @@ export enum CollectionName {
   ORDER = 'orders',
   ORDER_LINE = 'order_lines',
   PRODUCT = 'products',
+  PAYMENT = 'payments'
+}
+export enum PaymentType {
+  RECEIPT = 0,
+  EXPENSE,
+  PREPAID,
 }
 
 export const PROVINCES = [

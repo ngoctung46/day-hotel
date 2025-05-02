@@ -84,9 +84,7 @@ export class CustomerFormComponent implements OnInit {
         ? `0${today.getMonth() + 1}`
         : `${today.getMonth() + 1}`;
     const day =
-      today.getDate() + 1 < 10
-        ? `0${today.getDate() + 1}`
-        : `${today.getDate() + 1}`;
+      today.getDate() < 10 ? `0${today.getDate()}` : `${today.getDate()}`;
     const hour =
       today.getHours() > 10 ? `${today.getHours()}` : `0${today.getHours()}`;
     const min =

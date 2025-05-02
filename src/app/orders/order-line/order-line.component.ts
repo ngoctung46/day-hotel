@@ -5,8 +5,11 @@ import { Product } from '../../models/product';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { OrderLineService } from '../../services/order-line.service';
 import { ProductService } from '../../services/product.service';
-import { ProductType } from '../../models/const';
+import { PaymentType, ProductType } from '../../models/const';
 import { OrderService } from '../../services/order.service';
+import { PaymentService } from '../../services/payment.service';
+import { RoomService } from '../../services/room.service';
+import { Room } from '../../models/room';
 
 @Component({
   selector: 'orders-order-line',
@@ -16,10 +19,11 @@ import { OrderService } from '../../services/order.service';
 })
 export class OrderLineComponent {
   @Output() added: EventEmitter<boolean> = new EventEmitter();
+  @Input() room: Room = {};
   @Input() orderId = '';
   orderLineService = inject(OrderLineService);
   productService = inject(ProductService);
-  orderService = inject(OrderService);
+  paymentService = inject(PaymentService);
   orderLine: OrderLine = { quantity: 1 };
   products: Product[] = [];
   selectedProduct: Product = {};
@@ -43,8 +47,20 @@ export class OrderLineComponent {
       this.orderLine?.product?.price! * this.orderLine?.quantity!;
     this.orderLine.orderId = this.orderId;
     if (this.orderId == '') return;
-    this.orderLineService
-      .addItem(this.orderLine)
-      .then((_) => this.added.emit(true));
+    this.orderLineService.addItem(this.orderLine).then((_) => {
+      if (this.selectedProduct.type == ProductType.PREPAID) {
+        this.paymentService
+          .addItem({
+            name: this.selectedProduct.name!,
+            amount: this.orderLine.total ?? 0,
+            type: PaymentType.PREPAID,
+            room: this.room,
+            roomId: this.room.id,
+          })
+          .then();
+      }
+      this.orderLine.quantity = 1;
+      this.added.emit(true);
+    });
   }
 }
