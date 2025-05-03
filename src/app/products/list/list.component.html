@@ -1,7 +1,10 @@
 <div class="table-responsive d-flex justify-content-center">
-  <table *ngIf="products" class="table table-bordered w-auto rounded-2">
+  <table
+    *ngIf="products"
+    class="table table-bordered w-auto rounded-2 border-success"
+  >
     <thead>
-      <tr class="table-success">
+      <tr class="table-success border-success">
         <th scope="col">#</th>
         <th scope="col">Tên</th>
         <th scope="col">Giá</th>
@@ -9,7 +12,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody class="table-group-divider">
+    <tbody>
       <tr *ngFor="let product of products; let i = index">
         <th scope="row">{{ i + 1 }}</th>
         <td scope="row">

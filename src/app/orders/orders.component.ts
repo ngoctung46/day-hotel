@@ -20,10 +20,11 @@ import {
 import { ProductService } from '../services/product.service';
 import { Rate } from '../models/rate';
 import { PaymentService } from '../services/payment.service';
+import { NgxPrintModule, NgxPrintService, PrintOptions } from 'ngx-print';
 
 @Component({
   selector: 'app-orders',
-  imports: [CommonModule, OrderLineComponent, FormsModule],
+  imports: [CommonModule, OrderLineComponent, FormsModule, NgxPrintModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })
@@ -33,6 +34,7 @@ export class OrdersComponent {
     this.orderId = id;
     this.getOrder();
   }
+  printService = inject(NgxPrintService);
   orderId = '';
   order: Order | undefined;
   orderLineService = inject(OrderLineService);
@@ -46,6 +48,7 @@ export class OrdersComponent {
   discount = 0;
   extraFee = 0;
   checkOutTime: number = Date.now();
+  isPrinting = false;
   constructor() {}
 
   getOrderLines() {
@@ -103,38 +106,44 @@ export class OrdersComponent {
     let rates = this.getRates();
     rates = this.roomService.sumRates(rates);
     const orderLineRef = this.orderLineService.createDoc();
-    this.productService.getRoomRateOrderLine().then(async (p) => {
-      if (!p) return;
-      if (p.length > 1) return;
-      rates.forEach(async (rate) => {
-        p[0].price = rate.rate;
-        const newOrderLine = {
-          orderId: this.orderId,
-          productId: p[0].id,
-          quantity: rate.quantity,
-          product: p[0],
-          total: rate.quantity * rate.rate,
-        };
-        if (persistent) {
-          await this.orderLineService
-            .addItem(newOrderLine, orderLineRef)
-            .then((_) => this.orderLines.unshift(newOrderLine));
-        } else {
-          this.orderLines.unshift(newOrderLine);
-        }
-      });
+    rates.forEach(async (rate) => {
+      const newOrderLine = {
+        orderId: this.orderId,
+        product: {
+          name: 'Tiền phòng',
+          price: rate.rate,
+        },
+        quantity: rate.quantity,
+        total: rate.quantity * rate.rate,
+      };
+      if (persistent) {
+        await this.orderLineService
+          .addItem(newOrderLine, orderLineRef)
+          .then((_) => this.orderLines.unshift(newOrderLine));
+      } else {
+        this.orderLines.unshift(newOrderLine);
+      }
     });
   }
   update(ol: OrderLine) {
     ol.total = ol.quantity! * ol.product?.price!;
-    this.orderLineService.updateItem(ol).then((_) =>
-      this.paymentService.getByOrderLineId(ol.id!).then((p) => {
-        p.amount = ol.total ?? 0;
-        this.paymentService.updateItem(p);
-      })
-    );
-    this.getOrderLines();
+    if (ol.id) {
+      this.orderLineService.updateItem(ol).then((_) =>
+        this.paymentService.getByOrderLineId(ol.id!).then((p) => {
+          p.amount = ol.total ?? 0;
+          this.paymentService.updateItem(p);
+        })
+      );
+      this.getOrderLines();
+    } else {
+      let index = this.orderLines.findIndex((x) => x == ol);
+      if (index != -1) {
+        this.orderLines[index].quantity = ol.quantity;
+        this.orderLines[index].total = ol.total;
+      }
+    }
   }
+
   remove(ol: OrderLine) {
     if (!ol.id) return;
     this.orderLineService
@@ -157,12 +166,14 @@ export class OrdersComponent {
     return this.getDailyRates();
   }
   getHourlyRates(timeDiff: TimeDiff): Rate[] {
-    let index = timeDiff.hours === 0 ? 0 : timeDiff.hours! - 1;
-    const rate =
+    let rates: Rate[] = [];
+    let rate =
       this.room.type === RoomType.NORMAL || RoomType.DELUXE
         ? (HourlyRate.NORMAL_OR_DELUXE as number)
         : (HourlyRate.VIP as number);
-    if (timeDiff.hours! >= 4) {
+    const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
+
+    if (timeDiff.hours! >= 5) {
       return [
         {
           rate: this.room.rate!,
@@ -170,16 +181,22 @@ export class OrdersComponent {
         },
       ];
     }
-    if (timeDiff.minutes! > 15 && timeDiff.hours! >= 0) {
-      index++;
+    rates.push({ rate: rate, quantity: 1 });
+    if (timeDiff.hours! > 0) {
+      if (timeDiff.minutes! > 20) {
+        rates.push({
+          rate: extra,
+          quantity: timeDiff.hours!,
+        });
+      } else {
+        rates.push({
+          rate: extra,
+          quantity: timeDiff.hours! - 1,
+        });
+      }
     }
 
-    return [
-      {
-        rate: rate,
-        quantity: index,
-      },
-    ];
+    return rates;
   }
   getDailyRates(): Rate[] {
     let checkInTime = new Date(this.order?.checkInTime!);
@@ -192,7 +209,20 @@ export class OrdersComponent {
     }
     const start = new Date(year, month, date, 12, 0, 0).getTime();
     const diff = this.orderService.getTimeDiff(start);
-    const extra = this.getHourlyRates(diff).pop()!;
+    let extra = this.getHourlyRates(diff).pop()!;
+    const rate = this.room.type == RoomType.VIP ? 30_000 : 20_000;
+    if (diff.days! > 0 && diff.hours! < 6) extra.rate = rate;
     return [{ rate: this.room.rate!, quantity: diff.days! }, extra];
+  }
+  print() {
+    this.isPrinting = true;
+    setTimeout(() => {
+      const printOptions = new PrintOptions({
+        useExistingCss: true,
+        printSectionId: 'print-section',
+      });
+      this.printService.print(printOptions);
+      this.isPrinting = false;
+    }, 1);
   }
 }

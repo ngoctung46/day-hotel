@@ -7,103 +7,117 @@
 ></orders-order-line>
 <p></p>
 <p></p>
-<h2 class="text-warning text-center">
-  HÓA ĐƠN PHÒNG <span class="text-info">{{ room.number }}</span>
-</h2>
-<p></p>
-<h6 *ngIf="order?.checkInTime" class="text-success text-center">
-  Giờ vào: {{ order?.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
-</h6>
-<h6 class="text-danger text-center">
-  Giờ ra: {{ checkOutTime | date : "dd/MM/yyyy HH:mm:ss" }}
-</h6>
-<div class="table-responsive d-flex justify-content-center align-middle">
-  <table
-    class="table table-striped table-bordered w-auto rounded-2 align-middle"
-  >
-    <thead>
-      <tr class="table-danger">
-        <th scope="col" class="text-center">STT</th>
-        <th scope="col">Tên</th>
-        <th scope="col" class="text-end">Giá</th>
-        <th scope="col" class="text-end">SL</th>
-        <th scope="col" class="text-end">Thành tiền</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (ol of orderLines; track $index) {
-      <tr>
-        <th scope="row" class="text-center">{{ $index + 1 }}</th>
-        <td>{{ ol.product?.name }}</td>
-        <td class="text-end">{{ ol.product?.price | number }}</td>
-        <td class="text-end">
-          <input
-            type="number"
-            class="form-control"
-            style="width: 50px !important"
-            placeholder="Số lượng"
-            aria-label="quantity"
-            [(ngModel)]="ol.quantity"
-          />
-        </td>
-        <th class="text-end">
-          {{ ol.product?.price! * ol.quantity! | number }}
-        </th>
-        <th class="text-center">
-          <div class="input-group">
-            <button
-              class="btn btn-outline-warning bi bi-floppy-fill"
-              (click)="update(ol)"
-            ></button>
-            <button
-              class="btn btn-danger bi bi-trash-fill"
-              (click)="remove(ol)"
-            ></button>
-          </div>
-        </th>
-      </tr>
-      }
-      <tr>
-        <th colspan="4" class="text-end text-danger">Tổng</th>
-        <th class="text-end text-danger">{{ total | number }}</th>
-        <th class="w-20 text-end"></th>
-      </tr>
-      <tr>
-        <th colspan="4" class="text-end text-danger">Phụ thu</th>
-        <th class="text-end text-danger">
-          <input
-            type="number"
-            class="form-control form-inline text-end"
-            placeholder="phụ thu"
-            aria-label="phụ thu"
-            [(ngModel)]="extraFee"
-          />
-        </th>
-        <td></td>
-      </tr>
-      <tr>
-        <th colspan="4" class="text-end text-danger">Giảm giá</th>
-        <th class="text-end text-danger">
-          <input
-            type="number"
-            class="form-control form-inline text-end"
-            placeholder="giảm giá"
-            aria-label="giảm giá"
-            [(ngModel)]="discount"
-          />
-        </th>
-        <td></td>
-      </tr>
-      <tr>
-        <th colspan="4" class="text-end text-danger">Còn lại</th>
-        <th class="text-end text-danger">
-          {{ remainingFee | number }}
-        </th>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+<div id="print-section">
+  <h2 class="text-warning text-center">
+    HÓA ĐƠN PHÒNG <span class="text-info">{{ room.number }}</span>
+  </h2>
+  <p></p>
+  <h6 *ngIf="order?.checkInTime" class="text-success text-center">
+    Giờ vào: {{ order?.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
+  </h6>
+  <h6 class="text-danger text-center">
+    Giờ ra: {{ checkOutTime | date : "dd/MM/yyyy HH:mm:ss" }}
+  </h6>
+  <div class="table-responsive d-flex justify-content-center align-middle">
+    <table
+      class="table table-striped table-bordered w-auto rounded-2 align-middle border-danger"
+    >
+      <thead>
+        <tr class="table-danger border-danger">
+          <th scope="col" class="text-center">STT</th>
+          <th scope="col">Tên</th>
+          <th scope="col" class="text-end">Giá</th>
+          <th scope="col" class="text-end">SL</th>
+          <th scope="col" class="text-end">Thành tiền</th>
+          @if(!isPrinting){
+          <th></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (ol of orderLines; track $index) {
+        <tr>
+          <th scope="row" class="text-center">{{ $index + 1 }}</th>
+          <td>{{ ol.product?.name }}</td>
+          <td class="text-end">{{ ol.product?.price | number }}</td>
+          <td class="text-end">
+            <input
+              type="number"
+              class="form-control"
+              style="width: 50px !important"
+              placeholder="Số lượng"
+              aria-label="quantity"
+              [(ngModel)]="ol.quantity"
+            />
+          </td>
+          <th class="text-end">
+            {{ ol.total | number }}
+          </th>
+          @if(!isPrinting) {
+          <th class="text-center">
+            <div class="input-group">
+              <button
+                class="btn btn-outline-warning bi bi-floppy-fill"
+                (click)="update(ol)"
+              ></button>
+              <button
+                class="btn btn-danger bi bi-trash-fill"
+                (click)="remove(ol)"
+              ></button>
+            </div>
+          </th>
+          }
+        </tr>
+        }
+        <tr>
+          <th colspan="4" class="text-end text-danger">Tổng</th>
+          <th class="text-end text-danger">{{ total | number }}</th>
+          @if(!isPrinting){
+          <td></td>
+          }
+        </tr>
+        <tr>
+          <th colspan="4" class="text-end text-danger">Phụ thu</th>
+          <th class="text-end text-danger">
+            <input
+              type="number"
+              class="form-control form-inline text-end"
+              placeholder="phụ thu"
+              aria-label="phụ thu"
+              [(ngModel)]="extraFee"
+            />
+          </th>
+          @if(!isPrinting){
+          <td></td>
+          }
+        </tr>
+        <tr>
+          <th colspan="4" class="text-end text-danger">Giảm giá</th>
+          <th class="text-end text-danger">
+            <input
+              type="number"
+              class="form-control form-inline text-end"
+              placeholder="giảm giá"
+              aria-label="giảm giá"
+              [(ngModel)]="discount"
+            />
+          </th>
+          @if(!isPrinting){
+          <td></td>
+          }
+        </tr>
+        <tr>
+          <th colspan="4" class="text-end text-danger">Còn lại</th>
+          <th class="text-end text-danger">
+            {{ remainingFee | number }}
+          </th>
+          @if(!isPrinting){
+          <td></td>
+          }
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="d-flex justify-content-center">
   <div class="btn-group">
@@ -114,8 +128,15 @@
       Quay lại
     </button>
     <button
+      style="margin-left: 2px"
+      class="btn btn-outline-warning"
+      (click)="print()"
+    >
+      In <span class="bi bi-printer-fill"></span>
+    </button>
+    <button
       class="btn btn-outline-danger"
-      style="margin-left: 8px"
+      style="margin-left: 2px"
       (click)="checkOut()"
     >
       Trả phòng <span class="bi bi-caret-right-fill"></span>

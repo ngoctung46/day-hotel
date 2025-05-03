@@ -1,0 +1,57 @@
+<div class="input-group">
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Phòng</span
+  >
+  <select
+    class="form-select"
+    id="room-number"
+    aria-label="room-number"
+    [(ngModel)]="selectedRoom"
+  >
+    @for (room of rooms; track $index) {
+    <option [ngValue]="room">{{ room.number }}</option>
+    }
+  </select>
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Ngày đặt</span
+  >
+  <input
+    type="date"
+    class="form-control"
+    placeholder="Nhập tên"
+    aria-label="Tên"
+    [(ngModel)]="bookingDate"
+  />
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Giờ đặt</span
+  >
+  <input
+    type="time"
+    class="form-control"
+    placeholder="Nhập tên"
+    aria-label="Tên"
+    [(ngModel)]="bookingTime"
+  />
+
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Đặt cọc</span
+  >
+  <input
+    type="number"
+    class="form-control"
+    placeholder="Số tiền"
+    aria-label="price"
+    [(ngModel)]="prepaid"
+  />
+
+  <div class="btn-group">
+    <button
+      type="submit"
+      class="btn btn-warning"
+      style="margin-left: 16px"
+      (click)="add()"
+    >
+      Thêm
+    </button>
+  </div>
+</div>

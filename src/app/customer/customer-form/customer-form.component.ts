@@ -35,6 +35,7 @@ import { PROVINCES } from '../../models/const';
 import { CustomerService } from '../../services/customer.service';
 import { OrderService } from '../../services/order.service';
 import { OrderLineService } from '../../services/order-line.service';
+import { NgxPrintModule } from 'ngx-print';
 
 @Component({
   selector: 'customer-form',
@@ -45,6 +46,7 @@ import { OrderLineService } from '../../services/order-line.service';
     FormsModule,
     NgbTypeaheadModule,
     NgbDatepickerModule,
+    NgxPrintModule,
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',

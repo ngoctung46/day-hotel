@@ -1,5 +1,5 @@
 <div *ngIf="payments.length > 0">
-  <h1 class="text-warning">Thanh toán trước</h1>
+  <h3 class="text-warning">Thanh toán trước</h3>
   <table class="table table-bordered border-warning">
     <thead>
       <tr class="table-warning border-warning">
@@ -17,13 +17,13 @@
         <td>{{ payment.createdAt | date : "dd/MM/yy HH:mm:ss" }}</td>
         <td>{{ payment.name }}</td>
         <th class="text-center">{{ payment.room?.number }}</th>
-        <th class="text-end">{{ payment.amount * -1 | number }}</th>
+        <th class="text-end">{{ amount(payment.amount) | number }}</th>
       </tr>
       }
       <tr>
         <td colspan="3"></td>
         <th class="text-danger text-center">Tổng</th>
-        <th class="text-danger text-end">{{ total * -1 | number }}</th>
+        <th class="text-danger text-end">{{ total | number }}</th>
       </tr>
     </tbody>
   </table>

@@ -3,6 +3,7 @@ import { StatusComponent } from './status/status.component';
 import { DailyReportComponent } from './daily-report/daily-report.component';
 import { PrepaidComponent } from './prepaid/prepaid.component';
 import { CommonModule } from '@angular/common';
+import { BookingsComponent } from "./bookings/bookings.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,8 @@ import { CommonModule } from '@angular/common';
     DailyReportComponent,
     PrepaidComponent,
     CommonModule,
-  ],
+    BookingsComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

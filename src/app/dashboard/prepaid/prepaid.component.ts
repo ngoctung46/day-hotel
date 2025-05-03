@@ -21,6 +21,10 @@ export class PrepaidComponent implements OnInit {
   get total() {
     let total = 0;
     this.payments.forEach((p) => (total += p.amount));
-    return total;
+    return Math.abs(total);
+  }
+
+  amount(n: number) {
+    return Math.abs(n);
   }
 }

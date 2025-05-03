@@ -1,0 +1,30 @@
+@if(bookings.length > 0) {
+<h3 class="text-warning">Danh sách đặt phòng</h3>
+<table class="table table-bordered border-warning">
+  <thead>
+    <tr class="table-warning border-warning text-start">
+      <th scope="col">STT</th>
+      <th>Ngày đặt</th>
+      <th>Ngày nhận</th>
+      <th class="text-center" scope="col">Phòng</th>
+      <th class="text-end" scope="col">Đặt cọc</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (booking of bookings; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ booking.createdAt | date : "dd/MM/yy HH:mm:ss" }}</td>
+      <td>{{ booking.bookingDate | date : "dd/MM/yy HH:mm:ss" }}</td>
+      <th class="text-center">{{ booking.room?.number }}</th>
+      <th class="text-end">{{ booking.prepaid | number }}</th>
+    </tr>
+    }
+    <tr>
+      <td colspan="3"></td>
+      <th class="text-danger text-center">Tổng</th>
+      <th class="text-danger text-end">{{ total | number }}</th>
+    </tr>
+  </tbody>
+</table>
+}

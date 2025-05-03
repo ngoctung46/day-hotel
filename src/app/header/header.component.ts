@@ -10,11 +10,11 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   menuItems = [
-    { displayName: 'Quản lý', path: '/dashboard', order: 1 },
-    { displayName: 'Danh sách Phòng', path: '/home', order: 0 },
-    { displayName: 'Thu/Chi', path: '/payments', order: 1 },
-    { displayName: 'Báo cáo', path: '/reports', order: 3 },
-    { displayName: 'Dịch vụ', path: '/products', order: 2 },
-    // { displayName: 'Đặt phòng', path: '/bookings', order: 4 },
+    { displayName: 'Quản lý', path: '/dashboard', order: 0 },
+    { displayName: 'Danh sách Phòng', path: '/home', order: 1 },
+    { displayName: 'Thu/Chi', path: '/payments', order: 3 },
+    { displayName: 'Báo cáo', path: '/reports', order: 2 },
+    { displayName: 'Dịch vụ', path: '/products', order: 4 },
+    { displayName: 'Đặt phòng', path: '/bookings', order: 5 },
   ].sort((a, b) => a.order - b.order);
 }

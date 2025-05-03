@@ -39,7 +39,8 @@ export enum CollectionName {
   ORDER = 'orders',
   ORDER_LINE = 'order_lines',
   PRODUCT = 'products',
-  PAYMENT = 'payments'
+  PAYMENT = 'payments',
+  BOOKING = 'bookings',
 }
 export enum PaymentType {
   RECEIPT = 0,
