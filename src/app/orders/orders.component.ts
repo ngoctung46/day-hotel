@@ -19,6 +19,7 @@ import {
 } from '../models/const';
 import { ProductService } from '../services/product.service';
 import { Rate } from '../models/rate';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-orders',
@@ -38,6 +39,7 @@ export class OrdersComponent {
   orderService = inject(OrderService);
   roomService = inject(RoomService);
   productService = inject(ProductService);
+  paymentService = inject(PaymentService);
   orderLines: OrderLine[] = [];
   room: Room = {};
   router = inject(Router);
@@ -125,12 +127,19 @@ export class OrdersComponent {
   }
   update(ol: OrderLine) {
     ol.total = ol.quantity! * ol.product?.price!;
-    this.orderLineService.updateItem(ol);
+    this.orderLineService.updateItem(ol).then((_) =>
+      this.paymentService.getByOrderLineId(ol.id!).then((p) => {
+        p.amount = ol.total ?? 0;
+        this.paymentService.updateItem(p);
+      })
+    );
     this.getOrderLines();
   }
   remove(ol: OrderLine) {
     if (!ol.id) return;
-    this.orderLineService.deleteItem(ol.id);
+    this.orderLineService
+      .deleteItem(ol.id)
+      .then((_) => this.paymentService.deleteByOrderLineId(ol.id!));
     this.getOrderLines();
   }
   checkOut() {

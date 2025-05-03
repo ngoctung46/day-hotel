@@ -1,0 +1,30 @@
+<div *ngIf="payments.length > 0">
+  <h1 class="text-warning">Thanh toán trước</h1>
+  <table class="table table-bordered border-warning">
+    <thead>
+      <tr class="table-warning border-warning">
+        <th scope="col">STT</th>
+        <th>Thời gian</th>
+        <th scope="col">Tên</th>
+        <th class="text-center" scope="col">Phòng</th>
+        <th class="text-end" scope="col">Số tiền</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (payment of payments; track $index) {
+      <tr>
+        <th scope="row">{{ $index + 1 }}</th>
+        <td>{{ payment.createdAt | date : "dd/MM/yy HH:mm:ss" }}</td>
+        <td>{{ payment.name }}</td>
+        <th class="text-center">{{ payment.room?.number }}</th>
+        <th class="text-end">{{ payment.amount * -1 | number }}</th>
+      </tr>
+      }
+      <tr>
+        <td colspan="3"></td>
+        <th class="text-danger text-center">Tổng</th>
+        <th class="text-danger text-end">{{ total * -1 | number }}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>

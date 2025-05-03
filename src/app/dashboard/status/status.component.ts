@@ -22,11 +22,7 @@ export class StatusComponent {
   }
 
   get availableCount() {
-    return this.rooms.filter(
-      (r) =>
-        r.status == RoomStatus.AVAILABLE ||
-        RoomStatus.NEED_CLEANING_CUSTOMER_OUT
-    ).length;
+    return this.rooms.filter((r) => r.status == RoomStatus.AVAILABLE).length;
   }
 
   get needCleaningCount() {

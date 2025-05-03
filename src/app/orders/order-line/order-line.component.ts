@@ -47,7 +47,8 @@ export class OrderLineComponent {
       this.orderLine?.product?.price! * this.orderLine?.quantity!;
     this.orderLine.orderId = this.orderId;
     if (this.orderId == '') return;
-    this.orderLineService.addItem(this.orderLine).then((_) => {
+    const orderLineRef = this.orderLineService.createDoc();
+    this.orderLineService.addItem(this.orderLine, orderLineRef).then((_) => {
       if (this.selectedProduct.type == ProductType.PREPAID) {
         this.paymentService
           .addItem({
@@ -56,6 +57,8 @@ export class OrderLineComponent {
             type: PaymentType.PREPAID,
             room: this.room,
             roomId: this.room.id,
+            createdAt: Date.now(),
+            orderLineId: orderLineRef.id,
           })
           .then();
       }

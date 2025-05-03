@@ -1,1 +1,31 @@
-<p>daily-report works!</p>
+@if (payments.length > 0) {
+<h3 class="text-success">THU-CHI</h3>
+<table class="table table-bordered border-success">
+  <thead>
+    <tr class="table-success border-success">
+      <th scope="col">#</th>
+      <th>Thời gian</th>
+      <th scope="col">Tên</th>
+      <th scope="col">Loại</th>
+      <th class="text-end" scope="col">Số tiền</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (payment of payments; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ payment.createdAt | date : "dd/MM/yyyy" }}</td>
+      <td>{{ payment.name }}</td>
+      <td>{{ payment.type.toString() | paymentType }}</td>
+      <th class="text-end">{{ payment.amount | number }}</th>
+    </tr>
+    }
+    <tr>
+      <td colspan="3"></td>
+      <th class="text-danger">Tổng</th>
+      <th class="text-end text-danger">{{ total | number }}</th>
+    </tr>
+  </tbody>
+</table>
+
+}

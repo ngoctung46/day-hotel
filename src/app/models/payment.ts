@@ -8,4 +8,5 @@ export interface Payment extends ModelBase {
   amount: number;
   roomId?: string;
   room?: Room;
+  orderLineId?: string;
 }

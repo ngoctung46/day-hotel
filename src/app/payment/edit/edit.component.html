@@ -1,0 +1,45 @@
+<div class="input-group">
+  <span class="input-group-text bg-success text-light">Tên</span>
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Nhập tên"
+    aria-label="Tên"
+    [(ngModel)]="payment.name"
+  />
+
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Giá tiền</span
+  >
+  <input
+    type="number"
+    class="form-control"
+    placeholder="Số tiền"
+    aria-label="price"
+    [(ngModel)]="payment.amount"
+  />
+  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
+    >Loại</span
+  >
+  <select
+    class="form-select"
+    id="product-type"
+    aria-label="product-type"
+    [(ngModel)]="payment.type"
+  >
+    <option value="0">Thu</option>
+    <option value="1">Chi</option>
+    <option value="2">Thanh toán trước</option>
+  </select>
+  <div class="btn-group">
+    <button
+      type="submit"
+      [disabled]="!valid"
+      class="btn btn-warning"
+      style="margin-left: 16px"
+      (click)="addPayment()"
+    >
+      Thêm
+    </button>
+  </div>
+</div>

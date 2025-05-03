@@ -1,0 +1,2 @@
+<payment-edit (added)="addPayment($event)"></payment-edit>
+<payment-list *ngIf="payments.length > 0" [payments]="payments" (updated)="update($event)"></payment-list>
