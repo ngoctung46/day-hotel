@@ -11,5 +11,9 @@ import { FooterComponent } from './footer/footer.component';
 })
 export class AppComponent {
   title = 'day-hotel';
-  constructor() {}
+  constructor() {
+    setInterval(() => {
+      window.location.reload();
+    }, 3600000); // 1 hour = 3600000 milliseconds
+  }
 }
