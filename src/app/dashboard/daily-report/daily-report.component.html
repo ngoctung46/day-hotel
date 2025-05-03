@@ -14,7 +14,7 @@
     @for (payment of payments; track $index) {
     <tr class="text-start">
       <th scope="row">{{ $index + 1 }}</th>
-      <td>{{ payment.createdAt | date : "dd/MM/yyyy" }}</td>
+      <td>{{ payment.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
       <td>{{ payment.name }}</td>
       <th class="text-center">{{ payment.type.toString() | paymentType }}</th>
       <th class="text-end">{{ payment.amount | number }}</th>

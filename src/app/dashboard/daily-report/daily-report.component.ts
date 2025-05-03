@@ -25,12 +25,13 @@ export class DailyReportComponent implements OnInit {
     await this.getPayments().then();
   }
   async getPayments() {
-    const from = new Date(Date.now());
-    from.setHours(0, 0, 0);
-    const to = new Date(Date.now());
-    to.setHours(23, 59, 59);
+    const today = new Date(Date.now());
+    let prevDay = new Date();
+    prevDay.setDate(today.getDate() - 1);
+    let nextDay = new Date();
+    nextDay.setDate(today.getDate() + 1);
     await this.paymentService
-      .getPaymentsByDateAsync(from, to)
+      .getPaymentsByDateAsync(prevDay, nextDay)
       .then(
         (payments) =>
           (this.payments = payments.filter(

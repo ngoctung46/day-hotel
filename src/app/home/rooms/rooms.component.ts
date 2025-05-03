@@ -32,7 +32,7 @@ export class RoomsComponent {
   closeResult: WritableSignal<string> = signal('');
   changedRoom: Room = {};
   changingRoom: Room = {};
-
+  notes: string[] = ['', '', ''];
   changeRoom() {
     this.changedRoom.orderId = this.changingRoom.orderId;
     this.changedRoom.customerId = this.changingRoom.customerId;

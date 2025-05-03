@@ -71,12 +71,26 @@
       </div>
 
       <div class="col">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Ngày Sinh"
-          formControlName="birthDate"
-        />
+        <div class="input-group">
+          <input
+            id="birthDate"
+            type="text"
+            class="form-control"
+            placeholder="Ngày sinh"
+            formControlName="birthDate"
+          />
+          @if(customerForm.get('birthDate')?.valid) {
+          <div class="input-group-text text-success">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          }
+        </div>
+        <div
+          *ngIf="customerForm.get('birthDate')?.invalid"
+          class="form-text text-danger"
+        >
+          <b>Bắt buộc</b>
+        </div>
       </div>
       <div class="col">
         <input

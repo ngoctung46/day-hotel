@@ -13,8 +13,13 @@ export class PrepaidComponent implements OnInit {
   paymentService = inject(PaymentService);
   payments: Payment[] = [];
   async ngOnInit() {
+    const today = new Date(Date.now());
+    let prevDay = new Date();
+    prevDay.setDate(today.getDate() - 1);
+    let nextDay = new Date();
+    nextDay.setDate(today.getDate() + 1);
     await this.paymentService
-      .getPrepaids(new Date(Date.now()), new Date(Date.now()))
+      .getPrepaids(prevDay, nextDay)
       .then((payments) => (this.payments = payments));
   }
 

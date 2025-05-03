@@ -8,6 +8,7 @@
     <thead>
       <tr class="table-success border-success">
         <th scope="col">STT</th>
+        <th>Ngày</th>
         <th scope="col">Tên</th>
         <th scope="col">Số tiền</th>
         <th scope="col">Loại</th>
@@ -17,6 +18,7 @@
     <tbody>
       <tr *ngFor="let payment of payments; let i = index">
         <th scope="row">{{ i + 1 }}</th>
+        <td>{{ payment.createdAt | date : "dd/MM/yy HH:mm:ss" }}</td>
         <td scope="row">
           <input
             type="text"

@@ -47,6 +47,7 @@
   <div class="btn-group">
     <button
       type="submit"
+      [disabled]="!valid"
       class="btn btn-warning"
       style="margin-left: 16px"
       (click)="add()"

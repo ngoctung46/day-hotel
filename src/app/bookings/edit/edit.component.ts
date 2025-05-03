@@ -37,6 +37,15 @@ export class EditComponent {
     this.added.emit(this.booking);
   }
 
+  get valid() {
+    return (
+      this.bookingDate != '' &&
+      this.bookingTime != '' &&
+      this.selectedRoom &&
+      this.prepaid > 0
+    );
+  }
+
   private dateToStr(date_Object: Date): string {
     // get the year, month, date, hours, and minutes seprately and append to the string.
     let month = date_Object.getMonth() + 1;
