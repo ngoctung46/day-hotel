@@ -8,6 +8,12 @@
 <p></p>
 <p></p>
 <div id="print-section">
+  @if(isPrinting) {
+  <h5 class="text-center text-info">Nhà nghỉ Đạt Ý</h5>
+  <h6 class="text-center text-info">
+    21 Đường 14, Bình Hưng Hòa A, Bình Tân - ĐT: 09859971654
+  </h6>
+  }
   <h2 class="text-warning text-center">
     HÓA ĐƠN PHÒNG <span class="text-info">{{ room.number }}</span>
   </h2>
@@ -44,7 +50,7 @@
             <input
               type="number"
               class="form-control"
-              style="width: 50px !important"
+              style="width: 75px !important"
               placeholder="Số lượng"
               aria-label="quantity"
               [(ngModel)]="ol.quantity"

@@ -168,7 +168,7 @@ export class OrdersComponent {
   getHourlyRates(timeDiff: TimeDiff): Rate[] {
     let rates: Rate[] = [];
     let rate =
-      this.room.type === RoomType.NORMAL || RoomType.DELUXE
+      this.room.type === RoomType.NORMAL || this.room.type === RoomType.DELUXE
         ? (HourlyRate.NORMAL_OR_DELUXE as number)
         : (HourlyRate.VIP as number);
     const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
@@ -210,7 +210,7 @@ export class OrdersComponent {
     const start = new Date(year, month, date, 12, 0, 0).getTime();
     const diff = this.orderService.getTimeDiff(start);
     let extra = this.getHourlyRates(diff).pop()!;
-    const rate = this.room.type == RoomType.VIP ? 30_000 : 20_000;
+    const rate = 30_000;
     if (diff.days! > 0 && diff.hours! < 6) extra.rate = rate;
     return [{ rate: this.room.rate!, quantity: diff.days! }, extra];
   }

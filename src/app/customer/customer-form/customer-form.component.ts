@@ -16,14 +16,12 @@ import {
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
 import {
-  NgbDateParserFormatter,
   NgbDatepickerModule,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Room } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import {
-  concatWith,
   debounceTime,
   distinctUntilChanged,
   map,
@@ -36,6 +34,7 @@ import { CustomerService } from '../../services/customer.service';
 import { OrderService } from '../../services/order.service';
 import { OrderLineService } from '../../services/order-line.service';
 import { NgxPrintModule } from 'ngx-print';
+import { RoomService } from '../../services/room.service';
 
 @Component({
   selector: 'customer-form',
@@ -64,6 +63,7 @@ export class CustomerFormComponent implements OnInit {
   customerService = inject(CustomerService);
   orderService = inject(OrderService);
   orderLineService = inject(OrderLineService);
+  roomService = inject(RoomService);
   isNew = true;
   constructor(private fb: FormBuilder) {
     this.customerForm = this.fb.group({
@@ -102,9 +102,13 @@ export class CustomerFormComponent implements OnInit {
     if (this.customerId) {
       this.customerService.getItemById(this.customerId).then((c) => {
         this.customer = c;
+        this.roomService.getItemById(c?.roomId!).then((r) => (this.room = r));
         this.initData();
       });
       if ((this.roomId = '')) this.isNew = true;
+    }
+    if (this.roomId) {
+      this.roomService.getItemById(this.roomId).then((r) => (this.room = r));
     }
   }
 
@@ -123,11 +127,8 @@ export class CustomerFormComponent implements OnInit {
       )
     );
   onSubmit() {
-    if (!this.customer?.id) this.customer = this.customerForm.value as Customer;
-    this.customer.checkInTime = new Date(
-      `${this.checkInDate}T${this.checkInTime}:00`
-    ).getTime();
-    this.submittedCustomer.emit(this.customer);
+    if (this.roomId != '') this.addCustomer();
+    if (this.customerId != '') this.updateCustomer();
   }
   onClear() {
     this.customerForm.reset();
@@ -159,6 +160,28 @@ export class CustomerFormComponent implements OnInit {
       country: [this.customer?.country ?? 'Việt Nam'],
       phone: [this.customer?.phone],
     });
-    if (this.customer != undefined) this.customerForm.disable();
+    if (this.customer != undefined) {
+      this.customerForm.disable();
+      this.addCustomer
+    }
+  }
+  updateCustomer() {
+    if (!this.customer) return;
+    this.customer.checkInTime = new Date(
+      `${this.checkInDate}T${this.checkInTime}:00`
+    ).getTime();
+    this.customer.roomId = this.room?.id ?? '';
+    this.customerService
+      .updateItem(this.customer)
+      .then((_) => this.submittedCustomer.emit(this.customer));
+  }
+
+  addCustomer() {
+    if (!this.customer?.id) this.customer = this.customerForm.value as Customer;
+    this.customer.checkInTime = new Date(
+      `${this.checkInDate}T${this.checkInTime}:00`
+    ).getTime();
+    if (this.roomId) this.customer.roomId = this.roomId;
+    this.submittedCustomer.emit(this.customer);
   }
 }

@@ -34,9 +34,9 @@ export class DailyReportComponent implements OnInit {
       .getPaymentsByDateAsync(prevDay, nextDay)
       .then(
         (payments) =>
-          (this.payments = payments.filter(
-            (x) => x.type !== PaymentType.PREPAID
-          ))
+          (this.payments = payments
+            .filter((x) => x.type !== PaymentType.PREPAID)
+            .sort((a, b) => b.createdAt! - a.createdAt!))
       );
   }
 

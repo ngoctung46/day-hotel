@@ -20,7 +20,10 @@ export class PrepaidComponent implements OnInit {
     nextDay.setDate(today.getDate() + 1);
     await this.paymentService
       .getPrepaids(prevDay, nextDay)
-      .then((payments) => (this.payments = payments));
+      .then(
+        (payments) =>
+          (this.payments = payments.sort((a, b) => b.createdAt! - a.createdAt!))
+      );
   }
 
   get total() {

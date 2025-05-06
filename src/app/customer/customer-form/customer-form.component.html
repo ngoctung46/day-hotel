@@ -1,5 +1,8 @@
 <div id="print-section">
-  <h1 class="text-center text-success">THÔNG TIN KHÁCH LƯU TRÚ</h1>
+  <h1 class="text-center text-success">
+    THÔNG TIN KHÁCH LƯU TRÚ
+    <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
+  </h1>
   <form [formGroup]="customerForm">
     <label class="my-1 mr-2 text-primary"><h4>Giấy tờ tùy thân</h4></label>
     <div class="row row-cols-auto g-1">
