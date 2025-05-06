@@ -1,16 +1,55 @@
 <dashboard-status></dashboard-status>
 <h3 class="text-center text-danger">BÁO CÁO</h3>
-
 <shared-date-range-picker
   (dateRange)="getDateRange($event)"
 ></shared-date-range-picker>
+
 @if(dateRange) {
-<h6 class="text-center text-info">
-  Từ {{ dateRange.fromDate | date : "HH:mm, dd/MM/yy" }} Đến
-  {{ dateRange.toDate | date : "HH:mm, dd/MM/yy" }}
-</h6>
-<shared-order-report [dateRange]="dateRange"></shared-order-report>
-<dashboard-daily-report [payments]="payments"></dashboard-daily-report>
-<dashboard-prepaid [payments]="prepaids"></dashboard-prepaid>
-<dash-bookings></dash-bookings>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <li [ngbNavItem]="1">
+    <button class="text-danger" ngbNavLink>Báo cáo</button>
+    <ng-template ngbNavContent>
+      <dashboard-total-report
+        [totalOrders]="totalOrders"
+        [totalPayments]="totalPayments"
+        [totalPrepaids]="totalPrepaids"
+      ></dashboard-total-report>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="2">
+    <button class="text-primary" ngbNavLink>Tiền phòng</button>
+    <ng-template ngbNavContent>
+      <shared-order-report
+        *ngIf="orders.length > 0"
+        [orders]="orders"
+      ></shared-order-report>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="3">
+    <button class="text-warning" ngbNavLink>Thanh toán</button>
+    <ng-template ngbNavContent>
+      <dashboard-daily-report
+        *ngIf="prepaids.length > 0"
+        [payments]="prepaids"
+        [tableClass]="'border-warning table-warning'"
+      ></dashboard-daily-report>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="4">
+    <button class="text-success" ngbNavLink>Thu/chi</button>
+    <ng-template ngbNavContent>
+      <dashboard-daily-report
+        *ngIf="payments.length > 0"
+        [payments]="payments"
+      ></dashboard-daily-report>
+    </ng-template>
+  </li>
+  <li [ngbNavItem]="5">
+    <button class="text-info" ngbNavLink>Đặt phòng</button>
+    <ng-template ngbNavContent>
+      <dash-bookings></dash-bookings>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
 }

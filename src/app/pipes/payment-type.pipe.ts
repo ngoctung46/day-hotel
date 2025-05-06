@@ -5,13 +5,13 @@ import { PaymentType } from '../models/const';
   name: 'paymentType',
 })
 export class PaymentTypePipe implements PipeTransform {
-  transform(value: string | undefined): string {
+  transform(value: number | undefined): string {
     switch (value) {
-      case PaymentType.EXPENSE.toString():
+      case PaymentType.EXPENSE:
         return 'Chi';
-      case PaymentType.RECEIPT.toString():
+      case PaymentType.RECEIPT:
         return 'Thu';
-      case PaymentType.PREPAID.toString():
+      case PaymentType.PREPAID:
         return 'Thanh toán trước';
       default:
         return '';

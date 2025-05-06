@@ -19,27 +19,27 @@ import { OrderService } from '../services/order.service';
             <th>Thời gian</th>
             <th scope="col" class="text-center">Phòng</th>
             <th class="text-center">Hóa đơn</th>
-            <th scope="col" class="text-center text-primary">Phụ thu</th>
-            <th scope="col" class="text-center text-info">Giảm giá</th>
-            <th scope="col" class="text-center text-danger">Thực thu</th>
+            <th scope="col" class="text-center">Phụ thu</th>
+            <th scope="col" class="text-center">Giảm giá</th>
+            <th scope="col" class="text-center">Thực thu</th>
           </tr>
         </thead>
         <tbody>
           @for (o of orders; track $index) {
           <tr>
             <th scope="row" class="text-center">{{ $index + 1 }}</th>
-            <th>{{ o.checkOutTime | date : 'dd/MM HH:mm' }}</th>
+            <td>{{ o.checkOutTime | date : 'dd/MM HH:mm' }}</td>
 
-            <th class="text-center">{{ getRoomNumber(o.roomId!) }}</th>
-            <th class="text-end">
+            <td class="text-center">{{ getRoomNumber(o.roomId!) }}</td>
+            <td class="text-end">
               {{ o.total | number }}
-            </th>
-            <th class="text-end text-primary">
+            </td>
+            <td class="text-end">
               {{ o.charges | number }}
-            </th>
-            <th class="text-end text-info">
+            </td>
+            <td class="text-end">
               {{ o.discount | number }}
-            </th>
+            </td>
             <th class="text-end text-danger">
               {{
                 (o?.total ?? 0) + (o?.charges ?? 0) - (o?.discount ?? 0)
@@ -65,8 +65,7 @@ import { OrderService } from '../services/order.service';
   styles: ``,
 })
 export class OrderReportComponent implements OnInit {
-  @Input() dateRange: DateRange | undefined;
-  orders: Order[] = [];
+  @Input() orders: Order[] = [];
   total = 0;
   charges = 0;
   discount = 0;
@@ -74,20 +73,18 @@ export class OrderReportComponent implements OnInit {
   orderService = inject(OrderService);
   rooms: Room[] = [];
   ngOnInit(): void {
-    this.orderService
-      .getOrders(this.dateRange?.fromDate, this.dateRange?.toDate)
-      .then((orders) => {
-        this.orders = orders;
-        this.orders.forEach(async (order) => {
-          this.total += order.total ?? 0;
-          this.charges += order.charges ?? 0;
-          this.discount += order.discount ?? 0;
-        });
-      });
     this.roomService.getItems().then((rooms) => (this.rooms = rooms));
+    this.getTotals();
   }
   getRoomNumber(id: string) {
     let room = this.rooms.find((r) => r.id == id) ?? {};
     return room.number ?? '';
+  }
+  getTotals() {
+    this.orders.forEach((order) => {
+      this.total += order.total ?? 0;
+      this.charges += order.charges ?? 0;
+      this.discount += order.discount ?? 0;
+    });
   }
 }

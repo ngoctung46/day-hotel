@@ -11,7 +11,7 @@ import { DateRange } from '../models/date-range';
       <form class="row g-3 row-cols-sm-auto">
         <div class="col-auto">
           <div class="input-group">
-            <span for="fromDate" class="input-group-text bg-success text-light"
+            <span for="fromDate" class="input-group-text bg-warning text-light"
               >Từ</span
             >
 
@@ -33,7 +33,7 @@ import { DateRange } from '../models/date-range';
         </div>
         <div class="col-auto">
           <div class="input-group">
-            <span for="toDate" class="input-group-text bg-success text-light"
+            <span for="toDate" class="input-group-text bg-info text-light"
               >Đến</span
             >
 

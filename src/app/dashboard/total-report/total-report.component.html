@@ -1,0 +1,28 @@
+<ul class="list-group border-info">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <span class="text-dark"> Tổng thu tiền phòng: </span>
+    <span
+      ><b>{{ totalOrders | number }}</b></span
+    >
+  </li>
+  <li
+    class="list-group-item d-flex justify-content-between align-items-centerg"
+  >
+    <span class="text-dark"> Tổng thanh toán trước </span>
+    <span
+      ><b>{{ totalPrepaids | number }}</b></span
+    >
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <span class="text-dark"> Tổng thu/chi </span>
+    <span
+      ><b>{{ totalPayments | number }}</b></span
+    >
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <b class="text-danger">Doanh thu</b>
+    <span class="text-danger"
+      ><b>{{ totalOrders + totalPayments + totalPrepaids | number }}</b></span
+    >
+  </li>
+</ul>

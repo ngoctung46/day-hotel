@@ -17,14 +17,17 @@ import { DateRange } from '../../models/date-range';
 })
 export class DailyReportComponent {
   @Input() payments: Payment[] = [];
+  @Input() tableClass = 'table-success border-success';
 
   get total() {
     let totalReceipt = 0;
     let totalExpense = 0;
+    let totalPrepaid = 0;
     this.payments.forEach((p) => {
       if (p.type == PaymentType.RECEIPT) totalReceipt += p.amount;
       if (p.type == PaymentType.EXPENSE) totalExpense += p.amount;
+      if (p.type == PaymentType.PREPAID) totalPrepaid += Math.abs(p.amount);
     });
-    return totalReceipt - totalExpense;
+    return totalReceipt - totalExpense + totalPrepaid;
   }
 }

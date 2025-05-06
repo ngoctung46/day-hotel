@@ -21,6 +21,7 @@ export class EditComponent {
 
   addPayment() {
     this.payment.createdAt = Date.now();
+    this.payment.type = +this.payment.type;
     this.added.emit(this.payment);
     this.payment.name = '';
     this.payment.amount = 0;

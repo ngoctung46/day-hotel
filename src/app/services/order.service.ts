@@ -38,8 +38,9 @@ export class OrderService extends CloudFirestoreService<Order> {
       where('checkOutTime', '<=', toDate)
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(
+    const items = querySnapshot.docs.map(
       (doc) => ({ id: doc.id, ...doc.data() } as Order)
     );
+    return items.sort((a, b) => a.checkOutTime! - b.checkOutTime!);
   }
 }

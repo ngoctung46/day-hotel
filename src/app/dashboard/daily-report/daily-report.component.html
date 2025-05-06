@@ -1,8 +1,7 @@
 @if (payments.length > 0) {
-<h3 class="text-success">Thu chi trong ngày</h3>
-<table class="table table-bordered border-success">
+<table class="table table-bordered table-striped" [class]="tableClass">
   <thead>
-    <tr class="table-success border-success text-start">
+    <tr class="text-start" [class]="tableClass">
       <th scope="col">STT</th>
       <th>Thời gian</th>
       <th scope="col">Nội dung</th>
@@ -16,7 +15,7 @@
       <th scope="row">{{ $index + 1 }}</th>
       <td>{{ payment.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
       <td>{{ payment.name }}</td>
-      <th class="text-center">{{ payment.type.toString() | paymentType }}</th>
+      <td class="text-center">{{ payment.type | paymentType }}</td>
       <th class="text-end">{{ payment.amount | number }}</th>
     </tr>
     }
