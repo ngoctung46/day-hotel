@@ -1,5 +1,16 @@
-<h1 class="text-center text-danger">BÁO CÁO NGÀY {{ now | date : "dd/MM" }}</h1>
 <dashboard-status></dashboard-status>
-<dashboard-daily-report></dashboard-daily-report>
-<dashboard-prepaid></dashboard-prepaid>
+<h3 class="text-center text-danger">BÁO CÁO</h3>
+
+<shared-date-range-picker
+  (dateRange)="getDateRange($event)"
+></shared-date-range-picker>
+@if(dateRange) {
+<h6 class="text-center text-info">
+  Từ {{ dateRange.fromDate | date : "HH:mm, dd/MM/yy" }} Đến
+  {{ dateRange.toDate | date : "HH:mm, dd/MM/yy" }}
+</h6>
+<shared-order-report [dateRange]="dateRange"></shared-order-report>
+<dashboard-daily-report [payments]="payments"></dashboard-daily-report>
+<dashboard-prepaid [payments]="prepaids"></dashboard-prepaid>
 <dash-bookings></dash-bookings>
+}

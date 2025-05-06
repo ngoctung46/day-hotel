@@ -3,6 +3,7 @@ import { CloudFirestoreService } from './cloud-firestore.service';
 import { Order } from '../models/order';
 import { CollectionName } from '../models/const';
 import { TimeDiff } from '../models/time-diff';
+import { collection, getDocs, query, where } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +26,20 @@ export class OrderService extends CloudFirestoreService<Order> {
       seconds: seconds % 60,
       totalHours: hours,
     };
+  }
+
+  async getOrders(from?: Date, to?: Date) {
+    const orderRef = collection(this.firestore, this.collectionName);
+    const fromDate = from?.getTime() ?? 0;
+    const toDate = to?.getTime() ?? 0;
+    const q = query(
+      orderRef,
+      where('checkOutTime', '>=', fromDate),
+      where('checkOutTime', '<=', toDate)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(
+      (doc) => ({ id: doc.id, ...doc.data() } as Order)
+    );
   }
 }

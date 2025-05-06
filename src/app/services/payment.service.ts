@@ -15,23 +15,21 @@ export class PaymentService extends CloudFirestoreService<Payment> {
   }
 
   async getPaymentsByDateAsync(
-    fromDate: Date,
-    toDate: Date
+    fromDate?: Date,
+    toDate?: Date
   ): Promise<Payment[]> {
     const payments = await this.getItems().then((payments) =>
       payments.filter((x) => {
         let createdAt = new Date(x?.createdAt!);
-        fromDate.setHours(0, 0, 0);
-        toDate.setHours(23, 59, 59);
-        return createdAt >= fromDate && createdAt <= toDate;
+        fromDate?.setHours(0, 0, 0);
+        toDate?.setHours(23, 59, 59);
+        return createdAt >= fromDate! && createdAt <= toDate!;
       })
     );
     return payments;
   }
 
-  async getPrepaids(from: Date, to: Date): Promise<Payment[]> {
-    from.setHours(0, 0, 0);
-    to.setHours(23, 59, 59);
+  async getPrepaids(from?: Date, to?: Date): Promise<Payment[]> {
     const paymentRef = collection(this.firestore, this.collectionName);
     const q = query(paymentRef, where('type', '==', PaymentType.PREPAID));
     const querySnapshot = await getDocs(q);
@@ -40,7 +38,7 @@ export class PaymentService extends CloudFirestoreService<Payment> {
     );
     return items.filter((x) => {
       let createdAt = new Date(x?.createdAt!);
-      return createdAt >= from && createdAt <= to;
+      return createdAt >= from! && createdAt <= to!;
     });
   }
   async deleteByOrderLineId(id: string) {

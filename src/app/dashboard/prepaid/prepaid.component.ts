@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { PaymentService } from '../../services/payment.service';
 import { Payment } from '../../models/payment';
 import { CommonModule } from '@angular/common';
+import { DateRange } from '../../models/date-range';
 
 @Component({
   selector: 'dashboard-prepaid',
@@ -9,22 +10,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './prepaid.component.html',
   styleUrl: './prepaid.component.css',
 })
-export class PrepaidComponent implements OnInit {
-  paymentService = inject(PaymentService);
-  payments: Payment[] = [];
-  async ngOnInit() {
-    const today = new Date(Date.now());
-    let prevDay = new Date();
-    prevDay.setDate(today.getDate() - 1);
-    let nextDay = new Date();
-    nextDay.setDate(today.getDate() + 1);
-    await this.paymentService
-      .getPrepaids(prevDay, nextDay)
-      .then(
-        (payments) =>
-          (this.payments = payments.sort((a, b) => b.createdAt! - a.createdAt!))
-      );
-  }
+export class PrepaidComponent {
+  @Input() payments: Payment[] = [];
 
   get total() {
     let total = 0;

@@ -8,8 +8,10 @@ import {
   Firestore,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { ModelBase } from '../models/model-base';
 
@@ -36,6 +38,22 @@ export abstract class CloudFirestoreService<T extends ModelBase> {
       (doc) => ({ id: doc.id, ...doc.data() } as T)
     );
     return items;
+  }
+
+  async getItemsByDateRange(from?: Date, to?: Date) {
+    const itemRef = collection(this.firestore, this.collectionName);
+    const fromDate = from?.getTime() ?? 0;
+    const toDate = to?.getTime() ?? 0;
+    const q = query(
+      itemRef,
+      where('createdAt', '>=', fromDate),
+      where('createdAt', '<=', toDate)
+    );
+    const querySnapshot = await getDocs(q);
+    const items = querySnapshot.docs.map(
+      (doc) => ({ id: doc.id, ...doc.data() } as T)
+    );
+    return items.sort((a, b) => b.createdAt! - a.createdAt!);
   }
 
   async updateItem(item: T): Promise<void> {
