@@ -41,6 +41,7 @@ export enum CollectionName {
   PRODUCT = 'products',
   PAYMENT = 'payments',
   BOOKING = 'bookings',
+  NOTE = 'notes',
 }
 export enum PaymentType {
   RECEIPT = 0,

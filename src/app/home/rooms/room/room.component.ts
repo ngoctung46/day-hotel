@@ -54,15 +54,4 @@ export class RoomComponent implements OnInit {
         break;
     }
   }
-
-  // changeRoom(newRoom: Room) {
-  //   if (newRoom) {
-  //     newRoom.customerId = this.room.customerId;
-  //     newRoom.orderId = this.room.orderId;
-  //     newRoom.status = RoomStatus.CHECKED_IN;
-  //     this.room.customerId = undefined;
-  //     this.room.orderId = undefined;
-  //     this.room.status = RoomStatus.AVAILABLE;
-  //   }
-  // }
 }

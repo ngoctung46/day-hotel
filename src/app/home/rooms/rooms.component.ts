@@ -3,6 +3,7 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnInit,
   Output,
   signal,
   TemplateRef,
@@ -16,6 +17,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoomStatus } from '../../models/const';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
+import { NoteService } from '../../services/note.service';
+import { Note } from '../../models/note';
+import { Utils } from '../../utils';
 
 @Component({
   selector: 'home-rooms',
@@ -23,16 +27,18 @@ import { OrderService } from '../../services/order.service';
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css',
 })
-export class RoomsComponent {
+export class RoomsComponent implements OnInit {
   @Input() rooms: Room[] = [];
   @Output() changed = new EventEmitter<boolean>();
   roomService = inject(RoomService);
   orderService = inject(OrderService);
+  noteService = inject(NoteService);
   modalService = inject(NgbModal);
   closeResult: WritableSignal<string> = signal('');
   changedRoom: Room = {};
   changingRoom: Room = {};
   notes: string[] = ['', '', ''];
+  ngOnInit(): void {}
   changeRoom() {
     this.changedRoom.orderId = this.changingRoom.orderId;
     this.changedRoom.customerId = this.changingRoom.customerId;
@@ -53,6 +59,7 @@ export class RoomsComponent {
   get availableRooms() {
     return this.rooms.filter((r) => r.status == RoomStatus.AVAILABLE);
   }
+
   openModal(content: TemplateRef<any>) {
     this.modalService.open(content);
   }

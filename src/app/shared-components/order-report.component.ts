@@ -12,7 +12,9 @@ import { OrderService } from '../services/order.service';
   template: `
     @if(orders.length > 0) {
     <div class="table-responsive">
-      <table class="table table-bordered rounded-2 align-middle border-warning">
+      <table
+        class="table table-bordered table-striped rounded-2 align-middle border-warning"
+      >
         <thead>
           <tr class="table-danger border-warning">
             <th scope="col" class="text-center">STT</th>

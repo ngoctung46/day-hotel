@@ -22,15 +22,18 @@ export class StatusComponent {
   }
 
   get availableCount() {
-    return this.rooms.filter((r) => r.status == RoomStatus.AVAILABLE).length;
+    return this.rooms.filter(
+      (r) =>
+        r.status == RoomStatus.AVAILABLE ||
+        r.status == RoomStatus.NEED_CLEANING_CUSTOMER_OUT
+    ).length;
   }
 
   get needCleaningCount() {
     return this.rooms.filter(
       (r) =>
-        r.status ==
-        (RoomStatus.NEED_CLEANING_CUSTOMER_IN ||
-          RoomStatus.NEED_CLEANING_CUSTOMER_OUT)
+        r.status == RoomStatus.NEED_CLEANING_CUSTOMER_IN ||
+        r.status == RoomStatus.NEED_CLEANING_CUSTOMER_OUT
     ).length;
   }
 }

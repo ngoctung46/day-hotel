@@ -212,7 +212,10 @@ export class OrdersComponent {
     const diff = Utils.getTimeDiff(start);
     let extra = this.getHourlyRates(diff).pop()!;
     const rate = 30_000;
-    if (diff.days! > 0 && diff.hours! < 6) extra.rate = rate;
+    if (diff.days! > 0 && diff.hours! < 6) {
+      extra.quantity = extra.quantity + 1; // APPLIED FOR DAILY ROOM
+      extra.rate = rate;
+    }
     return [{ rate: this.room.rate!, quantity: diff.days! }, extra];
   }
   print() {

@@ -68,14 +68,6 @@ export abstract class CloudFirestoreService<T extends ModelBase> {
     const itemDocRef = doc(this.firestore, this.collectionName, id);
     await deleteDoc(itemDocRef);
   }
-  // async getItemById(id: string): Promise<T | undefined> {
-  //   const itemsCollection = collection(this.firestore, this.collectionName);
-  //   const snapshot = await getDocs(itemsCollection);
-  //   const item: T | undefined = snapshot.docs
-  //     .map((doc) => ({ id: doc.id, ...doc.data() } as T))
-  //     .find((item) => item.id === id);
-  //   return item;
-  // }
   async getItemById(id: string) {
     if (id == '') return undefined;
     const docRef = doc(this.firestore, this.collectionName, id);
