@@ -69,6 +69,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotal() {
+    this.totalPrepaids = 0;
+    this.totalPayments = 0;
+    this.totalOrders = 0;
     this.payments.forEach((p) => {
       if (p.type == PaymentType.RECEIPT || p.type == PaymentType.PREPAID)
         this.totalPayments += p.amount;
