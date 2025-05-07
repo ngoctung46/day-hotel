@@ -5,6 +5,7 @@ import { PaymentService } from '../services/payment.service';
 import { Payment } from '../models/payment';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { PaymentType } from '../models/const';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-payment',
@@ -24,11 +25,10 @@ export class PaymentComponent implements OnInit {
   }
 
   getPayments() {
-    const from = new Date(Date.now());
-    const to = new Date(Date.now());
+    const dateRange = Utils.getCurrentDateRange();
 
     this.paymentService
-      .getPaymentsByDateAsync(from, to)
+      .getPaymentsByDateAsync(dateRange.fromDate, dateRange.toDate)
       .then(
         (payments) =>
           (this.payments = payments.filter(

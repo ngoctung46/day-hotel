@@ -1,5 +1,5 @@
 <div class="card text-center" style="margin: 8px">
-  <div class="card-header bg-primary text-light">
+  <div class="card-header bg-success text-light">
     <b>{{ room.type | RoomType }}</b>
   </div>
   <div
@@ -47,13 +47,15 @@
       role="group"
     >
       <button
-        tooltip="Đổi phòng"
-        class="btn btn-success btn-lg bi bi-arrow-left-right w-25"
+        ngbTooltip="Đổi phòng"
+        class="btn btn-info btn-lg bi bi-arrow-left-right w-25"
+        placement="top"
         [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
       ></button>
       <button
-        tooltip="Thông tin khách lưu trú"
+        ngbTooltip="Thông tin khách lưu trú"
+        placement="top"
         type="button"
         [hidden]="room.status == 4"
         class="btn btn-primary btn-lg bi bi-person-badge-fill w-25"
@@ -61,14 +63,16 @@
       ></button>
       <button
         type="button"
-        tooltip="Phòng dơ"
+        ngbTooltip="Báo phòng dơ/sạch"
+        placement="top"
         class="btn btn-danger bi bi-stars w-25"
         [class]="{ 'w-100': room.status == 4 }"
         (click)="updateCleaningStatus()"
       ></button>
       <button
         type="button"
-        tooltip="Check out"
+        ngbTooltip="Hóa đơn"
+        placement="top"
         [hidden]="room.status == 4"
         class="btn btn-warning btn-lg bi bi-cart-check text-light w-25"
         [routerLink]="['/orders', room.orderId]"

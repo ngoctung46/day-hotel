@@ -21,6 +21,7 @@ import { ProductService } from '../services/product.service';
 import { Rate } from '../models/rate';
 import { PaymentService } from '../services/payment.service';
 import { NgxPrintModule, NgxPrintService, PrintOptions } from 'ngx-print';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-orders',
@@ -159,7 +160,7 @@ export class OrdersComponent {
   }
 
   getRates(): Rate[] {
-    var timeDiff = this.orderService.getTimeDiff(this.order?.checkInTime!);
+    var timeDiff = Utils.getTimeDiff(this.order?.checkInTime!);
     if (timeDiff.hours! <= 5 && timeDiff.days === 0) {
       return this.getHourlyRates(timeDiff);
     }
@@ -208,7 +209,7 @@ export class OrdersComponent {
       date--;
     }
     const start = new Date(year, month, date, 12, 0, 0).getTime();
-    const diff = this.orderService.getTimeDiff(start);
+    const diff = Utils.getTimeDiff(start);
     let extra = this.getHourlyRates(diff).pop()!;
     const rate = 30_000;
     if (diff.days! > 0 && diff.hours! < 6) extra.rate = rate;

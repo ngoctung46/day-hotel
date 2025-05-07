@@ -14,6 +14,7 @@ import { RoomStatus } from '../../../models/const';
 import { RoomStatusPipe } from '../../../pipes/room-status.pipe';
 import { RoomTypePipe } from '../../../pipes/room-type.pipe';
 import { RoomService } from '../../../services/room.service';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'home-room',
   imports: [
@@ -22,9 +23,11 @@ import { RoomService } from '../../../services/room.service';
     RouterModule,
     RoomStatusPipe,
     RoomTypePipe,
+    NgbTooltip,
   ],
   templateUrl: './room.component.html',
   styleUrl: './room.component.css',
+  host: { class: 'd-block' },
 })
 export class RoomComponent implements OnInit {
   @Input() room: Room = {};

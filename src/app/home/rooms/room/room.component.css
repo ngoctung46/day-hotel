@@ -4,3 +4,7 @@
 .btn {
   border-radius: 0;
 }
+.tooltip-bg-color {
+  background-color: darkgreen;
+  color: white;
+}

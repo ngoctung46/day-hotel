@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DateRange } from '../models/date-range';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'shared-date-range-picker',
@@ -83,13 +84,11 @@ export class DateRangePickerComponent {
   }
   initDateRange() {
     const datePipe: DatePipe = new DatePipe('en-US');
-    const from = new Date(Date.now());
-    from.setHours(12, 0, 0);
-    from.setDate(from.getDate() - 1);
+    const dateRange = Utils.getCurrentDateRange();
+    const from = dateRange.fromDate;
     this.fromDate = datePipe.transform(from, 'yyyy-MM-dd');
     this.fromTime = datePipe.transform(from, 'HH:mm:ss');
-    const to = new Date(Date.now());
-    to.setHours(12, 0, 0);
+    const to = dateRange.toDate;
     this.toDate = datePipe.transform(to, 'yyyy-MM-dd');
     this.toTime = datePipe.transform(to, 'HH:mm:ss');
   }

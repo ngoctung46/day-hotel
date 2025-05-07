@@ -13,6 +13,7 @@ import { OrderService } from '../services/order.service';
 import { Order } from '../models/order';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TotalReportComponent } from './total-report/total-report.component';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,11 +37,13 @@ export class DashboardComponent implements OnInit {
   prepaids: Payment[] = [];
   payments: Payment[] = [];
   orders: Order[] = [];
-  ngOnInit(): void {}
   dateRange: DateRange | undefined = undefined;
   totalPrepaids = 0;
   totalPayments = 0;
   totalOrders = 0;
+  ngOnInit(): void {
+    this.getDateRange(Utils.getCurrentDateRange());
+  }
   getDateRange(dateRange: DateRange) {
     this.dateRange = dateRange;
     this.getPayments();
