@@ -22,12 +22,10 @@
       </td>
       <th class="text-end">{{ payment.amount | number }}</th>
       <td class="text-center">
-        @if(payment.type == 2) {
         <button
           class="btn btn-danger bi bi-trash-fill"
           (click)="deleted.emit(payment)"
         ></button>
-        }
       </td>
     </tr>
     }

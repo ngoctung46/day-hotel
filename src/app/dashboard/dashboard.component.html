@@ -32,7 +32,7 @@
         *ngIf="prepaids.length > 0"
         [payments]="prepaids"
         [tableClass]="'border-warning table-warning'"
-        (deleted)="deletePrepaid($event)"
+        (deleted)="deletePayment($event)"
       ></dashboard-daily-report>
     </ng-template>
   </li>
@@ -41,6 +41,7 @@
     <ng-template ngbNavContent>
       <dashboard-daily-report
         *ngIf="payments.length > 0"
+        (deleted)="deletePayment($event)"
         [payments]="payments"
       ></dashboard-daily-report>
     </ng-template>
@@ -48,7 +49,10 @@
   <li [ngbNavItem]="5">
     <button class="text-info" ngbNavLink>Đặt phòng</button>
     <ng-template ngbNavContent>
-      <dash-bookings></dash-bookings>
+      <dash-bookings
+        [bookings]="bookings"
+        (deleted)="deleteBooking($event)"
+      ></dash-bookings>
     </ng-template>
   </li>
 </ul>

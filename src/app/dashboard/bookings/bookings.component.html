@@ -8,6 +8,7 @@
       <th>Ngày nhận</th>
       <th class="text-center" scope="col">Phòng</th>
       <th class="text-end" scope="col">Đặt cọc</th>
+      <td></td>
     </tr>
   </thead>
   <tbody>
@@ -18,10 +19,16 @@
       <td>{{ booking.bookingDate | date : "dd/MM/yy HH:mm:ss" }}</td>
       <th class="text-center">{{ booking.room?.number }}</th>
       <th class="text-end">{{ booking.prepaid | number }}</th>
+      <td class="text-center">
+        <button
+          class="btn btn-danger bi bi-trash-fill"
+          (click)="deleted.emit(booking)"
+        ></button>
+      </td>
     </tr>
     }
     <tr>
-      <td colspan="3"></td>
+      <td colspan="4"></td>
       <th class="text-danger text-center">Tổng</th>
       <th class="text-danger text-end">{{ total | number }}</th>
     </tr>

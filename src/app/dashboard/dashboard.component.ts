@@ -14,6 +14,8 @@ import { Order } from '../models/order';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TotalReportComponent } from './total-report/total-report.component';
 import { Utils } from '../utils';
+import { Booking } from '../models/booking';
+import { BookingService } from '../services/booking.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,9 +36,11 @@ export class DashboardComponent implements OnInit {
   active = 1;
   paymentService = inject(PaymentService);
   orderService = inject(OrderService);
+  bookingService = inject(BookingService);
   prepaids: Payment[] = [];
   payments: Payment[] = [];
   orders: Order[] = [];
+  bookings: Booking[] = [];
   dateRange: DateRange | undefined = undefined;
   totalPrepaids = 0;
   totalPayments = 0;
@@ -48,6 +52,7 @@ export class DashboardComponent implements OnInit {
     this.dateRange = dateRange;
     this.getPayments();
     this.getOrders();
+    this.getBookings();
     this.getTotal();
   }
 
@@ -67,6 +72,16 @@ export class DashboardComponent implements OnInit {
         this.getTotal();
       });
   }
+  getBookings() {
+    this.bookingService
+      .getItems()
+      .then(
+        (bookings) =>
+          (this.bookings = bookings.sort(
+            (a, b) => a.bookingDate! - b.bookingDate!
+          ))
+      );
+  }
 
   getTotal() {
     this.totalPrepaids = 0;
@@ -82,10 +97,15 @@ export class DashboardComponent implements OnInit {
       (o) => (this.totalOrders += o.total! - o.discount! + o.charges!)
     );
   }
-  deletePrepaid(payment: Payment) {
+  deletePayment(payment: Payment) {
     if (!payment?.id) return;
     this.paymentService.deleteItem(payment.id).then();
     this.getPayments();
     this.getTotal();
+  }
+  deleteBooking(booking: Booking) {
+    if (!booking.id) return;
+    this.bookingService.deleteItem(booking.id).then();
+    this.getBookings();
   }
 }
