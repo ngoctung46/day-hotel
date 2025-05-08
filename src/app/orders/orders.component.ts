@@ -157,6 +157,7 @@ export class OrdersComponent {
     this.updateOrder();
     this.updateRoom();
     this.router.navigate(['/home']);
+    // this.print();
   }
 
   getRates(): Rate[] {
