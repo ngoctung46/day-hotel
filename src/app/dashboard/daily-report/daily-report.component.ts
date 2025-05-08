@@ -1,4 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order';
 import { OrderLineService } from '../../services/order-line.service';
@@ -18,7 +25,7 @@ import { DateRange } from '../../models/date-range';
 export class DailyReportComponent {
   @Input() payments: Payment[] = [];
   @Input() tableClass = 'table-success border-success';
-
+  @Output() deleted = new EventEmitter<Payment>();
   get total() {
     let totalReceipt = 0;
     let totalExpense = 0;

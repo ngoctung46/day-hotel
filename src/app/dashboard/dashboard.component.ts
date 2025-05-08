@@ -82,4 +82,10 @@ export class DashboardComponent implements OnInit {
       (o) => (this.totalOrders += o.total! - o.discount! + o.charges!)
     );
   }
+  deletePrepaid(payment: Payment) {
+    if (!payment?.id) return;
+    this.paymentService.deleteItem(payment.id).then();
+    this.getPayments();
+    this.getTotal();
+  }
 }

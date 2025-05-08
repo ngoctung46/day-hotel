@@ -36,7 +36,7 @@
     style="padding: 0px"
   >
     <button
-      tooltip="Nhận Phòng"
+      ngbTooltip="Nhận Phòng"
       *ngIf="room.status == 0"
       class="btn btn-success btn-lg w-100"
       [routerLink]="['/customer/room/', room.id]"

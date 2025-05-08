@@ -32,6 +32,7 @@
         *ngIf="prepaids.length > 0"
         [payments]="prepaids"
         [tableClass]="'border-warning table-warning'"
+        (deleted)="deletePrepaid($event)"
       ></dashboard-daily-report>
     </ng-template>
   </li>

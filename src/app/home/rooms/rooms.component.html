@@ -1,3 +1,14 @@
+@if(note !== '') {
+<h5 class="text-warning text-center">
+  LƯU Ý:
+  <span class="text-danger"
+    ><b>{{ note | uppercase }}</b></span
+  >
+</h5>
+
+}
+
+<hr class="text-success" />
 <div class="row row-cols-auto">
   @for (room of rooms; track $index) {
   <div class="col-sm-4">
@@ -13,7 +24,6 @@
       </div>
 
       <ul class="list-group list-group-flush">
-        @for (note of notes; track $index) {
         <li class="list-group-item">
           <div class="input-group">
             <input
@@ -22,16 +32,23 @@
               placeholder="Lời nhắn"
               aria-label="Lời nhắn"
               aria-describedby="basic-addon2"
-              [(ngModel)]="notes[$index]"
+              [(ngModel)]="note"
             />
+
             <span
-              class="input-group-text bi bi-x"
+              class="input-group-text bi bi-floppy-fill text-success"
+              ngbTooltip="Lưu"
               id="basic-addon2"
-              (click)="notes[$index] = ''"
+              (click)="saveNote()"
+            ></span>
+            <span
+              ngbTooltip="Xóa"
+              class="input-group-text bi bi-trash-fill text-danger"
+              id="basic-addon2"
+              (click)="deleteNote()"
             ></span>
           </div>
         </li>
-        }
       </ul>
     </div>
   </div>
@@ -72,5 +89,4 @@
     ></button>
   </div>
 </ng-template>
-
-<hr />
+<hr class="text-success" />

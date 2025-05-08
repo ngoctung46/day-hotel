@@ -13,19 +13,18 @@ import { RoomComponent } from './room/room.component';
 import { Room } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import { RoomService } from '../../services/room.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RoomStatus } from '../../models/const';
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NOTE_ID, RoomStatus } from '../../models/const';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
 import { NoteService } from '../../services/note.service';
-import { Note } from '../../models/note';
-import { Utils } from '../../utils';
 
 @Component({
   selector: 'home-rooms',
-  imports: [RoomComponent, CommonModule, FormsModule],
+  imports: [RoomComponent, CommonModule, FormsModule, NgbTooltip],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css',
+  host: { class: 'd-block' },
 })
 export class RoomsComponent implements OnInit {
   @Input() rooms: Room[] = [];
@@ -37,8 +36,12 @@ export class RoomsComponent implements OnInit {
   closeResult: WritableSignal<string> = signal('');
   changedRoom: Room = {};
   changingRoom: Room = {};
-  notes: string[] = ['', '', ''];
-  ngOnInit(): void {}
+  note = '';
+  ngOnInit(): void {
+    this.noteService
+      .getItemById(NOTE_ID)
+      .then((note) => (this.note = note?.content ?? ''));
+  }
   changeRoom() {
     this.changedRoom.orderId = this.changingRoom.orderId;
     this.changedRoom.customerId = this.changingRoom.customerId;
@@ -66,5 +69,13 @@ export class RoomsComponent implements OnInit {
 
   setRoom(room: Room) {
     this.changingRoom = room;
+  }
+  saveNote() {
+    if (this.note == '') return;
+    this.noteService.updateItem({ id: NOTE_ID, content: this.note });
+  }
+  deleteNote() {
+    this.note = '';
+    this.noteService.updateItem({ id: NOTE_ID, content: this.note });
   }
 }

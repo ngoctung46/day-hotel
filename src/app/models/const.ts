@@ -49,6 +49,8 @@ export enum PaymentType {
   PREPAID,
 }
 
+export const NOTE_ID = 'Note_Id';
+
 export const PROVINCES = [
   'Cục Cảnh sát',
   'An Giang',
