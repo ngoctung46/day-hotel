@@ -12,12 +12,12 @@ export class BookingService extends CloudFirestoreService<Booking> {
     super(CollectionName.BOOKING);
   }
 
-  async getBookingsInWeek() {
+  async getBookings(dateRange = 7) {
     const bookingRef = collection(this.firestore, this.collectionName);
     const from = new Date(Date.now());
     from.setHours(0, 0, 0);
     const to = new Date(Date.now());
-    to.setDate(to.getDate() + 7);
+    to.setDate(to.getDate() + dateRange);
     to.setHours(23, 59, 59);
     const q = query(
       bookingRef,

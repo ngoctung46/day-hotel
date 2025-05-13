@@ -2,6 +2,7 @@ import { Component, inject, Injectable } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { EditModelComponent } from './shared-components/edit-model.component';
 
 @Component({
   selector: 'app-root',

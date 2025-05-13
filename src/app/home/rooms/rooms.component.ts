@@ -18,6 +18,9 @@ import { NOTE_ID, RoomStatus } from '../../models/const';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
 import { NoteService } from '../../services/note.service';
+import { Booking } from '../../models/booking';
+import { BookingService } from '../../services/booking.service';
+import { Utils } from '../../utils';
 
 @Component({
   selector: 'home-rooms',
@@ -32,15 +35,27 @@ export class RoomsComponent implements OnInit {
   roomService = inject(RoomService);
   orderService = inject(OrderService);
   noteService = inject(NoteService);
+  bookingService = inject(BookingService);
   modalService = inject(NgbModal);
   closeResult: WritableSignal<string> = signal('');
   changedRoom: Room = {};
   changingRoom: Room = {};
   note = '';
+  bookings: Booking[] = [];
   ngOnInit(): void {
     this.noteService
       .getItemById(NOTE_ID)
       .then((note) => (this.note = note?.content ?? ''));
+    const dateRange = Utils.getCurrentDateRange(2);
+    this.bookingService.getItems().then((bookings) => {
+      this.bookings = bookings
+        .filter(
+          (x) =>
+            x?.bookingDate! >= new Date(Date.now()).setHours(0, 0, 0) &&
+            x?.bookingDate! <= dateRange.toDate?.getTime()!
+        )
+        .sort((a, b) => a.bookingDate! - b.bookingDate!);
+    });
   }
   changeRoom() {
     this.changedRoom.orderId = this.changingRoom.orderId;

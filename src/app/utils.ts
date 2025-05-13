@@ -2,9 +2,11 @@ import { DateRange } from './models/date-range';
 import { TimeDiff } from './models/time-diff';
 
 export class Utils {
-  static getCurrentDateRange(): DateRange {
+  static getCurrentDateRange(step = 0): DateRange {
     const from: Date = new Date(Date.now());
+    from.setDate(from.getDate() - step);
     const to: Date = new Date(Date.now());
+    to.setDate(to.getDate() + step);
     if (to.getHours() <= 12) {
       from.setDate(from.getDate() - 1);
       from.setHours(12, 0, 0);
@@ -30,5 +32,34 @@ export class Utils {
       seconds: seconds % 60,
       totalHours: hours,
     };
+  }
+  static dateToStr(date_Object: Date): string {
+    // get the year, month, date, hours, and minutes seprately and append to the string.
+    let month = date_Object.getMonth() + 1;
+    const monthStr = month < 10 ? `0${month}` : `${month}`;
+    const dayStr =
+      date_Object.getDate() < 10
+        ? `0${date_Object.getDate()}`
+        : `${date_Object.getDate()}`;
+    const hourStr =
+      date_Object.getHours() < 10
+        ? `0${date_Object.getHours()}`
+        : `${date_Object.getHours()}`;
+    const minutesStr =
+      date_Object.getMinutes() < 10
+        ? `0${date_Object.getMinutes()}`
+        : `${date_Object.getMinutes()}`;
+
+    let date_String: string =
+      date_Object.getFullYear() +
+      '-' +
+      monthStr +
+      '-' +
+      dayStr +
+      'T' +
+      hourStr +
+      ':' +
+      minutesStr;
+    return date_String;
   }
 }

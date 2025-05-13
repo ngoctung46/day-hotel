@@ -1,37 +1,38 @@
-<div class="input-group">
-  <span class="input-group-text bg-success text-light">Tên</span>
-  <select
-    class="form-select"
-    id="product-type"
-    aria-label="product"
-    [(ngModel)]="selectedProduct"
-  >
-    @for (product of products; track $index) {
-    <option [ngValue]="product">{{ product.name }}</option>
-    }
-  </select>
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Giá tiền</span
-  >
-  <input
-    type="number"
-    class="form-control"
-    placeholder="Giá"
-    aria-label="Giá"
-    [(ngModel)]="selectedProduct.price"
-  />
-
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Số lượng</span
-  >
-  <input
-    type="number"
-    class="form-control w-10"
-    placeholder="Số lượng"
-    aria-label="quantity"
-    [(ngModel)]="orderLine.quantity"
-  />
-  <div class="btn-group">
+<div class="row row-cols-auto g-3 align-items-center justify-content-center">
+  <div class="col-auto">
+    <label class="col-form-label">Tên</label>
+    <select
+      class="form-select"
+      id="product-type"
+      aria-label="product"
+      [(ngModel)]="selectedProduct"
+    >
+      @for (product of products; track $index) {
+      <option [ngValue]="product">{{ product.name }}</option>
+      }
+    </select>
+  </div>
+  <div class="col-auto">
+    <label class="col-form-label">Giá tiền</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Giá"
+      aria-label="Giá"
+      [(ngModel)]="selectedProduct.price"
+    />
+  </div>
+  <div class="col-auto">
+    <label class="col-form-label">Số lượng</label>
+    <input
+      type="number"
+      class="form-control w-10"
+      placeholder="Số lượng"
+      aria-label="quantity"
+      [(ngModel)]="orderLine.quantity"
+    />
+  </div>
+  <div class="col-auto align-self-end">
     <button
       type="submit"
       class="btn btn-warning"

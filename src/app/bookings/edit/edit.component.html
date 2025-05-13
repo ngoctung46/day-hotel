@@ -1,50 +1,59 @@
-<div class="input-group">
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Phòng</span
-  >
-  <select
-    class="form-select"
-    id="room-number"
-    aria-label="room-number"
-    [(ngModel)]="selectedRoom"
-  >
-    @for (room of rooms; track $index) {
-    <option [ngValue]="room">{{ room.number }}</option>
-    }
-  </select>
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Ngày đặt</span
-  >
-  <input
-    type="date"
-    class="form-control"
-    placeholder="Nhập tên"
-    aria-label="Tên"
-    [(ngModel)]="bookingDate"
-  />
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Giờ đặt</span
-  >
-  <input
-    type="time"
-    class="form-control"
-    placeholder="Nhập tên"
-    aria-label="Tên"
-    [(ngModel)]="bookingTime"
-  />
+<div class="row row-cols-auto justify-content-center align-items-center g-3">
+  <div class="col-auto">
+    <label for="room-number" class="col-form-label">Phòng</label>
+    <select
+      class="form-select"
+      id="room-number"
+      aria-label="room-number"
+      [(ngModel)]="selectedRoom"
+    >
+      @for (room of rooms; track $index) {
+      <option [ngValue]="room">{{ room.number }}</option>
+      }
+    </select>
+  </div>
+  <div class="col-auto">
+    <label for="booking-date" class="col-form-label">Ngày đặt</label>
 
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Đặt cọc</span
-  >
-  <input
-    type="number"
-    class="form-control"
-    placeholder="Số tiền"
-    aria-label="price"
-    [(ngModel)]="prepaid"
-  />
+    <input
+      type="date"
+      class="form-control"
+      placeholder="booking-date"
+      aria-label="Ngày đặt"
+      [(ngModel)]="bookingDate"
+    />
+  </div>
+  <div class="col-auto">
+    <label for="booking-time" class="col-form-label">Giờ đặt</label>
 
-  <div class="btn-group">
+    <input
+      type="time"
+      class="form-control"
+      placeholder="booking-time"
+      aria-label="booking-time"
+      [(ngModel)]="bookingTime"
+    />
+  </div>
+  <div class="col-auto">
+    <label for="prepaid" class="col-form-label">Đặt cọc</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Số tiền"
+      aria-label="price"
+      [(ngModel)]="prepaid"
+    />
+  </div>
+  <div class="col-auto">
+    <label for="prepaid" class="col-form-label">Thông tin liên hệ</label>
+    <input
+      type="text"
+      class="form-control"
+      aria-label="contact"
+      [(ngModel)]="contactInfo"
+    />
+  </div>
+  <div class="col-auto align-self-end">
     <button
       type="submit"
       [disabled]="!valid"

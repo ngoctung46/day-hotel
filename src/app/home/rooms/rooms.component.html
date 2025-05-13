@@ -1,12 +1,17 @@
 @if(note !== '') {
-<marquee direction="right"
-  ><h5 class="text-warning text-center">
+<marquee direction="right">
+  <h5 class="text-warning text-center">
     LƯU Ý:
     <span class="text-danger"
       ><b>{{ note | uppercase }}</b></span
     >
-  </h5></marquee
->
+  </h5>
+</marquee>
+} @for (booking of bookings; track $index) {
+<div class="alert alert-info">
+  Ngày {{ booking.bookingDate | date : "dd/MM/yy HH:mm" }} khách đặt P.
+  {{ booking.room?.number }}
+</div>
 
 }
 

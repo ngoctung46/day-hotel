@@ -6,4 +6,5 @@ export interface Booking extends ModelBase {
   room?: Room;
   bookingDate?: number;
   prepaid?: number;
+  contactInfo?: string;
 }

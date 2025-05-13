@@ -16,6 +16,7 @@ import { TotalReportComponent } from './total-report/total-report.component';
 import { Utils } from '../utils';
 import { Booking } from '../models/booking';
 import { BookingService } from '../services/booking.service';
+import { NoteService } from '../services/note.service';
 
 @Component({
   selector: 'app-dashboard',

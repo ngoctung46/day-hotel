@@ -1,41 +1,42 @@
-<div class="input-group">
-  <span class="input-group-text bg-success text-light">Tên</span>
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Nhập tên"
-    aria-label="Tên"
-    [(ngModel)]="product.name"
-  />
-
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Giá tiền</span
-  >
-  <input
-    type="number"
-    class="form-control"
-    placeholder="Nhập giá"
-    aria-label="price"
-    [(ngModel)]="product.price"
-  />
-  <span class="input-group-text bg-success text-light" style="margin-left: 16px"
-    >Loại</span
-  >
-  <select
-    class="form-select"
-    id="product-type"
-    aria-label="product-type"
-    [(ngModel)]="product.type"
-  >
-    <option value="0" selected>Thức uống</option>
-    <option value="1">Thức ăn</option>
-    <option value="2">Dịch vụ phòng</option>
-    <option value="3">Giá giờ</option>
-    <option value="4">Phụ thu</option>
-    <option value="5">Giảm giá</option>
-    <option value="6">Thanh toán trước</option>
-  </select>
-  <div class="btn-group">
+<div class="row row-cols-auto g-3 align-items-center justify-content-center">
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Tên</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Nhập tên"
+      aria-label="Tên"
+      [(ngModel)]="product.name"
+    />
+  </div>
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Giá tiền</label>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Nhập giá"
+      aria-label="price"
+      [(ngModel)]="product.price"
+    />
+  </div>
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Loại</label>
+    <select
+      class="form-select"
+      id="product-type"
+      aria-label="product-type"
+      [(ngModel)]="product.type"
+    >
+      <option value="0" selected>Thức uống</option>
+      <option value="1">Thức ăn</option>
+      <option value="2">Dịch vụ phòng</option>
+      <option value="3">Giá giờ</option>
+      <option value="4">Phụ thu</option>
+      <option value="5">Giảm giá</option>
+      <option value="6">Thanh toán trước</option>
+    </select>
+  </div>
+  <div class="col-auto align-self-end">
     <button
       type="submit"
       [disabled]="!valid"

@@ -12,6 +12,7 @@
         <th scope="col">Phòng</th>
         <th scope="col">Ngày nhận phòng</th>
         <th scope="col">Đặt cọc</th>
+        <th>Thông tin liên hệ</th>
         <th></th>
       </tr>
     </thead>
@@ -24,6 +25,7 @@
         </td>
 
         <td scope="row">{{ booking.prepaid | number }}</td>
+        <td>{{ booking.contactInfo }}</td>
         <td scope="row">
           <div class="input-group">
             <button

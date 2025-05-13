@@ -3,6 +3,7 @@ import { Booking } from '../../models/booking';
 import { Room } from '../../models/room';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { Utils } from '../../utils';
 
 @Component({
   selector: 'booking-edit',
@@ -18,9 +19,10 @@ export class EditComponent {
   bookingTime: string = '';
   bookingDate: string = '';
   selectedRoom: Room = {};
+  contactInfo = '';
   constructor() {
     const now = new Date(Date.now());
-    const dateStr = this.dateToStr(now);
+    const dateStr = Utils.dateToStr(now);
     this.bookingDate = dateStr.split('T')[0];
     this.bookingTime = dateStr.split('T')[1];
     if (this.rooms.length > 0) this.selectedRoom = this.rooms[0];
@@ -34,45 +36,13 @@ export class EditComponent {
     this.booking.prepaid = this.prepaid;
     this.booking.room = this.selectedRoom;
     this.booking.roomId = this.selectedRoom.id;
+    this.booking.contactInfo = this.contactInfo;
     this.added.emit(this.booking);
   }
 
   get valid() {
     return (
-      this.bookingDate != '' &&
-      this.bookingTime != '' &&
-      this.selectedRoom &&
-      this.prepaid > 0
+      this.bookingDate != '' && this.bookingTime != '' && this.selectedRoom
     );
-  }
-
-  private dateToStr(date_Object: Date): string {
-    // get the year, month, date, hours, and minutes seprately and append to the string.
-    let month = date_Object.getMonth() + 1;
-    const monthStr = month < 10 ? `0${month}` : `${month}`;
-    const dayStr =
-      date_Object.getDate() < 10
-        ? `0${date_Object.getDate()}`
-        : `${date_Object.getDate()}`;
-    const hourStr =
-      date_Object.getHours() < 10
-        ? `0${date_Object.getHours()}`
-        : `${date_Object.getHours()}`;
-    const minutesStr =
-      date_Object.getMinutes() < 10
-        ? `0${date_Object.getMinutes()}`
-        : `${date_Object.getMinutes()}`;
-
-    let date_String: string =
-      date_Object.getFullYear() +
-      '-' +
-      monthStr +
-      '-' +
-      dayStr +
-      'T' +
-      hourStr +
-      ':' +
-      minutesStr;
-    return date_String;
   }
 }
