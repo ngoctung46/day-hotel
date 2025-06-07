@@ -156,6 +156,7 @@ export class OrdersComponent {
     this.addHourlyRateOrderLine(true);
     this.updateOrder();
     this.updateRoom();
+    this.playReminderSound();
     this.router.navigate(['/home']);
     // this.print();
   }
@@ -166,6 +167,13 @@ export class OrdersComponent {
       return this.getHourlyRates(timeDiff);
     }
     return this.getDailyRates();
+  }
+  private playReminderSound() {
+    const audio = new Audio('assets/reminder.wav');
+    audio.load();
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
   }
   getHourlyRates(timeDiff: TimeDiff): Rate[] {
     let rates: Rate[] = [];
