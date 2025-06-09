@@ -140,7 +140,6 @@ export class CustomerFormComponent implements OnInit {
       if (c) {
         this.customer = c;
         this.initData();
-        this.customerForm.disable();
       }
     });
   }
@@ -161,8 +160,7 @@ export class CustomerFormComponent implements OnInit {
       phone: [this.customer?.phone],
     });
     if (this.customer != undefined) {
-      this.customerForm.disable();
-      this.addCustomer
+      this.addCustomer();
     }
   }
   updateCustomer() {

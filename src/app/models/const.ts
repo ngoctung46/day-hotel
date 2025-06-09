@@ -13,9 +13,9 @@ export enum RoomStatus {
   UNDER_MAINTENANCE,
 }
 export enum RoomRate {
-  NORMAL = 160_000,
-  DELUXE = 200_000,
-  VIP = 250_000,
+  NORMAL = 200_000,
+  DELUXE = 250_000,
+  VIP = 350_000,
 }
 
 export enum HourlyRate {

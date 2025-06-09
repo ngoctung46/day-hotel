@@ -40,7 +40,7 @@ export class CustomerComponent {
     await this.orderService.addItem(
       {
         customerId: customerRef.id,
-        roomId: this.rId,
+        roomId: this.rId ?? customer.roomId,
         checkInTime: customer.checkInTime,
         orderLineIds: [],
       },
@@ -50,6 +50,8 @@ export class CustomerComponent {
       await this.customerService
         .addItem(customer, customerRef)
         .then((_) => (customer.id = customerRef.id));
+    } else {
+      await this.customerService.updateItem(customer).then();
     }
 
     this.roomService
