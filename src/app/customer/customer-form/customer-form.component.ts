@@ -35,7 +35,7 @@ import { OrderService } from '../../services/order.service';
 import { OrderLineService } from '../../services/order-line.service';
 import { NgxPrintModule } from 'ngx-print';
 import { RoomService } from '../../services/room.service';
-
+import { format } from 'date-fns';
 @Component({
   selector: 'customer-form',
   imports: [
@@ -80,22 +80,9 @@ export class CustomerFormComponent implements OnInit {
       country: ['Việt Nam'],
       phone: [''],
     });
-    const today = new Date(Date.now());
-    const month =
-      today.getMonth() + 1 < 10
-        ? `0${today.getMonth() + 1}`
-        : `${today.getMonth() + 1}`;
-    const day =
-      today.getDate() < 10 ? `0${today.getDate()}` : `${today.getDate()}`;
-    const hour =
-      today.getHours() >= 10 ? `${today.getHours()}` : `0${today.getHours()}`;
-    const min =
-      today.getMinutes() >= 10
-        ? `${today.getMinutes()}`
-        : `0${today.getMinutes()}`;
-
-    this.checkInDate = `${today.getFullYear()}-${month}-${day}`;
-    this.checkInTime = `${hour}:${min}`;
+    const current = new Date();
+    this.checkInDate = format(current, 'yyyy-MM-dd');
+    this.checkInTime = format(current, 'HH:mm');
   }
 
   ngOnInit() {
@@ -162,7 +149,12 @@ export class CustomerFormComponent implements OnInit {
     });
     if (this.customer != undefined) {
       this.customerForm.disable();
-      this.addCustomer
+      let date = new Date(this.customer.checkInTime!);
+      let dateStr = date.toLocaleDateString();
+      let timeStr = date.toLocaleTimeString();
+      this.checkInDate = format(date, 'yyyy-MM-dd');
+      this.checkInTime = format(date, 'HH:mm');
+      // this.addCustomer();
     }
   }
   updateCustomer() {

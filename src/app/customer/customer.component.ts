@@ -36,11 +36,11 @@ export class CustomerComponent {
   async saveCustomerAsync(customer: Customer) {
     let customerRef = this.customerService.createDoc();
     let orderRef = this.orderService.createDoc();
-
+    customer.orderId = orderRef.id;
     await this.orderService.addItem(
       {
         customerId: customerRef.id,
-        roomId: this.rId,
+        roomId: customer.roomId,
         checkInTime: customer.checkInTime,
         orderLineIds: [],
       },
@@ -54,7 +54,7 @@ export class CustomerComponent {
 
     this.roomService
       .updateItem({
-        id: this.rId,
+        id: this.rId ?? customer.roomId,
         customerId: customer.id,
         orderId: orderRef.id,
         status: RoomStatus.CHECKED_IN,
