@@ -138,7 +138,7 @@ export class CustomerFormComponent implements OnInit {
       idNumber: [this.customer?.idNumber, Validators.required],
       issuedPlace: [this.customer?.issuedPlace ?? 'Cục Cảnh sát'],
       issuedDate: [this.customer?.issuedDate],
-      birthDate: [this.customer?.birthDate],
+      birthDate: [this.customer?.birthDate, Validators.required],
       birthPlace: [this.customer?.birthPlace],
       nationality: [this.customer?.nationality ?? 'Việt Nam'],
       addressLine1: [this.customer?.addressLine1],

@@ -190,8 +190,9 @@
 <div class="d-flex justify-content-center">
   <button
     type="button"
-    class="btn btn-outline-primary btn-lg mx-1 bi bi-floppy"
+    class="btn btn-primary btn-lg mx-1 bi bi-floppy"
     (click)="onSubmit()"
+    [disabled]="customerForm.invalid"
     aria-label="Submit customer information"
   >
     Lưu
@@ -199,7 +200,7 @@
   <button
     [useExistingCss]="true"
     type="button"
-    class="btn btn-outline-warning btn-lg mx-1 bi bi-printer"
+    class="btn btn-warning btn-lg mx-1 bi bi-printer"
     printSectionId="print-section"
     aria-label="In Thong tin KH"
     ngxPrint
@@ -209,7 +210,7 @@
   <button
     type="button"
     [disabled]="customerForm.disabled"
-    class="btn btn-outline-info btn-lg mx-0 bi bi-arrow-repeat"
+    class="btn btn-info btn-lg mx-0 bi bi-arrow-repeat"
     (click)="onClear()"
     aria-label="Clear form"
   >
@@ -218,7 +219,7 @@
   <button
     type="button"
     [routerLink]="['/']"
-    class="btn btn-outline-danger btn-lg mx-1 bi bi-x-lg"
+    class="btn btn-danger btn-lg mx-1 bi bi-x-lg"
     aria-label="Clear form"
   >
     Hủy
