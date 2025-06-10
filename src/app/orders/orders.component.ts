@@ -183,7 +183,7 @@ export class OrdersComponent {
         : (HourlyRate.VIP as number);
     const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
 
-    if (timeDiff.hours! >= 5) {
+    if (timeDiff.hours! > 5) {
       return [
         {
           rate: this.room.rate!,
