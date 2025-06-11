@@ -114,8 +114,14 @@ export class CustomerFormComponent implements OnInit {
       )
     );
   onSubmit() {
-    if (this.roomId != '') this.addCustomer();
-    if (this.customerId != '') this.updateCustomer();
+    if (this.customer != undefined) {
+      this.updateCustomer();
+    } else {
+      this.addCustomer();
+    }
+
+    // if (this.roomId != '') this.addCustomer();
+    // if (this.customerId != '') this.updateCustomer();
   }
   onClear() {
     this.customerForm.reset();
@@ -149,9 +155,12 @@ export class CustomerFormComponent implements OnInit {
     });
     if (this.customer != undefined) {
       this.customerForm.disable();
-      let date = new Date(this.customer.checkInTime!);
-      let dateStr = date.toLocaleDateString();
-      let timeStr = date.toLocaleTimeString();
+      var date;
+      if (this.customerId != undefined) {
+        date = new Date(this.customer.checkInTime!);
+      } else {
+        date = new Date();
+      }
       this.checkInDate = format(date, 'yyyy-MM-dd');
       this.checkInTime = format(date, 'HH:mm');
       // this.addCustomer();
