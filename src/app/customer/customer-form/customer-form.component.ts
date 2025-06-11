@@ -28,7 +28,7 @@ import {
   Observable,
   OperatorFunction,
 } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PROVINCES } from '../../models/const';
 import { CustomerService } from '../../services/customer.service';
 import { OrderService } from '../../services/order.service';
@@ -65,7 +65,7 @@ export class CustomerFormComponent implements OnInit {
   orderLineService = inject(OrderLineService);
   roomService = inject(RoomService);
   isNew = true;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.customerForm = this.fb.group({
       name: ['', Validators.required],
       idNumber: ['', Validators.required],
@@ -172,9 +172,13 @@ export class CustomerFormComponent implements OnInit {
       `${this.checkInDate}T${this.checkInTime}:00`
     ).getTime();
     this.customer.roomId = this.room?.id ?? '';
-    this.customerService
-      .updateItem(this.customer)
-      .then((_) => this.submittedCustomer.emit(this.customer));
+    this.customerService.updateItem(this.customer).then(() => {
+      if (this.customerId != undefined) {
+        this.router.navigate(['/home']);
+      } else {
+        this.submittedCustomer.emit(this.customer);
+      }
+    });
   }
 
   addCustomer() {
