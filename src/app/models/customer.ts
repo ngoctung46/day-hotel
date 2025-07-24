@@ -17,4 +17,5 @@ export interface Customer extends ModelBase {
   checkInTime?: number;
   roomId?: string;
   orderId?: string;
+  room?: number;
 }

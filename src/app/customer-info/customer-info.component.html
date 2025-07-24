@@ -7,8 +7,9 @@
   <thead>
     <tr class="text-start">
       <th scope="col">STT</th>
-      <th>Thời gian</th>
-      <th scope="col">Tên khách</th>
+      <th class="text-center">Thời gian</th>
+      <th class="text-center">Phòng</th>
+      <th scope="col" class="text-center">Tên khách</th>
       <th class="text-center" scope="col">CCCD số</th>
     </tr>
   </thead>
@@ -16,7 +17,10 @@
     @for (customer of customers; track $index) {
     <tr class="text-start">
       <th scope="row">{{ $index + 1 }}</th>
-      <td>{{ customer.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+      <td class="text-center">
+        {{ customer.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
+      </td>
+      <td class="text-center">{{ customer.room }}</td>
       <td class="text-center">{{ customer.name }}</td>
       <td class="text-center">{{ customer.idNumber }}</td>
     </tr>
@@ -25,4 +29,3 @@
 </table>
 
 }
-

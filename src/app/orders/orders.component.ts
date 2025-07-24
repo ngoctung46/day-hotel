@@ -193,7 +193,7 @@ export class OrdersComponent {
     }
     rates.push({ rate: rate, quantity: 1 });
     if (timeDiff.hours! > 0) {
-      if (timeDiff.minutes! > 15) {
+      if (timeDiff.minutes! > 20) {
         rates.push({
           rate: extra,
           quantity: timeDiff.hours!,
@@ -214,7 +214,7 @@ export class OrdersComponent {
     const month = checkInTime.getMonth();
     let date = checkInTime.getDate();
     const hour = checkInTime.getHours();
-    if (hour >= 0 && hour <= 9) {
+    if (hour >= 0 && hour <= 6) {
       date--;
     }
     const start = new Date(year, month, date, 12, 0, 0).getTime();
