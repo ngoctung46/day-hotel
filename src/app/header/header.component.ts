@@ -16,5 +16,6 @@ export class HeaderComponent {
     { displayName: 'Báo cáo', path: '/reports', order: 2 },
     { displayName: 'Dịch vụ', path: '/products', order: 4 },
     { displayName: 'Đặt phòng', path: '/bookings', order: 5 },
+    { displayName: 'Thông tin khách hàng', path: '/customers', order: 6 },
   ].sort((a, b) => a.order - b.order);
 }

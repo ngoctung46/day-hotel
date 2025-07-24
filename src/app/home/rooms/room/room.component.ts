@@ -54,4 +54,17 @@ export class RoomComponent implements OnInit {
         break;
     }
   }
+  updateCustomerOutStatus() {
+    switch (this.room.status) {
+      case RoomStatus.CHECKED_IN:
+        this.room.status = RoomStatus.CUSTOMER_OUT;
+        this.roomService.updateItem(this.room);
+        break;
+      case RoomStatus.CUSTOMER_OUT:
+        this.room.status = RoomStatus.CHECKED_IN;
+        this.roomService.updateItem(this.room);
+        break;
+    }
+  }
+
 }

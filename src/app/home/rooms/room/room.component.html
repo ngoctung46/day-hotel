@@ -7,25 +7,27 @@
     class="card-header text-light"
     [ngClass]="room.status == 0 ? 'bg-success' : 'bg-danger'"
   >
-    <b>{{ room.type | RoomType }}</b>
+    <b>{{ room.type | RoomType }} - {{room.rate | number}}đ</b>
   </div>
   <div
     class="card-body"
     [class]="{
       'bg-light': room.status == 0,
       'occupied-room': room.status == 1,
-      'bg-warning': room.status == 3 || room.status == 4
+      'bg-warning': room.status == 3 || room.status == 4,
+      'bg-info': room.status == 2,
     }"
   >
     <h1 class="card-title">{{ room.number }}</h1>
+
     <p
       class="card-text"
       [ngClass]="room.status == 1 ? 'text-light' : 'text-success'"
+
     >
-      <span
-        ><b>{{ room.status | RoomStatus }}</b></span
-      >
+      <span><b>{{ room.status | RoomStatus }} </b></span>
     </p>
+    
   </div>
   <div
     class="card-footer"
@@ -54,6 +56,16 @@
         placement="top"
         [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
+      ></button>
+            <button
+        ngbTooltip="Khách ra/vào"
+        class="btn btn-light btn-lg w-25 bi bi-arrow-bar-left"
+        [ngClass]="{
+          'bi bi-arrow-bar-right': room.status == 1,
+        }"
+        placement="top"
+        [hidden]="room.status == 4"
+        (click)="updateCustomerOutStatus()"
       ></button>
       <button
         ngbTooltip="Thông tin khách lưu trú"

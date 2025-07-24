@@ -7,10 +7,12 @@ import { Booking } from '../models/booking';
 import { ListComponent } from './list/list.component';
 import { PaymentService } from '../services/payment.service';
 import { PaymentType } from '../models/const';
+import { CustomerService } from '../services/customer.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-bookings',
-  imports: [EditComponent, ListComponent],
+  imports: [EditComponent, ListComponent, CommonModule],
   templateUrl: './bookings.component.html',
   styleUrl: './bookings.component.css',
 })
@@ -18,8 +20,10 @@ export class BookingsComponent implements OnInit {
   roomService = inject(RoomService);
   bookingService = inject(BookingService);
   paymentService = inject(PaymentService);
+  customerService = inject(CustomerService);
   rooms: Room[] = [];
   bookings: Booking[] = [];
+  customers: any[] = [];
   async ngOnInit() {
     await this.roomService
       .getItems()
@@ -27,6 +31,9 @@ export class BookingsComponent implements OnInit {
         (rooms) => (this.rooms = rooms.sort((a, b) => a.number! - b.number!))
       );
     await this.getBookings();
+    await this.customerService
+      .getItems()
+      .then((customers) => (this.customers = customers.filter(c => new Date(c.checkInTime!!) >= new Date(2025, 6, 11,0,0,0) && new Date(c.checkInTime!!) <= new Date(2025, 6, 12, 23, 59, 59))));
   }
   async getBookings() {
     await this.bookingService

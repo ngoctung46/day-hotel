@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ListComponent {
   @Input() bookings: Booking[] = [];
+  
   @Output() deleted = new EventEmitter<Booking>();
   router = inject(Router);
   goBack() {
