@@ -122,6 +122,7 @@ export class CustomerFormComponent implements OnInit {
     this.customerService.getCustomerByIdNumber(newValue).then((c) => {
       if (c) {
         c.checkInTime = undefined;
+        c.checkOutTime = undefined;
         this.customers.push(c);
         this.customerForm.reset();
       }

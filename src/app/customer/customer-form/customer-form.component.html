@@ -97,6 +97,7 @@
           class="btn btn-primary btn-lg mx-1 bi bi-plus"
           ngbTooltip="Thêm khách"
           aria-label="Thêm khách"
+          [disabled]="customerForm.invalid"
           (click)="addCustomer()"
         ></button>
       </div>
