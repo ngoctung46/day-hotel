@@ -15,6 +15,6 @@ export class AppComponent {
   constructor() {
     setInterval(() => {
       window.location.reload();
-    }, 3600000); // 1 hour = 3600000 milliseconds
+    }, 3600000 / 2); // 1 hour = 3600000 milliseconds
   }
 }

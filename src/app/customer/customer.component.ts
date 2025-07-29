@@ -10,9 +10,10 @@ import { OrderLineService } from '../services/order-line.service';
 import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { RoomStatus } from '../models/const';
+import { CustomerListComponent } from './customer-list/customer-list.component';
 @Component({
   selector: 'app-customer',
-  imports: [CustomerFormComponent, CommonModule],
+  imports: [CustomerFormComponent, CommonModule, CustomerListComponent],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css',
 })
@@ -23,44 +24,65 @@ export class CustomerComponent {
   orderService = inject(OrderService);
   productService = inject(ProductService);
   rId = '';
-  cId = '';
+  edittable = false;
+  customers: Customer[] = [];
   @Input() set roomId(id: string) {
     this.rId = id;
   }
 
-  @Input() set id(id: string) {
-    this.cId = id;
-  }
   constructor(private router: Router) {}
-  ngOnInit() {}
-  async saveCustomerAsync(customer: Customer) {
-    let customerRef = this.customerService.createDoc();
+  async ngOnInit() {
+    await this.getCustomersByRoomIdAsync();
+   }
+  async saveCustomersAsync(customers: Customer[]) {
+    if (customers.length === 0) return;
     let orderRef = this.orderService.createDoc();
-    customer.orderId = orderRef.id;
+    let customerIds: string[] = [];
+
+    customers.forEach(async (customer) => {
+      let customerRef = this.customerService.createDoc();
+      customer.orderId = orderRef.id;
+      if (!customer.id) {
+        customer.id = customerRef.id;
+        await this.customerService.addItem(customer, customerRef).then((_) => {
+          customerIds.push(customerRef.id);
+        });
+      } else {
+        await this.customerService.updateItem(customer).then((_) => {
+          customerIds.push(customer.id ?? '');
+        });
+      }
+    });
     await this.orderService.addItem(
       {
-        customerId: customerRef.id,
-        roomId: customer.roomId,
-        checkInTime: customer.checkInTime,
+        extraCustomerIds: customerIds,
+        roomId: customers[0].roomId,
+        checkInTime: customers[0].checkInTime,
         orderLineIds: [],
       },
       orderRef
     );
-    if (!customer.id) {
-      await this.customerService
-        .addItem(customer, customerRef)
-        .then((_) => (customer.id = customerRef.id));
-    }
-
     this.roomService
       .updateItem({
-        id: this.rId ?? customer.roomId,
-        customerId: customer.id,
+        id: this.rId ?? customers[0].roomId,
+        customerId: customers[0].id,
         orderId: orderRef.id,
         status: RoomStatus.CHECKED_IN,
+        extraCustomerIds: customerIds,
       })
       .then(() => {
         this.router.navigate(['/home']);
       });
+  }
+  async getCustomersByRoomIdAsync() {
+    if (!this.rId) return;
+    await this.roomService.getItemById(this.rId).then(async (r) => {
+      if (r) {
+        await this.customerService.getCustomersInRoom(r).then((customers) => {
+          this.customers = customers;
+          this.edittable = true;
+        });
+      }
+    });
   }
 }

@@ -22,6 +22,8 @@ import { Rate } from '../models/rate';
 import { PaymentService } from '../services/payment.service';
 import { NgxPrintModule, NgxPrintService, PrintOptions } from 'ngx-print';
 import { Utils } from '../utils';
+import { CustomerService } from '../services/customer.service';
+import { CustomerHistoriesService } from '../services/customer-histories.service';
 
 @Component({
   selector: 'app-orders',
@@ -43,6 +45,8 @@ export class OrdersComponent {
   roomService = inject(RoomService);
   productService = inject(ProductService);
   paymentService = inject(PaymentService);
+  customerSerivce = inject(CustomerService);
+  customerHistoriesService = inject(CustomerHistoriesService);
   orderLines: OrderLine[] = [];
   room: Room = {};
   router = inject(Router);
@@ -87,6 +91,7 @@ export class OrdersComponent {
     this.room.status = RoomStatus.NEED_CLEANING_CUSTOMER_OUT;
     this.room.orderId = '';
     this.room.customerId = '';
+    this.room.extraCustomerIds = [];
     this.roomService.updateItem(this.room).then();
   }
 
@@ -101,6 +106,23 @@ export class OrdersComponent {
       this.order.discount = this.discount;
       this.order.charges = this.extraFee;
       this.orderService.updateItem(this.order);
+    }
+  }
+
+  async checkOutCustomersAsync() {
+    let customers = await this.customerSerivce.getCustomersInRoom(this.room);
+    for (const customer of customers) {
+      customer.checkOutTime = this.checkOutTime;
+      await this.customerSerivce.updateItem(customer);
+      await this.customerHistoriesService.addItem({
+        customerId: customer.id,
+        checkInTime: customer.checkInTime,
+        checkOutTime: this.checkOutTime,
+        roomId: this.room.id,
+        roomNumber: this.room.number,
+        orderId: this.orderId,
+        customer: customer,
+      });
     }
   }
   addHourlyRateOrderLine(persistent: boolean = false) {
@@ -152,7 +174,8 @@ export class OrdersComponent {
       .then((_) => this.paymentService.deleteByOrderLineId(ol.id!));
     this.getOrderLines();
   }
-  checkOut() {
+  async checkOut() {
+    await this.checkOutCustomersAsync();
     this.addHourlyRateOrderLine(true);
     this.updateOrder();
     this.updateRoom();

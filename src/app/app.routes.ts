@@ -20,14 +20,16 @@ export const routes: Routes = [
       import('./customer/customer.component').then((m) => m.CustomerComponent),
   },
   {
-    path: 'customer/:id',
+    path: 'customers/:roomId',
     loadComponent: () =>
       import('./customer/customer.component').then((m) => m.CustomerComponent),
   },
-    {
+  {
     path: 'customers',
     loadComponent: () =>
-      import('./customer-info/customer-info.component').then((m) => m.CustomerInfoComponent),
+      import('./customer-info/customer-info.component').then(
+        (m) => m.CustomerInfoComponent
+      ),
   },
   {
     path: 'products',

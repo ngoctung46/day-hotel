@@ -1,7 +1,2 @@
 <booking-edit [rooms]="rooms" (added)="added($event)"></booking-edit>
 <booking-list [bookings]="bookings" (deleted)="deleted($event)"></booking-list>
-@if (customers.length > 0) {
-    <ul *ngFor="let c of customers">
-      <li *ngIf="c.name !== 'khách thuê giờ' && c.name != 'giờ'  && c.name != 'gio'">Tên: {{ c.name }} - CCCD số: {{ c.idNumber }}</li>
-    </ul>
-}

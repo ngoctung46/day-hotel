@@ -1,5 +1,5 @@
-import { ModelBase } from "./model-base";
-import { OrderLine } from "./order-line";
+import { ModelBase } from './model-base';
+import { OrderLine } from './order-line';
 
 export interface Order extends ModelBase {
   roomId?: string;
@@ -12,4 +12,5 @@ export interface Order extends ModelBase {
   charges?: number;
   discount?: number;
   note?: string;
+  extraCustomerIds?: string[];
 }

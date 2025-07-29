@@ -7,7 +7,7 @@
     class="card-header text-light"
     [ngClass]="room.status == 0 ? 'bg-success' : 'bg-danger'"
   >
-    <b>{{ room.type | RoomType }} - {{room.rate | number}}đ</b>
+    <b>{{ room.type | RoomType }} - {{ room.rate | number }}đ</b>
   </div>
   <div
     class="card-body"
@@ -23,11 +23,11 @@
     <p
       class="card-text"
       [ngClass]="room.status == 1 ? 'text-light' : 'text-success'"
-
     >
-      <span><b>{{ room.status | RoomStatus }} </b></span>
+      <span
+        ><b>{{ room.status | RoomStatus }} </b></span
+      >
     </p>
-    
   </div>
   <div
     class="card-footer"
@@ -57,7 +57,7 @@
         [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
       ></button>
-            <button
+      <button
         ngbTooltip="Khách ra/vào"
         class="btn btn-light btn-lg w-25 bi bi-arrow-bar-left"
         [ngClass]="{
@@ -73,7 +73,7 @@
         type="button"
         [hidden]="room.status == 4"
         class="btn btn-primary btn-lg bi bi-person-badge-fill w-25"
-        [routerLink]="['/customer', room.customerId]"
+        [routerLink]="['/customers', room.id]"
       ></button>
       <button
         type="button"

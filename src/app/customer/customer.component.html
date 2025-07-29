@@ -1,7 +1,10 @@
 <div class="container">
+  @if(customers.length === 0){
   <customer-form
     [roomId]="rId"
-    [customerId]="cId"
-    (submittedCustomer)="saveCustomerAsync($event)"
+    (checkedInCustomers)="saveCustomersAsync($event)"
   />
+  } @else {
+  <app-customer-list [customers]="customers" [editable]="edittable" />
+  }
 </div>
