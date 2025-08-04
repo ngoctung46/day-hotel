@@ -81,6 +81,7 @@ export class CustomerFormComponent implements OnInit {
         [Validators.required, this.birthDateAfter1900Validator],
       ],
       phone: [''],
+      tagNumber: [''],
     });
     const current = new Date();
     this.checkInDate = format(current, 'yyyy-MM-dd');
@@ -114,9 +115,7 @@ export class CustomerFormComponent implements OnInit {
       )
     );
   onSubmit() {
-    this.checkIn();
-    // if (this.roomId != '') this.addCustomer();
-    // if (this.customerId != '') this.updateCustomer();
+    this.checkedInCustomers.emit(this.customers);
   }
   onClear() {
     this.customerForm.reset();
@@ -126,24 +125,18 @@ export class CustomerFormComponent implements OnInit {
     if (newValue && newValue.length < 6) return;
     this.customerService.getCustomerByIdNumber(newValue).then((c) => {
       if (c) {
-        c.checkInTime = 0;
+        c.checkInTime = new Date(
+          `${this.checkInDate}T${this.checkInTime}:00`
+        ).getTime();
         c.checkOutTime = 0;
+        c.roomId = this.roomId;
+        c.room = this.room?.number;
         this.customers.push(c);
         this.customerForm.reset();
       }
     });
   }
 
-  checkIn() {
-    this.customers.forEach((element) => {
-      element.roomId = this.roomId;
-      element.room = this.room?.number;
-      element.checkInTime = new Date(
-        `${this.checkInDate}T${this.checkInTime}:00`
-      ).getTime();
-    });
-    this.checkedInCustomers.emit(this.customers);
-  }
   async addCustomer() {
     const customer = this.customerForm.value as Customer;
     customer.roomId = this.roomId;

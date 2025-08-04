@@ -8,11 +8,14 @@ import {
   RoomType,
 } from '../models/const';
 import { Rate } from '../models/rate';
+import { CustomerService } from './customer.service';
+import { Customer } from '../models/customer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoomService extends CloudFirestoreService<Room> {
+  customerService = inject(CustomerService);
   constructor() {
     super(CollectionName.ROOM);
     // this.seedData();
@@ -90,5 +93,26 @@ export class RoomService extends CloudFirestoreService<Room> {
     }
 
     return Array.from(rateMap, ([rate, quantity]) => ({ rate, quantity }));
+  }
+
+  async getCustomersInRoom(room: Room) {
+    if (!room.extraCustomerIds || room.extraCustomerIds.length === 0) {
+      return [];
+    }
+    const customers = await Promise.all(
+      room.extraCustomerIds.map((id) => this.customerService.getItemById(id))
+    );
+    return customers.filter((c) => !!c) as Customer[];
+  }
+  async getAllStayingCustomers() {
+    const rooms = await this.getItems();
+    const stayingCustomers: Customer[] = [];
+    for (const room of rooms) {
+      if (room.extraCustomerIds && room.extraCustomerIds.length > 0) {
+        const customers = await this.getCustomersInRoom(room);
+        stayingCustomers.push(...customers);
+      }
+    }
+    return stayingCustomers;
   }
 }

@@ -10,4 +10,5 @@ export interface Customer extends ModelBase {
   orderId?: string;
   phone?: string;
   room?: number;
+  tagNumber?: string; // Added for vehicle number plate
 }

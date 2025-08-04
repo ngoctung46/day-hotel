@@ -1,139 +1,153 @@
-<div id="print-section">
-  <div class="row">
-    <div class="col-4">
-      <label class="my-1 mr-2 text-primary"
-        ><h4>
-          Thông Tin Khách Lưu Trú
-          <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
-        </h4></label
-      >
-    </div>
+<div class="row">
+  <div class="col-4">
+    <label class="my-1 mr-2 text-primary"
+      ><h4>
+        Thông Tin Khách Lưu Trú
+        <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
+      </h4></label
+    >
   </div>
-  <form [formGroup]="customerForm">
-    <div class="row row-cols-auto g-">
-      <div class="col">
-        <label for="lastName" class="form-label">Số giấy tờ</label>
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Nhập số CCCD/Hộ chiếu"
-            formControlName="idNumber"
-            (ngModelChange)="valueChange($event)"
-            autofocus
-          />
-          @if(customerForm.get('idNumber')?.valid) {
-          <div class="input-group-text text-success">
-            <i class="bi bi-check-lg"></i>
-          </div>
-          }
-        </div>
-        <div
-          *ngIf="customerForm.get('idNumber')?.invalid"
-          class="form-text text-danger"
-        >
-          <b>Bắt buộc</b>
-        </div>
-      </div>
-      <div class="col">
-        <label for="lastName" class="form-label">Họ và Tên</label>
-        <div class="input-group">
-          <input
-            id="lastName"
-            type="text"
-            class="form-control"
-            placeholder="Nhập tên khách"
-            formControlName="name"
-          />
-          @if(customerForm.get('name')?.valid) {
-          <div class="input-group-text text-success">
-            <i class="bi bi-check-lg"></i>
-          </div>
-          }
-        </div>
-        <div
-          *ngIf="customerForm.get('name')?.invalid"
-          class="form-text text-danger"
-        >
-          <b>Bắt buộc</b>
-        </div>
-      </div>
-
-      <div class="col">
-        <label for="birthDate" class="form-label">Ngày sinh</label>
-        <input
-          type="date"
-          lang="vi"
-          class="form-control"
-          formControlName="birthDate"
-        />
-        <div
-          *ngIf="customerForm.get('birthDate')?.invalid"
-          class="form-text text-danger"
-        >
-          <b>Sai ngày sinh</b>
-        </div>
-      </div>
-      <div class="col">
-        <label for="phone" class="form-label">Số điện thoại</label>
+</div>
+<form [formGroup]="customerForm">
+  <div class="row row-cols-auto g-">
+    <div class="col">
+      <label for="lastName" class="form-label">Số giấy tờ</label>
+      <div class="input-group">
         <input
           type="text"
-          maxlength="10"
           class="form-control"
-          placeholder="Nếu có"
-          formControlName="phone"
+          placeholder="Nhập số CCCD/Hộ chiếu"
+          formControlName="idNumber"
+          (ngModelChange)="valueChange($event)"
+          autofocus
         />
-      </div>
-      <div class="col">
-        <label for="phone" class="form-label"></label>
-      </div>
-      <div class="col">
-        <div class="col">
-          <label for="phone" class="form-label"></label>
+        @if(customerForm.get('idNumber')?.valid) {
+        <div class="input-group-text text-success">
+          <i class="bi bi-check-lg"></i>
         </div>
-        <button
-          type="button"
-          class="btn btn-primary btn-lg mx-1 bi bi-plus"
-          ngbTooltip="Thêm khách"
-          aria-label="Thêm khách"
-          [disabled]="customerForm.invalid"
-          (click)="addCustomer()"
-        ></button>
+        }
+      </div>
+      <div
+        *ngIf="customerForm.get('idNumber')?.invalid"
+        class="form-text text-danger"
+      >
+        <b>Bắt buộc</b>
       </div>
     </div>
-  </form>
-
-  <!-- @if (!this.customer) { -->
-  <label class="my-1 mr-2 text-info"><h4>Thông tin nhận phòng</h4></label>
-  <div class="row row-cols-auto g-1">
     <div class="col">
-      <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
+      <label for="lastName" class="form-label">Họ và Tên</label>
+      <div class="input-group">
+        <input
+          id="lastName"
+          type="text"
+          class="form-control"
+          placeholder="Nhập tên khách"
+          formControlName="name"
+        />
+        @if(customerForm.get('name')?.valid) {
+        <div class="input-group-text text-success">
+          <i class="bi bi-check-lg"></i>
+        </div>
+        }
+      </div>
+      <div
+        *ngIf="customerForm.get('name')?.invalid"
+        class="form-text text-danger"
+      >
+        <b>Bắt buộc</b>
+      </div>
+    </div>
+
+    <div class="col">
+      <label for="birthDate" class="form-label">Ngày sinh</label>
       <input
         type="date"
         lang="vi"
         class="form-control"
-        placeholder="Ngày nhận phòng"
-        [(ngModel)]="checkInDate"
-        [value]="checkInDate"
+        formControlName="birthDate"
+      />
+      <div
+        *ngIf="customerForm.get('birthDate')?.invalid"
+        class="form-text text-danger"
+      >
+        <b>Sai ngày sinh</b>
+      </div>
+    </div>
+    <div class="col">
+      <label for="phone" class="form-label">Số điện thoại</label>
+      <input
+        type="text"
+        maxlength="10"
+        class="form-control"
+        placeholder="Nếu có"
+        formControlName="phone"
       />
     </div>
     <div class="col">
-      <label for="checkInTime" class="form-label">Giờ nhận phòng</label>
+      <label for="phone" class="form-label">Biển số xe</label>
       <input
-        type="time"
+        type="text"
+        maxlength="10"
         class="form-control"
-        placeholder="Giờ nhận phòng"
-        [(ngModel)]="checkInTime"
-        [value]="checkInTime"
+        placeholder="Nếu có"
+        formControlName="tagNumber"
       />
     </div>
+    <div class="col">
+      <label for="phone" class="form-label"></label>
+    </div>
+    <div class="col">
+      <div class="col">
+        <label for="phone" class="form-label"></label>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg mx-1 bi bi-plus"
+        ngbTooltip="Thêm khách"
+        aria-label="Thêm khách"
+        [disabled]="customerForm.invalid"
+        (click)="addCustomer()"
+      ></button>
+    </div>
   </div>
-  <!-- } -->
+</form>
 
-  <br />
+<!-- @if (!this.customer) { -->
+<label class="my-1 mr-2 text-info"><h4>Thông tin nhận phòng</h4></label>
+<div class="row row-cols-auto g-1">
+  <div class="col">
+    <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
+    <input
+      type="date"
+      lang="vi"
+      class="form-control"
+      placeholder="Ngày nhận phòng"
+      [(ngModel)]="checkInDate"
+      [value]="checkInDate"
+    />
+  </div>
+  <div class="col">
+    <label for="checkInTime" class="form-label">Giờ nhận phòng</label>
+    <input
+      type="time"
+      class="form-control"
+      placeholder="Giờ nhận phòng"
+      [(ngModel)]="checkInTime"
+      [value]="checkInTime"
+    />
+  </div>
 </div>
+<!-- } -->
+
 <br />
-<app-customer-list [customers]="customers" (delete)="deleteCustomer($event)" />
+
+<br />
+<div id="print-section">
+  <app-customer-list
+    [customers]="customers"
+    (delete)="deleteCustomer($event)"
+  />
+</div>
 <div class="d-flex justify-content-center">
   <button
     type="button"

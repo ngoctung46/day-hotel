@@ -116,12 +116,11 @@ export class OrdersComponent {
       await this.customerSerivce.updateItem(customer);
       await this.customerHistoriesService.addItem({
         customerId: customer.id,
-        checkInTime: customer.checkInTime,
-        checkOutTime: this.checkOutTime,
         roomId: this.room.id,
         roomNumber: this.room.number,
         orderId: this.orderId,
-        customer: customer,
+        checkInTime: customer.checkInTime,
+        checkOutTime: customer.checkOutTime,
       });
     }
   }

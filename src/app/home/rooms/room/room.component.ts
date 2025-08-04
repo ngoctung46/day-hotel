@@ -34,9 +34,12 @@ export class RoomComponent implements OnInit {
   @Output() changeRoom = new EventEmitter<Room>();
   roomService = inject(RoomService);
   rooms: Room[] = [];
+  tagNumbers: string[] = [];
   constructor() {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.getStayingCustomers();
+  }
 
   updateCleaningStatus() {
     switch (this.room.status) {
@@ -66,5 +69,11 @@ export class RoomComponent implements OnInit {
         break;
     }
   }
-
+  async getStayingCustomers() {
+    this.roomService.getCustomersInRoom(this.room).then((customers) => {
+      this.tagNumbers = customers
+        .map((c) => c.tagNumber ?? '')
+        .filter((tag) => tag !== '');
+    });
+  }
 }

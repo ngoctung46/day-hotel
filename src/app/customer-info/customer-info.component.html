@@ -1,24 +1,61 @@
-<h3 class="text-center text-danger">THÔNG TIN KHÁCH LƯU TRÚ</h3>
+@if(customers.length > 0) {
+<h3 class="text-center text-primary">THÔNG TIN KHÁCH ĐANG LƯU TRÚ</h3>
+<table class="table table-sm table-bordered">
+  <thead>
+    <tr class="text-center table-primary border-primary">
+      <th scope="col">STT</th>
+      <th class="text-center" scope="col">Số giấy tờ</th>
+      <th class="text-center">Phòng</th>
+      <th scope="col" class="text-center">Tên khách</th>
+      <th>Năm Sinh</th>
+      <th>TG vào</th>
+      <th>SĐT</th>
+      <th>Số xe</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (c of customers; track $index) {
+    <tr class="text-center border-primary">
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ c.idNumber }}</td>
+      <td>{{ c.room }}</td>
+      <td>{{ c.name }}</td>
+      <td class="text-center">
+        {{ c.birthDate | date : "dd/MM/yyyy" }}
+      </td>
+      <td class="text-center">
+        {{ c.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
+      </td>
+      <td>{{ c.phone }}</td>
+      <td>{{ c.tagNumber }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+}
+<hr />
+<h3 class="text-center text-danger">THÔNG TIN KHÁCH ĐÃ LƯU TRÚ</h3>
 <shared-date-range-picker
   (dateRange)="getDateRange($event)"
 ></shared-date-range-picker>
 @if (histories.length > 0) {
-<table class="table table-sm table-bordered table-striped">
+<table class="table table-sm table-bordered">
   <thead>
-    <tr class="text-center">
+    <tr class="text-center table-danger border-danger">
       <th scope="col">STT</th>
-      <th class="text-center" scope="col">CCCD số</th>
+      <th class="text-center" scope="col">Số giấy tờ</th>
       <th class="text-center">Phòng</th>
       <th scope="col" class="text-center">Tên khách</th>
       <th>Năm Sinh</th>
       <th>TG vào</th>
       <th>TG ra</th>
       <th>SĐT</th>
+      <th>Số xe</th>
     </tr>
   </thead>
   <tbody>
     @for (h of histories; track $index) {
-    <tr class="text-center">
+    <tr class="text-center border-danger">
       <th scope="row">{{ $index + 1 }}</th>
       <td>{{ h.customer?.idNumber }}</td>
       <td>{{ h.roomNumber }}</td>
@@ -27,12 +64,13 @@
         {{ h.customer?.birthDate | date : "dd/MM/yyyy" }}
       </td>
       <td class="text-center">
-        {{ h.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
+        {{ h.customer?.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
       </td>
       <td class="text-center">
-        {{ h.checkOutTime | date : "dd/MM/yyyy HH:mm:ss" }}
+        {{ h.customer?.checkOutTime | date : "dd/MM/yyyy HH:mm:ss" }}
       </td>
       <td>{{ h.customer?.phone }}</td>
+      <td>{{ h.customer?.tagNumber }}</td>
     </tr>
     }
   </tbody>

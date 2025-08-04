@@ -61,11 +61,12 @@ export class RoomsComponent implements OnInit {
     this.changedRoom.orderId = this.changingRoom.orderId;
     this.changedRoom.customerId = this.changingRoom.customerId;
     this.changedRoom.status = this.changingRoom.status;
+    this.changedRoom.extraCustomerIds = this.changingRoom.extraCustomerIds;
     this.roomService.updateItem(this.changedRoom).then();
     this.updateOrderAsync(this.changingRoom.orderId!, this.changedRoom.id!);
     this.changingRoom.orderId = '';
     this.changingRoom.customerId = '';
-    this.changingRoom.status = RoomStatus.AVAILABLE;
+    this.changingRoom.status = RoomStatus.NEED_CLEANING_CUSTOMER_OUT;
     this.roomService.updateItem(this.changingRoom).then();
     this.changed.emit(true);
   }
