@@ -10,9 +10,9 @@ export class RoomStatusPipe implements PipeTransform {
       case RoomStatus.AVAILABLE:
         return 'Phòng trống';
       case RoomStatus.CHECKED_IN:
-        return 'Khách đang ở';
+        return 'Có khách';
       case RoomStatus.NEED_CLEANING_CUSTOMER_IN:
-        return 'Cần dọn phòng (Khách đang ở)';
+        return 'Cần dọn phòng (Có khách)';
       case RoomStatus.NEED_CLEANING_CUSTOMER_OUT:
         return 'Cần dọn phòng (Phòng trống)';
       case RoomStatus.BOOKED:
@@ -20,7 +20,7 @@ export class RoomStatusPipe implements PipeTransform {
       case RoomStatus.CUSTOMER_OUT:
         return 'Khách đi ra ngoài';
       case RoomStatus.UNDER_MAINTENANCE:
-        return 'Đang bảo trì';
+        return 'Đang sửa chữa';
       default:
         return 'Không xác định';
     }

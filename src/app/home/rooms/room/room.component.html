@@ -22,11 +22,14 @@
 
     <p
       class="card-text"
-      [ngClass]="room.status == 1 ? 'text-light' : 'text-success'"
+      [ngClass]="room.status == 1 ? 'text-dark' : 'text-success'"
     >
       <span
         ><b>{{ room.status | RoomStatus }} </b></span
       >
+      @if(tagNumbers !== '') {
+      <span><b>- Biển số xe: {{ tagNumbers }}</b></span>
+      }
     </p>
   </div>
   <div
@@ -95,6 +98,4 @@
     </div>
   </div>
 </div>
-@for(tag of tagNumbers; track $index) {
-<h5 class="text-center ">Biển số: {{ tag }}</h5>
-}
+
