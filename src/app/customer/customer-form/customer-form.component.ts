@@ -54,6 +54,7 @@ import { CustomerListComponent } from '../customer-list/customer-list.component'
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
+
 })
 export class CustomerFormComponent implements OnInit {
   @Output() checkedInCustomers: EventEmitter<Customer[]> = new EventEmitter();

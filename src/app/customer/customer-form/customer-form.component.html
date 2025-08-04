@@ -9,7 +9,7 @@
   </div>
 </div>
 <form [formGroup]="customerForm">
-  <div class="row row-cols-auto g-">
+  <div class="row row-cols-auto g-2">
     <div class="col">
       <label for="lastName" class="form-label">Số giấy tờ</label>
       <div class="input-group">
@@ -151,38 +151,39 @@
 <div class="d-flex justify-content-center">
   <button
     type="button"
+    ngbTooltip="Lưu"
     class="btn btn-primary btn-lg mx-1 bi bi-floppy"
     (click)="onSubmit()"
     [disabled]="customers.length === 0"
     aria-label="Submit customer information"
   >
-    Lưu
   </button>
   <button
     [useExistingCss]="true"
+    ngbTooltip="In "
     type="button"
     class="btn btn-warning btn-lg mx-1 bi bi-printer"
     printSectionId="print-section"
     aria-label="In Thong tin KH"
     ngxPrint
   >
-    In
   </button>
   <button
     type="button"
     [disabled]="customerForm.disabled"
     class="btn btn-info btn-lg mx-0 bi bi-arrow-repeat"
     (click)="onClear()"
+    ngbTooltip="Reset"
     aria-label="Clear form"
   >
-    Xóa
+  
   </button>
   <button
     type="button"
+    ngbTooltip="Quay về"
     [routerLink]="['/']"
-    class="btn btn-danger btn-lg mx-1 bi bi-x-lg"
+    class="btn btn-danger btn-lg mx-1 bi bi-arrow-left"
     aria-label="Clear form"
   >
-    Hủy
   </button>
 </div>
