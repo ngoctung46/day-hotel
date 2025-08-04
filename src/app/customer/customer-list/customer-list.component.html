@@ -1,0 +1,128 @@
+@if (customers.length > 0) {
+<h2 class="text-center text-success">Danh sách khách lưu trú</h2>
+
+<div class="table-responsive d-flex justify-content-center">
+  <table class="table table-sm table-bordered w-auto rounded-2 border-success">
+    <thead>
+      <tr class="table-info border-info text-center">
+        <th scope="col">STT</th>
+        <th scope="col" class="text-center">Phòng</th>
+        <th>CCCD</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Năm sinh</th>
+        <th scope="col">TG vào</th>
+        @if (!active) {
+        <th scope="col">TG ra</th>
+        }
+        <th>SĐT</th>
+        <th>Biển số xe</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (customer of customers; track $index; let i = $index) {
+      <tr>
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <input
+            type="text"
+            class="form-control text-center"
+            placeholder="room"
+            aria-label="room"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.room"
+            style="width: 60px"
+          />
+        </td>
+
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            style="width: 120px"
+            placeholder="idNumber"
+            aria-label="idNumber"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.idNumber"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="name"
+            aria-label="name"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.name"
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            class="form-control"
+            placeholder="name"
+            aria-label="name"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.birthDate"
+          />
+        </td>
+        <td style="vertical-align: middle; text-align: center">
+          <div class="row">
+            <div class="col-6">
+              {{ customer.checkInTime | date : "dd/MM/yy" }}
+            </div>
+            <div class="col-6">
+              {{ customer.checkInTime | date : "HH:mm" }}
+            </div>
+          </div>
+        </td>
+        @if (!active) {
+        <td style="vertical-align: middle; text-align: center">
+          {{ customer.checkOutTime | date : "dd/MM/yy HH:mm" }}
+        </td>
+        }
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            style="width: 120px"
+            maxlength="10"
+            placeholder="Điện Thoại"
+            aria-label="Điện thoại"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.phone"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            style="width: 120px"
+            maxlength="10"
+            placeholder="Biển số xe"
+            aria-label="Biển số xe"
+            aria-describedby="name-description"
+            [(ngModel)]="customer.tagNumber"
+          />
+        </td>
+        <td scope="row">
+          <button
+            ngbTooltip="Lưu"
+            class="btn btn-outline-warning bi bi-floppy-fill"
+            (click)="updateCustomerAsync(customer)"
+          ></button>
+        </td>
+        <td scope="row">
+          <button
+            ngbTooltip="Xóa"
+            class="btn btn-outline-danger bi bi-trash-fill"
+            (click)="deleteCustomer(customer)"
+          ></button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+}
