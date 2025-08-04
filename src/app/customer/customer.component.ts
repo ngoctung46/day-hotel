@@ -11,9 +11,10 @@ import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { RoomStatus } from '../models/const';
 import { CustomerListComponent } from './customer-list/customer-list.component';
+import { NgxPrintModule, NgxPrintService, PrintOptions } from 'ngx-print';
 @Component({
   selector: 'app-customer',
-  imports: [CustomerFormComponent, CommonModule, CustomerListComponent],
+  imports: [CustomerFormComponent, CommonModule, NgxPrintModule],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css',
 })
@@ -23,6 +24,7 @@ export class CustomerComponent {
   orderLineService = inject(OrderLineService);
   orderService = inject(OrderService);
   productService = inject(ProductService);
+  printService = inject(NgxPrintService);
   rId = '';
   edittable = false;
   customers: Customer[] = [];
@@ -32,26 +34,21 @@ export class CustomerComponent {
 
   constructor(private router: Router) {}
   async ngOnInit() {
-    await this.getCustomersByRoomIdAsync();
-   }
+    let room = await this.roomService.getItemById(this.rId);
+    if (room) {
+      this.customers = await this.customerService.getCustomersInRoom(room);
+      this.edittable = true;
+    }
+  }
   async saveCustomersAsync(customers: Customer[]) {
     if (customers.length === 0) return;
     let orderRef = this.orderService.createDoc();
     let customerIds: string[] = [];
 
     customers.forEach(async (customer) => {
-      let customerRef = this.customerService.createDoc();
       customer.orderId = orderRef.id;
-      if (!customer.id) {
-        customer.id = customerRef.id;
-        await this.customerService.addItem(customer, customerRef).then((_) => {
-          customerIds.push(customerRef.id);
-        });
-      } else {
-        await this.customerService.updateItem(customer).then((_) => {
-          customerIds.push(customer.id ?? '');
-        });
-      }
+      customerIds.push(customer.id!);
+      await this.customerService.updateItem(customer);
     });
     await this.orderService.addItem(
       {

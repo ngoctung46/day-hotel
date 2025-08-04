@@ -20,11 +20,6 @@ export const routes: Routes = [
       import('./customer/customer.component').then((m) => m.CustomerComponent),
   },
   {
-    path: 'customers/:roomId',
-    loadComponent: () =>
-      import('./customer/customer.component').then((m) => m.CustomerComponent),
-  },
-  {
     path: 'customers',
     loadComponent: () =>
       import('./customer-info/customer-info.component').then(

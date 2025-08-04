@@ -1,12 +1,11 @@
 <div id="print-section">
-  <h1 class="text-center text-success">
-    NHẬN KHÁCH PHÒNG
-    <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
-  </h1>
   <div class="row">
     <div class="col-4">
       <label class="my-1 mr-2 text-primary"
-        ><h4>Thông Tin Khách Lưu Trú</h4></label
+        ><h4>
+          Thông Tin Khách Lưu Trú
+          <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
+        </h4></label
       >
     </div>
   </div>

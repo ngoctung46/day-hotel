@@ -70,7 +70,7 @@ export class CustomerFormComponent implements OnInit {
   orderLineService = inject(OrderLineService);
   roomService = inject(RoomService);
   isNew = true;
-  customers: Customer[] = [];
+  @Input() customers: Customer[] = [];
   constructor(private fb: FormBuilder, private router: Router) {
     this.birthDate = format(new Date(1900, 0, 1), 'yyyy-MM-dd');
     this.customerForm = this.fb.group({
@@ -90,7 +90,12 @@ export class CustomerFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.roomId) {
-      this.roomService.getItemById(this.roomId).then((r) => (this.room = r));
+      this.roomService.getItemById(this.roomId).then((r) => {
+        this.room = r;
+        this.customerService
+          .getCustomersInRoom(r!!)
+          .then((cs) => (this.customers = cs));
+      });
     }
   }
 
@@ -118,11 +123,11 @@ export class CustomerFormComponent implements OnInit {
   }
 
   valueChange(newValue: string) {
-    if (newValue.length < 6) return;
+    if (newValue && newValue.length < 6) return;
     this.customerService.getCustomerByIdNumber(newValue).then((c) => {
       if (c) {
-        c.checkInTime = undefined;
-        c.checkOutTime = undefined;
+        c.checkInTime = 0;
+        c.checkOutTime = 0;
         this.customers.push(c);
         this.customerForm.reset();
       }
@@ -139,10 +144,16 @@ export class CustomerFormComponent implements OnInit {
     });
     this.checkedInCustomers.emit(this.customers);
   }
-  addCustomer() {
+  async addCustomer() {
     const customer = this.customerForm.value as Customer;
     customer.roomId = this.roomId;
     customer.room = this.room?.number;
+    customer.checkInTime = new Date(
+      `${this.checkInDate}T${this.checkInTime}:00`
+    ).getTime();
+    const docRef = this.customerService.createDoc();
+    await this.customerService.addItem(customer, docRef);
+    customer.id = docRef.id;
     this.customers.push(customer);
     this.customerForm.reset();
     this.customerForm.enable();
@@ -151,6 +162,10 @@ export class CustomerFormComponent implements OnInit {
     this.customers = this.customers.filter(
       (c) => c.idNumber !== customer.idNumber
     );
+    this.customerService.deleteItem(customer.id!);
+  }
+  async updateCustomer(customer: Customer) {
+    await this.customerService.updateItem(customer);
   }
   birthDateAfter1900Validator(
     control: import('@angular/forms').AbstractControl
