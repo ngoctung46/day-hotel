@@ -93,22 +93,6 @@
         formControlName="tagNumber"
       />
     </div>
-    <div class="col">
-      <label for="phone" class="form-label"></label>
-    </div>
-    <div class="col">
-      <div class="col">
-        <label for="phone" class="form-label"></label>
-      </div>
-      <button
-        type="button"
-        class="btn btn-primary btn-lg mx-1 bi bi-plus"
-        ngbTooltip="Thêm khách"
-        aria-label="Thêm khách"
-        [disabled]="customerForm.invalid"
-        (click)="addCustomer()"
-      ></button>
-    </div>
   </div>
 </form>
 
@@ -136,7 +120,22 @@
       [value]="checkInTime"
     />
   </div>
+  <div class="col"></div>
 </div>
+<br />
+<div class="text-center">
+  <button
+    type="button"
+    class="btn btn-primary btn-lg mx-1 bi bi-plus text-center"
+    ngbTooltip="Thêm khách"
+    aria-label="Thêm khách"
+    [disabled]="customerForm.invalid"
+    (click)="addCustomer()"
+  >
+    <span class="bi bi-person-fill"></span>
+  </button>
+</div>
+
 <!-- } -->
 
 <br />
@@ -156,8 +155,7 @@
     (click)="onSubmit()"
     [disabled]="customers.length === 0"
     aria-label="Submit customer information"
-  >
-  </button>
+  ></button>
   <button
     [useExistingCss]="true"
     ngbTooltip="In "
@@ -166,8 +164,7 @@
     printSectionId="print-section"
     aria-label="In Thong tin KH"
     ngxPrint
-  >
-  </button>
+  ></button>
   <button
     type="button"
     [disabled]="customerForm.disabled"
@@ -175,15 +172,12 @@
     (click)="onClear()"
     ngbTooltip="Reset"
     aria-label="Clear form"
-  >
-  
-  </button>
+  ></button>
   <button
     type="button"
     ngbTooltip="Quay về"
     [routerLink]="['/']"
     class="btn btn-danger btn-lg mx-1 bi bi-arrow-left"
     aria-label="Clear form"
-  >
-  </button>
+  ></button>
 </div>
