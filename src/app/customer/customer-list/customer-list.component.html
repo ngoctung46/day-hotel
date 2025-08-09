@@ -4,8 +4,8 @@
 <div class="table-responsive d-flex justify-content-center">
   <table class="table table-sm table-bordered w-auto rounded-2 border-success">
     <thead>
-      <tr class="table-info border-info text-center">
-        <th scope="col">STT</th>
+      <tr class="table-success border-success text-center">
+        <th scope="col" class="align-items-center">STT</th>
         <th scope="col" class="text-center">Phòng</th>
         <th>CCCD</th>
         <th scope="col">Tên</th>
@@ -68,14 +68,7 @@
           />
         </td>
         <td style="vertical-align: middle; text-align: center">
-          <div class="row">
-            <div class="col-6">
-              {{ customer.checkInTime | date : "dd/MM/yy" }}
-            </div>
-            <div class="col-6">
-              {{ customer.checkInTime | date : "HH:mm" }}
-            </div>
-          </div>
+          {{customer.checkInTime | date : "dd/MM HH:mm" }}
         </td>
         @if (!active) {
         <td style="vertical-align: middle; text-align: center">

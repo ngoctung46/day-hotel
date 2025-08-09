@@ -1,9 +1,37 @@
+
+<!-- @if (!this.customer) { -->
+<h3 *ngIf="room" class="text-danger text-center">Đăng ký nhận <span class="text-warning">Phòng {{ room.number }}</span> </h3>
+<label class="my-1 mr-2 text-info"><h4>Thời gian</h4></label>
+<div class="row row-cols-auto g-1">
+  <div class="col">
+    <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
+    <input
+      type="date"
+      lang="vi"
+      class="form-control"
+      placeholder="Ngày nhận phòng"
+      [(ngModel)]="checkInDate"
+      [value]="checkInDate"
+    />
+  </div>
+  <div class="col">
+    <label for="checkInTime" class="form-label">Giờ nhận phòng</label>
+    <input
+      type="time"
+      class="form-control"
+      lang="vi"
+      placeholder="Giờ nhận phòng"
+      [(ngModel)]="checkInTime"
+      [value]="checkInTime"
+    />
+  </div>
+</div>
+<br />
 <div class="row">
   <div class="col-4">
-    <label class="my-1 mr-2 text-primary"
+    <label class="my-1 mr-2 text-success"
       ><h4>
-        Thông Tin Khách Lưu Trú
-        <span *ngIf="room" class="text-danger">P.{{ room.number }}</span>
+        Thông Tin Khách
       </h4></label
     >
   </div>
@@ -59,7 +87,6 @@
         <b>Bắt buộc</b>
       </div>
     </div>
-
     <div class="col">
       <label for="birthDate" class="form-label">Ngày sinh</label>
       <input
@@ -75,6 +102,8 @@
         <b>Sai ngày sinh</b>
       </div>
     </div>
+</div> 
+<div class="row row-cols-auto g-2 align-items-end">
     <div class="col">
       <label for="phone" class="form-label">Số điện thoại</label>
       <input
@@ -88,7 +117,7 @@
     <div class="col">
       <label for="phone" class="form-label">Biển số xe</label>
       <input
-      #tag
+        #tag
         type="text"
         maxlength="10"
         (input)="tag.value = tag.value.toUpperCase()"
@@ -97,48 +126,20 @@
         formControlName="tagNumber"
       />
     </div>
+    <div class="col">
+      <label for="phone" class="form-label">&nbsp;</label>
+      <button
+      type="button"
+      class="btn btn-primary mx-1 bi bi-plus-lg"
+      ngbTooltip="Thêm khách"
+      aria-label="Thêm khách"
+      [disabled]="customerForm.invalid"
+      (click)="addCustomer()"
+    >
+    </button>
+    </div>
   </div>
 </form>
-
-<!-- @if (!this.customer) { -->
-<label class="my-1 mr-2 text-info"><h4>Thông tin nhận phòng</h4></label>
-<div class="row row-cols-auto g-1">
-  <div class="col">
-    <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
-    <input
-      type="date"
-      lang="vi"
-      class="form-control"
-      placeholder="Ngày nhận phòng"
-      [(ngModel)]="checkInDate"
-      [value]="checkInDate"
-    />
-  </div>
-  <div class="col">
-    <label for="checkInTime" class="form-label">Giờ nhận phòng</label>
-    <input
-      type="time"
-      class="form-control"
-      placeholder="Giờ nhận phòng"
-      [(ngModel)]="checkInTime"
-      [value]="checkInTime"
-    />
-  </div>
-  <div class="col"></div>
-</div>
-<br />
-<div class="text-center">
-  <button
-    type="button"
-    class="btn btn-primary btn-lg mx-1 bi bi-plus text-center"
-    ngbTooltip="Thêm khách"
-    aria-label="Thêm khách"
-    [disabled]="customerForm.invalid"
-    (click)="addCustomer()"
-  >
-    <span class="bi bi-person-fill"></span>
-  </button>
-</div>
 
 <!-- } -->
 

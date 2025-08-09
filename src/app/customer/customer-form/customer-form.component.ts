@@ -137,7 +137,6 @@ export class CustomerFormComponent implements OnInit {
       }
     });
   }
-
   async addCustomer() {
     const customer = this.customerForm.value as Customer;
     customer.roomId = this.roomId;
