@@ -49,11 +49,13 @@
         </td>
         <td>
           <input
+            #name
             type="text"
             class="form-control"
             placeholder="name"
             aria-label="name"
             aria-describedby="name-description"
+            (input)="name.value = name.value.toUpperCase()"
             [(ngModel)]="customer.name"
           />
         </td>
@@ -89,12 +91,14 @@
         </td>
         <td>
           <input
+          #tag
             type="text"
             class="form-control"
             style="width: 120px"
             maxlength="10"
             placeholder="Biển số xe"
             aria-label="Biển số xe"
+            (input)="tag.value = tag.value.toUpperCase()"
             aria-describedby="name-description"
             [(ngModel)]="customer.tagNumber"
           />
