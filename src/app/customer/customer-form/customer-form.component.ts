@@ -54,7 +54,6 @@ import { CustomerListComponent } from '../customer-list/customer-list.component'
   ],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.css',
-
 })
 export class CustomerFormComponent implements OnInit {
   @Output() checkedInCustomers: EventEmitter<Customer[]> = new EventEmitter();
@@ -139,6 +138,7 @@ export class CustomerFormComponent implements OnInit {
   }
   async addCustomer() {
     const customer = this.customerForm.value as Customer;
+    customer.name = customer.name?.toUpperCase();
     customer.roomId = this.roomId;
     customer.room = this.room?.number;
     customer.checkInTime = new Date(

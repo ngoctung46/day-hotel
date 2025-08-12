@@ -21,6 +21,7 @@ import { NoteService } from '../../services/note.service';
 import { Booking } from '../../models/booking';
 import { BookingService } from '../../services/booking.service';
 import { Utils } from '../../utils';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'home-rooms',
@@ -36,6 +37,7 @@ export class RoomsComponent implements OnInit {
   orderService = inject(OrderService);
   noteService = inject(NoteService);
   bookingService = inject(BookingService);
+  customerService = inject(CustomerService);
   modalService = inject(NgbModal);
   closeResult: WritableSignal<string> = signal('');
   changedRoom: Room = {};
@@ -63,16 +65,27 @@ export class RoomsComponent implements OnInit {
     this.changedRoom.status = this.changingRoom.status;
     this.changedRoom.extraCustomerIds = this.changingRoom.extraCustomerIds;
     this.roomService.updateItem(this.changedRoom).then();
+    this.updateCustomers(this.changedRoom).then();
     this.updateOrderAsync(this.changingRoom.orderId!, this.changedRoom.id!);
     this.changingRoom.orderId = '';
     this.changingRoom.customerId = '';
     this.changingRoom.status = RoomStatus.NEED_CLEANING_CUSTOMER_OUT;
+    this.changingRoom.extraCustomerIds = [];
     this.roomService.updateItem(this.changingRoom).then();
     this.changed.emit(true);
   }
 
   updateOrderAsync(id: string, roomId: string) {
     this.orderService.updateItem({ id, roomId }).then();
+  }
+
+  async updateCustomers(room: Room) {
+    this.roomService.getCustomersInRoom(room).then((customers) => {
+      customers.forEach((customer) => {
+        customer.roomId = room.id;
+        this.customerService.updateItem(customer).then();
+      });
+    });
   }
 
   get availableRooms() {
