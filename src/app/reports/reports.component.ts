@@ -81,7 +81,7 @@ export class ReportsComponent implements OnInit {
       this.fromDate.year,
       this.fromDate.month - 1,
       this.fromDate.day,
-      0,
+      12,
       0,
       0
     );
@@ -89,9 +89,9 @@ export class ReportsComponent implements OnInit {
       this.toDate.year,
       this.toDate.month - 1,
       this.toDate.day,
-      23,
-      59,
-      59
+      12,
+      0,
+      0
     );
     this.filteredOrders = this.orders.filter(
       (o) =>

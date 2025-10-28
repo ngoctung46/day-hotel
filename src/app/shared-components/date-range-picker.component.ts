@@ -63,6 +63,7 @@ import { Utils } from '../utils';
             ></button>
           </div>
         </div>
+        .
       </form>
     </div>
   `,

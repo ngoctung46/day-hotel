@@ -7,6 +7,7 @@ import { CustomerHistoriesService } from '../services/customer-histories.service
 import { CustomerHistories } from '../models/customer-histories';
 import { CustomerService } from '../services/customer.service';
 import { RoomService } from '../services/room.service';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-customer-info',
@@ -32,6 +33,39 @@ export class CustomerInfoComponent {
     );
     this.histories = histories.sort(
       (a, b) => a.customer?.checkInTime!! - b.customer?.checkInTime!!
+    );
+  }
+
+  exportToExcel(): void {
+    const columns = [
+      { header: 'Tên', key: 'name' },
+      { header: 'Số giấy tờ', key: 'idNumber' },
+      { header: 'Số phòng', key: 'room' },
+      {
+        header: 'Vào',
+        key: 'checkInTime',
+        transform: (v: number) => (v ? new Date(v).toLocaleString() : ''),
+      },
+      {
+        header: 'Ra',
+        key: 'checkOutTime',
+        transform: (v: number) => (v ? new Date(v).toLocaleString() : ''),
+      },
+      {
+        header: 'BSX',
+        key: 'tagNumber',
+      },
+    ];
+
+    this.customerService.exportCustomersToExcel(
+      this.customers,
+      columns,
+      'Khách đang ở'
+    );
+    this.customerService.exportCustomersToExcel(
+      this.histories.map((h) => h.customer!),
+      columns,
+      'Lịch sử khách'
     );
   }
 }
