@@ -214,7 +214,7 @@ export class OrdersComponent {
       ];
     }
     rates.push({ rate: rate, quantity: 1 });
-    if (timeDiff.hours! > 0) {
+    if (timeDiff.hours! >= 0) {
       if (timeDiff.minutes! > 20) {
         rates.push({
           rate: extra,

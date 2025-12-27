@@ -14,7 +14,10 @@ import { RoomStatus } from '../../../models/const';
 import { RoomStatusPipe } from '../../../pipes/room-status.pipe';
 import { RoomTypePipe } from '../../../pipes/room-type.pipe';
 import { RoomService } from '../../../services/room.service';
+import { BookingService } from '../../../services/booking.service';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { Booking } from '../../../models/booking';
+import { Utils } from '../../../utils';
 @Component({
   selector: 'home-room',
   imports: [
@@ -33,12 +36,29 @@ export class RoomComponent implements OnInit {
   @Input() room: Room = {};
   @Output() changeRoom = new EventEmitter<Room>();
   roomService = inject(RoomService);
+  bookingService = inject(BookingService);
   rooms: Room[] = [];
+  bookings: Booking[] = [];
   tagNumbers: string = '';
   constructor() {}
 
   async ngOnInit() {
     await this.getStayingCustomers();
+    const bookingRange = Utils.getCurrentDateRange(2);
+      this.bookingService.getItems().then((bookings) => {
+      this.bookings = bookings
+        .filter(
+          (x) =>
+            x?.bookingDate! >= new Date(Date.now()).setHours(0, 0, 0) &&
+            x?.bookingDate! <= bookingRange.toDate?.getTime()!
+        )
+        .sort((a, b) => a.bookingDate! - b.bookingDate!);
+      bookings.forEach(booking => {
+        if(booking.roomId === this.room.id){
+          this.room.booking = booking.bookingDate;
+        }
+      });
+    });
   }
 
   updateCleaningStatus() {

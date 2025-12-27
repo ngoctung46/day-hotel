@@ -1,6 +1,9 @@
 .occupied-room {
   background-color: #dd8080;
 }
+.booked-room {
+      background-color: #803f02;
+}
 .btn {
   border-radius: 0;
 }
