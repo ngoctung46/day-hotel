@@ -33,6 +33,19 @@ export class Utils {
       totalHours: hours,
     };
   }
+
+  static getDailyTimeDiff(startTime: number): TimeDiff {
+    let checkInTime = new Date(startTime);
+    const year = checkInTime.getFullYear()!;
+    const month = checkInTime.getMonth();
+    let date = checkInTime.getDate();
+    const hour = checkInTime.getHours();
+    if (hour >= 0 && hour <= 6) {
+      date--;
+    }
+    const start = new Date(year, month, date, 12, 0, 0).getTime();
+    return Utils.getTimeDiff(start);
+  }
   static dateToStr(date_Object: Date): string {
     // get the year, month, date, hours, and minutes seprately and append to the string.
     let month = date_Object.getMonth() + 1;
