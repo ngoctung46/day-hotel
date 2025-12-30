@@ -7,12 +7,11 @@
     class="card-header text-light"
     [ngClass]="room.status == 0 ? 'bg-success' : 'bg-danger'"
   >
-    <b>{{ room.type | RoomType }} &lpar;
-      @if(room.booking) {
+    <b>{{ room.type | RoomType }}-@if(room.booking) {
  <span class="card-text text-warning">ĐẶT: {{ room.booking | date : "dd/MM/yy HH:mm"}}</span>
       } @else {
       {{ room.rate | number }}đ
-      } &rpar;</b>
+      }</b>
 
   </div>
   <div
