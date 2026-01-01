@@ -56,7 +56,7 @@ export class RoomComponent implements OnInit {
       bookings.forEach(booking => {
         if(booking.roomId === this.room.id){
           this.room.booking = booking.bookingDate;
-        }
+        } 
       });
     });
   }
