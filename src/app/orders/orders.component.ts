@@ -190,6 +190,13 @@ export class OrdersComponent {
     if (timeDiff.days! == 0) {
       if (timeDiff.hours! > 5) {
         dailyRate = this.getDailyRate();
+        let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
+        if(diff.hours! < 6) {
+          var extraRate = this.getExtraRate(diff);
+          rates.push(extraRate);
+        } else {
+          dailyRate.quantity += 1;
+        }
         rates.push(dailyRate);
       } else {
         var hourlyRates = this.getHourlyRates(timeDiff);
