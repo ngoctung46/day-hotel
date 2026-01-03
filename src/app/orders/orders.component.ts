@@ -194,10 +194,10 @@ export class OrdersComponent {
         if(diff.days! > 0){
           if(diff.hours! < 6) {
             var extraRate = this.getExtraRate(diff);
-            rates.push(extraRate);
-          } else {
-          dailyRate.quantity += 1;
-          }
+            rates.push(extraRate)};
+          // } else {
+          // dailyRate.quantity += 1;
+          // }
         }
         rates.push(dailyRate);
       } else {
