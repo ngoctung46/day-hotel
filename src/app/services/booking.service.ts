@@ -21,8 +21,8 @@ export class BookingService extends CloudFirestoreService<Booking> {
     to.setHours(23, 59, 59);
     const q = query(
       bookingRef,
-      where('bookingDate', '>=', from),
-      where('bookingDate', '<=', to)
+      where('bookingDate', '>=', from.getTime()),
+      where('bookingDate', '<=', to.getTime())
     );
     const querySnapshot = await getDocs(q);
     const items: Booking[] = querySnapshot.docs.map(

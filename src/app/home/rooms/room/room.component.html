@@ -4,7 +4,7 @@
   [ngClass]="room.status == 0 ? 'border-success' : 'border-dark'"
 >
   <div
-    class="card-header text-light"
+    class="card-header text-dark"
     [ngClass]="room.status == 0 ? 'bg-success' : 'bg-warning'"
   >
     <b
@@ -12,8 +12,7 @@
       <span class="card-text text-danger"
         >ĐẶT: {{ room.booking | date : "dd/MM/yy HH:mm" }}</span
       >
-      } @else {
-      {{ room.rate | number }}đ }</b
+      } @else {{{ room.rate | number }}đ }</b
     >
   </div>
   <div

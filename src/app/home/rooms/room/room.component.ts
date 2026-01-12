@@ -46,13 +46,7 @@ export class RoomComponent implements OnInit {
     await this.getStayingCustomers();
     const bookingRange = Utils.getCurrentDateRange(1);
     this.bookingService.getBookings(2).then((bookings) => {
-      this.bookings = bookings
-        .filter(
-          (x) =>
-            x?.bookingDate! >= new Date(Date.now()).setHours(0, 0, 0) &&
-            x?.bookingDate! <= bookingRange.toDate?.getTime()!
-        )
-        .sort((a, b) => a.bookingDate! - b.bookingDate!);
+      this.bookings = bookings.sort((a, b) => a.bookingDate! - b.bookingDate!);
       bookings.forEach((booking) => {
         if (booking.roomId === this.room.id) {
           this.room.booking = booking.bookingDate;
