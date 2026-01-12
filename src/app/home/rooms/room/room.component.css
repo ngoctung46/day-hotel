@@ -1,10 +1,23 @@
 .occupied-room {
   background-color: #dd8080;
 }
+.booked-room {
+      background-color: #803f02;
+}
 .btn {
   border-radius: 0;
 }
 .tooltip-bg-color {
   background-color: darkgreen;
   color: white;
+}
+.responsive-buttons {
+  flex-wrap: wrap; /* Allow buttons to wrap to the next row if needed */
+  gap: 1px; /* Add spacing between buttons */
+}
+
+@media (min-width: 768px) {
+  .responsive-buttons {
+    justify-content: space-between; /* Adjust alignment for larger screens */
+  }
 }

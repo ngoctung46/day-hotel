@@ -68,5 +68,11 @@ export class BookingsComponent implements OnInit {
     await this.bookingService
       .deleteItem(booking.id!)
       .then(async (_) => await this.getBookings());
+    await this.roomService.getItemById(booking.roomId!).then(async (room) => {
+      if (room) {
+        room.booking = undefined;
+        await this.roomService.updateItem(room);
+      }
+  });
   }
 }

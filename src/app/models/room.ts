@@ -9,4 +9,5 @@ export interface Room extends ModelBase {
   orderId?: string;
   customerId?: string;
   extraCustomerIds?: string[];
+  booking?: number;
 }

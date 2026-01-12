@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { OrderLineService } from '../services/order-line.service';
 import { OrderLine } from '../models/order-line';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Time } from '@angular/common';
 import { OrderLineComponent } from './order-line/order-line.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -185,10 +185,36 @@ export class OrdersComponent {
 
   getRates(): Rate[] {
     var timeDiff = Utils.getTimeDiff(this.order?.checkInTime!);
-    if (timeDiff.hours! <= 5 && timeDiff.days === 0) {
-      return this.getHourlyRates(timeDiff);
+    var rates: Rate[] = [];
+    var dailyRate: Rate = { rate: 0, quantity: 0 };
+    if (timeDiff.days! == 0) {
+      if (timeDiff.hours! > 5) {
+        dailyRate = this.getDailyRate();
+        let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
+        if(diff.days! > 0){
+          if(diff.hours! < 6) {
+            var extraRate = this.getExtraRate(diff);
+            rates.push(extraRate)};
+          // } else {
+          // dailyRate.quantity += 1;
+          // }
+        }
+        rates.push(dailyRate);
+      } else {
+        var hourlyRates = this.getHourlyRates(timeDiff);
+        rates.push(...hourlyRates);
+      }
+    } else {
+      dailyRate = this.getDailyRate();
+      rates.push(dailyRate);
+      let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
+      if(diff.hours! < 6) {
+        var extraRate = this.getExtraRate(diff);
+        rates.push(extraRate);
+      }
+
     }
-    return this.getDailyRates();
+    return rates;
   }
   private playReminderSound() {
     const audio = new Audio('assets/reminder.wav');
@@ -198,13 +224,6 @@ export class OrdersComponent {
     });
   }
   getHourlyRates(timeDiff: TimeDiff): Rate[] {
-    let rates: Rate[] = [];
-    let rate =
-      this.room.type === RoomType.NORMAL || this.room.type === RoomType.DELUXE
-        ? (HourlyRate.NORMAL_OR_DELUXE as number)
-        : (HourlyRate.VIP as number);
-    const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
-
     if (timeDiff.hours! > 5) {
       return [
         {
@@ -212,42 +231,44 @@ export class OrdersComponent {
           quantity: 1,
         },
       ];
-    }
-    rates.push({ rate: rate, quantity: 1 });
-    if (timeDiff.hours! > 0) {
+    } else {
+      const rate =
+        this.room.type == RoomType.VIP
+          ? HourlyRate.VIP
+          : HourlyRate.NORMAL_OR_DELUXE;
+      var rates: Rate[] = [];
+      var hourRate: Rate = { rate: rate, quantity: timeDiff.hours!};
       if (timeDiff.minutes! > 20) {
-        rates.push({
-          rate: extra,
-          quantity: timeDiff.hours!,
-        });
+        hourRate.quantity++;
+      }
+      if (hourRate.quantity! > 1) {
+        rates.push({ rate: rate, quantity: 1 });
+        var diff: TimeDiff = {
+          hours: timeDiff.hours! - 1,
+          minutes: timeDiff.minutes,
+        };
+        var additionalRate: Rate = this.getExtraRate(diff);
+        rates.push(additionalRate);
       } else {
-        rates.push({
-          rate: extra,
-          quantity: timeDiff.hours! - 1,
-        });
+        rates.push(hourRate);
       }
     }
-
     return rates;
   }
-  getDailyRates(): Rate[] {
-    let checkInTime = new Date(this.order?.checkInTime!);
-    const year = checkInTime.getFullYear()!;
-    const month = checkInTime.getMonth();
-    let date = checkInTime.getDate();
-    const hour = checkInTime.getHours();
-    if (hour >= 0 && hour <= 6) {
-      date--;
-    }
-    const start = new Date(year, month, date, 12, 0, 0).getTime();
-    const diff = Utils.getTimeDiff(start);
-    let extra = this.getHourlyRates(diff).pop()!;
-    const rate = 30_000;
-    if (diff.days! > 0 && diff.hours! < 6) {
-      extra.quantity = extra.quantity + 1; // APPLIED FOR DAILY ROOM
-      extra.rate = rate;
-    }
-    return [{ rate: this.room.rate!, quantity: diff.days! }, extra];
+
+  getExtraRate(timeDiff: TimeDiff): Rate {
+
+      const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
+      var rate: Rate = { rate: extra, quantity: timeDiff.hours! };
+      if (timeDiff.minutes! > 20) {
+        rate.quantity++;
+      }
+      return rate;
+  }
+  getDailyRate(): Rate {
+    let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
+    if(diff.hours! > 5) diff.days! += 1;
+    return { rate: this.room.rate!, quantity: diff.days! };
   }
   print() {
     this.isPrinting = true;
