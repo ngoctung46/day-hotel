@@ -1,15 +1,15 @@
 <div
   class="card text-center"
   style="margin: 8px; border-width: 2px"
-  [ngClass]="room.status == 0 ? 'border-success' : 'border-dark'"
+  [ngClass]="room.status == 0 ? 'border-success' : 'border-danger'"
 >
   <div
     class="card-header text-dark"
-    [ngClass]="room.status == 0 ? 'bg-success' : 'bg-warning'"
+    [ngClass]="room.status == 0 ? 'bg-success' : 'bg-danger'"
   >
     <b
       >{{ room.type | RoomType }}-@if(room.booking) {
-      <span class="card-text text-danger"
+      <span class="card-text text-light"
         >ĐẶT: {{ room.booking | date : "dd/MM/yy HH:mm" }}</span
       >
       } @else {{{ room.rate | number }}đ }</b
