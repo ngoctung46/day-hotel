@@ -44,8 +44,8 @@ export class RoomComponent implements OnInit {
 
   async ngOnInit() {
     await this.getStayingCustomers();
-    const bookingRange = Utils.getCurrentDateRange(2);
-      this.bookingService.getItems().then((bookings) => {
+    const bookingRange = Utils.getCurrentDateRange(1);
+    this.bookingService.getBookings(2).then((bookings) => {
       this.bookings = bookings
         .filter(
           (x) =>
@@ -53,10 +53,10 @@ export class RoomComponent implements OnInit {
             x?.bookingDate! <= bookingRange.toDate?.getTime()!
         )
         .sort((a, b) => a.bookingDate! - b.bookingDate!);
-      bookings.forEach(booking => {
-        if(booking.roomId === this.room.id){
+      bookings.forEach((booking) => {
+        if (booking.roomId === this.room.id) {
           this.room.booking = booking.bookingDate;
-        } 
+        }
       });
     });
   }
@@ -93,7 +93,8 @@ export class RoomComponent implements OnInit {
     this.roomService.getCustomersInRoom(this.room).then((customers) => {
       this.tagNumbers = customers
         .map((c) => c.tagNumber ?? '')
-        .filter((tag) => tag !== '').join(';');
+        .filter((tag) => tag !== '')
+        .join(';');
     });
   }
 }

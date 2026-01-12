@@ -1,18 +1,20 @@
 <div
   class="card text-center"
-  style="margin: 8px"
-  [ngClass]="room.status == 0 ? 'border-success' : 'border-danger'"
+  style="margin: 8px; border-width: 2px"
+  [ngClass]="room.status == 0 ? 'border-success' : 'border-dark'"
 >
   <div
     class="card-header text-light"
-    [ngClass]="room.status == 0 ? 'bg-success' : 'bg-danger'"
+    [ngClass]="room.status == 0 ? 'bg-success' : 'bg-warning'"
   >
-    <b>{{ room.type | RoomType }}-@if(room.booking) {
- <span class="card-text text-warning">ĐẶT: {{ room.booking | date : "dd/MM/yy HH:mm"}}</span>
+    <b
+      >{{ room.type | RoomType }}-@if(room.booking) {
+      <span class="card-text text-danger"
+        >ĐẶT: {{ room.booking | date : "dd/MM/yy HH:mm" }}</span
+      >
       } @else {
-      {{ room.rate | number }}đ
-      }</b>
-
+      {{ room.rate | number }}đ }</b
+    >
   </div>
   <div
     class="card-body"
@@ -33,7 +35,9 @@
         ><b>{{ room.status | RoomStatus }} </b></span
       >
       @if(tagNumbers !== '') {
-      <span><b>- BSX: {{ tagNumbers }}</b></span>
+      <span
+        ><b>- BSX: {{ tagNumbers }}</b></span
+      >
       }
     </p>
   </div>
@@ -61,6 +65,7 @@
       <button
         ngbTooltip="Đổi phòng"
         class="btn btn-info btn-lg bi bi-arrow-left-right w-25"
+        style="border-radius: 0 0 0 5px"
         placement="top"
         [hidden]="room.status == 4"
         (click)="changeRoom.emit(room)"
@@ -97,10 +102,10 @@
         placement="top"
         [hidden]="room.status == 4"
         class="btn btn-warning btn-lg bi bi-cart-check text-light w-25"
+        style="border-radius: 0 0 5px 0"
         [routerLink]="['/orders', room.orderId]"
         routerLinkActive="router-link-active"
       ></button>
     </div>
   </div>
 </div>
-
