@@ -33,7 +33,7 @@ export class CustomerInfoComponent {
     );
     this.histories = histories.sort(
       (a, b) => a.customer?.checkInTime!! - b.customer?.checkInTime!!
-    );
+    ).filter(h => h.customer?.name != '');
   }
 
   exportToExcel(): void {
