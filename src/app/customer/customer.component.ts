@@ -26,22 +26,37 @@ export class CustomerComponent {
   productService = inject(ProductService);
   printService = inject(NgxPrintService);
   rId = '';
-  edittable = false;
+  existed = false;
   customers: Customer[] = [];
+  room: Room | undefined;
   @Input() set roomId(id: string) {
     this.rId = id;
   }
 
   constructor(private router: Router) {}
   async ngOnInit() {
-    let room = await this.roomService.getItemById(this.rId);
-    if (room) {
-      this.customers = await this.customerService.getCustomersInRoom(room);
-      this.edittable = true;
+    this.room = await this.roomService.getItemById(this.rId);
+    if (this.room) {
+      this.customers = await this.customerService.getCustomersInRoom(this.room);
+      if (this.customers.length > 0) {
+        this.existed = true;
+      }
     }
   }
   async saveCustomersAsync(customers: Customer[]) {
     if (customers.length === 0) return;
+    if (this.existed) {
+      customers.forEach(async (customer) => {
+        await this.customerService.updateItem(customer);
+      });
+      if (this.room) {
+        this.room.extraCustomerIds = customers.map((c) => c.id!);
+        this.roomService
+          .updateItem(this.room)
+          .then((r) => this.router.navigate(['/home']));
+      }
+      return;
+    }
     let orderRef = this.orderService.createDoc();
     let customerIds: string[] = [];
 
@@ -57,7 +72,7 @@ export class CustomerComponent {
         checkInTime: customers[0].checkInTime,
         orderLineIds: [],
       },
-      orderRef
+      orderRef,
     );
     this.roomService
       .updateItem({
@@ -77,7 +92,6 @@ export class CustomerComponent {
       if (r) {
         await this.customerService.getCustomersInRoom(r).then((customers) => {
           this.customers = customers;
-          this.edittable = true;
         });
       }
     });

@@ -88,7 +88,7 @@ export class RoomService extends CloudFirestoreService<Room> {
     for (const rateItem of rates) {
       rateMap.set(
         rateItem.rate,
-        (rateMap.get(rateItem.rate) || 0) + rateItem.quantity
+        (rateMap.get(rateItem.rate) || 0) + rateItem.quantity,
       );
     }
 
@@ -100,7 +100,7 @@ export class RoomService extends CloudFirestoreService<Room> {
       return [];
     }
     const customers = await Promise.all(
-      room.extraCustomerIds.map((id) => this.customerService.getItemById(id))
+      room.extraCustomerIds.map((id) => this.customerService.getItemById(id)),
     );
     return customers.filter((c) => !!c) as Customer[];
   }

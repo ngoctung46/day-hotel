@@ -8,21 +8,50 @@
 <p></p>
 <p></p>
 <div id="print-section">
-  @if(isPrinting) {
-  <h5 class="text-center text-info">Nhà nghỉ Đạt Ý</h5>
-  <h6 class="text-center text-info">
-    21 Đường 14, Bình Hưng Hòa A, Bình Tân - ĐT: 09859971654
-  </h6>
+  @if (isPrinting) {
+    <h5 class="text-center text-info">Nhà nghỉ Đạt Ý</h5>
+    <h6 class="text-center text-info">
+      21 Đường 14, Bình Hưng Hòa A, Bình Tân - ĐT: 09859971654
+    </h6>
   }
   <h2 class="text-warning text-center">
     HÓA ĐƠN PHÒNG <span class="text-info">{{ room.number }}</span>
   </h2>
   <p></p>
-  <h6 *ngIf="order?.checkInTime" class="text-success text-center">
-    Giờ vào: {{ order?.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
-  </h6>
+  <div class="row row-cols-auto g-1 align-items-center justify-content-center">
+    <div class="col">
+      <h6 class="text-primary" for="checkout">Ngày giờ vào:</h6>
+    </div>
+    <div class="col">
+      <input
+        type="date"
+        lang="vi"
+        class="form-control"
+        placeholder="Ngày nhận phòng"
+        [(ngModel)]="checkInDate"
+        [value]="checkInDate"
+      />
+    </div>
+    <div class="col">
+      <input
+        type="time"
+        class="form-control"
+        lang="vi"
+        placeholder="Giờ nhận phòng"
+        [(ngModel)]="checkInTime"
+        [value]="checkInTime"
+      />
+    </div>
+    <div class="col">
+      <button
+        ngbTooltip="Lưu"
+        class="btn btn-outline-warning bi bi-floppy-fill"
+        (click)="save()"
+      ></button>
+    </div>
+  </div>
   <h6 class="text-danger text-center">
-    Giờ ra: {{ checkOutTime | date : "dd/MM/yyyy HH:mm:ss" }}
+    Giờ ra: {{ checkOutTime | date: "dd/MM/yyyy HH:mm:ss" }}
   </h6>
   <div class="table-responsive d-flex justify-content-center align-middle">
     <table
@@ -35,51 +64,51 @@
           <th scope="col" class="text-end">Giá</th>
           <th scope="col" class="text-end">SL</th>
           <th scope="col" class="text-end">Thành tiền</th>
-          @if(!isPrinting){
-          <th></th>
+          @if (!isPrinting) {
+            <th></th>
           }
         </tr>
       </thead>
       <tbody>
         @for (ol of orderLines; track $index) {
-        <tr>
-          <th scope="row" class="text-center">{{ $index + 1 }}</th>
-          <td>{{ ol.product?.name }}</td>
-          <td class="text-end">{{ ol.product?.price | number }}</td>
-          <td class="text-end">
-            <input
-              type="number"
-              class="form-control"
-              style="width: 75px !important"
-              placeholder="Số lượng"
-              aria-label="quantity"
-              [(ngModel)]="ol.quantity"
-            />
-          </td>
-          <th class="text-end">
-            {{ ol.total | number }}
-          </th>
-          @if(!isPrinting) {
-          <th class="text-center">
-            <div class="input-group">
-              <button
-                class="btn btn-outline-warning bi bi-floppy-fill"
-                (click)="update(ol)"
-              ></button>
-              <button
-                class="btn btn-danger bi bi-trash-fill"
-                (click)="remove(ol)"
-              ></button>
-            </div>
-          </th>
-          }
-        </tr>
+          <tr>
+            <th scope="row" class="text-center">{{ $index + 1 }}</th>
+            <td>{{ ol.product?.name }}</td>
+            <td class="text-end">{{ ol.product?.price | number }}</td>
+            <td class="text-end">
+              <input
+                type="number"
+                class="form-control"
+                style="width: 75px !important"
+                placeholder="Số lượng"
+                aria-label="quantity"
+                [(ngModel)]="ol.quantity"
+              />
+            </td>
+            <th class="text-end">
+              {{ ol.total | number }}
+            </th>
+            @if (!isPrinting) {
+              <th class="text-center">
+                <div class="input-group">
+                  <button
+                    class="btn btn-outline-warning bi bi-floppy-fill"
+                    (click)="update(ol)"
+                  ></button>
+                  <button
+                    class="btn btn-danger bi bi-trash-fill"
+                    (click)="remove(ol)"
+                  ></button>
+                </div>
+              </th>
+            }
+          </tr>
         }
         <tr>
           <th colspan="4" class="text-end text-danger">Tổng</th>
           <th class="text-end text-danger">{{ total | number }}</th>
-          @if(!isPrinting){
-          <td></td>
+          @if (!isPrinting) {
+            <td></td>
           }
         </tr>
         <tr>
@@ -93,8 +122,8 @@
               [(ngModel)]="extraFee"
             />
           </th>
-          @if(!isPrinting){
-          <td></td>
+          @if (!isPrinting) {
+            <td></td>
           }
         </tr>
         <tr>
@@ -108,8 +137,8 @@
               [(ngModel)]="discount"
             />
           </th>
-          @if(!isPrinting){
-          <td></td>
+          @if (!isPrinting) {
+            <td></td>
           }
         </tr>
         <tr>
@@ -117,8 +146,8 @@
           <th class="text-end text-danger">
             {{ remainingFee | number }}
           </th>
-          @if(!isPrinting){
-          <td></td>
+          @if (!isPrinting) {
+            <td></td>
           }
         </tr>
       </tbody>

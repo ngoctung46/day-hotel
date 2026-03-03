@@ -28,12 +28,19 @@ export class BookingsComponent implements OnInit {
     await this.roomService
       .getItems()
       .then(
-        (rooms) => (this.rooms = rooms.sort((a, b) => a.number! - b.number!))
+        (rooms) => (this.rooms = rooms.sort((a, b) => a.number! - b.number!)),
       );
     await this.getBookings();
     await this.customerService
       .getItems()
-      .then((customers) => (this.customers = customers.filter(c => new Date(c.checkInTime!!) >= new Date(2025, 6, 11,0,0,0) && new Date(c.checkInTime!!) <= new Date(2025, 6, 12, 23, 59, 59))));
+      .then(
+        (customers) =>
+          (this.customers = customers.filter(
+            (c) =>
+              new Date(c.checkInTime!!) >= new Date(2025, 6, 11, 0, 0, 0) &&
+              new Date(c.checkInTime!!) <= new Date(2025, 6, 12, 23, 59, 59),
+          )),
+      );
   }
   async getBookings() {
     await this.bookingService
@@ -41,8 +48,8 @@ export class BookingsComponent implements OnInit {
       .then(
         (bookings) =>
           (this.bookings = bookings.sort(
-            (a, b) => a.bookingDate! - b.bookingDate!
-          ))
+            (a, b) => a.bookingDate! - b.bookingDate!,
+          )),
       );
   }
   async added(booking: Booking) {
@@ -61,7 +68,7 @@ export class BookingsComponent implements OnInit {
               })
               .then();
           }
-        })
+        }),
     );
   }
   async deleted(booking: Booking) {
@@ -70,9 +77,11 @@ export class BookingsComponent implements OnInit {
       .then(async (_) => await this.getBookings());
     await this.roomService.getItemById(booking.roomId!).then(async (room) => {
       if (room) {
-        room.booking = undefined;
-        await this.roomService.updateItem(room);
+        room.booking = 0;
+        await this.roomService
+          .updateItem(room)
+          .then((r) => console.log(JSON.stringify(r)));
       }
-  });
+    });
   }
 }

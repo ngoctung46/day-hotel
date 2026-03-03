@@ -11,6 +11,11 @@ import { TimeDiff } from '../models/time-diff';
 import { Room } from '../models/room';
 import { RoomService } from '../services/room.service';
 import {
+  NgbDatepickerModule,
+  NgbTooltip,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import {
   HourlyRate,
   ProductType,
   RoomRate,
@@ -24,10 +29,19 @@ import { NgxPrintModule, NgxPrintService, PrintOptions } from 'ngx-print';
 import { Utils } from '../utils';
 import { CustomerService } from '../services/customer.service';
 import { CustomerHistoriesService } from '../services/customer-histories.service';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-orders',
-  imports: [CommonModule, OrderLineComponent, FormsModule, NgxPrintModule],
+  imports: [
+    CommonModule,
+    OrderLineComponent,
+    FormsModule,
+    NgxPrintModule,
+    NgbTooltip,
+    NgbDatepickerModule,
+    NgbTypeaheadModule,
+  ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })
@@ -52,6 +66,8 @@ export class OrdersComponent {
   router = inject(Router);
   discount = 0;
   extraFee = 0;
+  checkInDate: any;
+  checkInTime: any;
   checkOutTime: number = Date.now();
   isPrinting = false;
   constructor() {}
@@ -66,6 +82,9 @@ export class OrdersComponent {
   getOrder() {
     this.orderService.getItemById(this.orderId).then((order) => {
       this.order = order;
+      var checkInTime = new Date(order?.checkInTime!);
+      this.checkInTime = format(checkInTime, 'HH:mm:ss');
+      this.checkInDate = format(checkInTime, 'yyyy-MM-dd');
       this.roomService
         .getItemById(order?.roomId!)
         .then((r) => (this.room = r ?? {}));
@@ -154,7 +173,7 @@ export class OrdersComponent {
         this.paymentService.getByOrderLineId(ol.id!).then((p) => {
           p.amount = ol.total ?? 0;
           this.paymentService.updateItem(p);
-        })
+        }),
       );
       this.getOrderLines();
     } else {
@@ -166,6 +185,17 @@ export class OrdersComponent {
     }
   }
 
+  save() {
+    let checkInTime = new Date(
+      `${this.checkInDate}T${this.checkInTime}:00`,
+    ).getTime();
+    if (this.order) {
+      this.order.checkInTime = checkInTime;
+      this.orderService.updateItem(this.order).then(() => {
+        location.reload();
+      });
+    }
+  }
   remove(ol: OrderLine) {
     if (!ol.id) return;
     this.orderLineService
@@ -191,10 +221,11 @@ export class OrdersComponent {
       if (timeDiff.hours! > 5) {
         dailyRate = this.getDailyRate();
         let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
-        if(diff.days! > 0){
-          if(diff.hours! < 6) {
+        if (diff.days! > 0) {
+          if (diff.hours! < 6) {
             var extraRate = this.getExtraRate(diff);
-            rates.push(extraRate)};
+            rates.push(extraRate);
+          }
           // } else {
           // dailyRate.quantity += 1;
           // }
@@ -208,11 +239,10 @@ export class OrdersComponent {
       dailyRate = this.getDailyRate();
       rates.push(dailyRate);
       let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
-      if(diff.hours! < 6) {
+      if (diff.hours! < 6) {
         var extraRate = this.getExtraRate(diff);
         rates.push(extraRate);
       }
-
     }
     return rates;
   }
@@ -237,7 +267,7 @@ export class OrdersComponent {
           ? HourlyRate.VIP
           : HourlyRate.NORMAL_OR_DELUXE;
       var rates: Rate[] = [];
-      var hourRate: Rate = { rate: rate, quantity: timeDiff.hours!};
+      var hourRate: Rate = { rate: rate, quantity: timeDiff.hours! };
       if (timeDiff.minutes! > 20) {
         hourRate.quantity++;
       }
@@ -257,17 +287,16 @@ export class OrdersComponent {
   }
 
   getExtraRate(timeDiff: TimeDiff): Rate {
-
-      const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
-      var rate: Rate = { rate: extra, quantity: timeDiff.hours! };
-      if (timeDiff.minutes! > 20) {
-        rate.quantity++;
-      }
-      return rate;
+    const extra = this.room.type == RoomType.VIP ? 30_000 : 20_000;
+    var rate: Rate = { rate: extra, quantity: timeDiff.hours! };
+    if (timeDiff.minutes! > 20) {
+      rate.quantity++;
+    }
+    return rate;
   }
   getDailyRate(): Rate {
     let diff = Utils.getDailyTimeDiff(this.order?.checkInTime!);
-    if(diff.hours! > 5) diff.days! += 1;
+    if (diff.hours! > 5) diff.days! += 1;
     return { rate: this.room.rate!, quantity: diff.days! };
   }
   print() {
