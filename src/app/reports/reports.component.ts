@@ -51,7 +51,7 @@ export class ReportsComponent implements OnInit {
   discount = 0;
   constructor(
     private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>
+    private dateAdapter: NgbDateAdapter<string>,
   ) {
     const today = new Date(Date.now());
     const nextDay = new Date();
@@ -83,7 +83,7 @@ export class ReportsComponent implements OnInit {
       this.fromDate.day,
       12,
       0,
-      0
+      0,
     );
     let to = new Date(
       this.toDate.year,
@@ -91,19 +91,25 @@ export class ReportsComponent implements OnInit {
       this.toDate.day,
       12,
       0,
-      0
+      0,
     );
-    this.filteredOrders = this.orders.filter(
-      (o) =>
-        new Date(o?.checkOutTime!) >= from && new Date(o?.checkOutTime!) <= to
-    );
+    this.filteredOrders = this.orders
+      .filter(
+        (o) =>
+          new Date(o?.checkOutTime!) >= from &&
+          new Date(o?.checkOutTime!) <= to &&
+          (o.total ?? 0) > 0,
+      )
+      .sort((a, b) => (a.checkOutTime ?? 0) - (b.checkOutTime ?? 0));
     this.filteredOrders.forEach(async (order) => {
       this.total += order.total ?? 0;
       this.charges += order.charges ?? 0;
       this.discount += order.discount ?? 0;
+      order.roomId = this.getRoomNumber(order.roomId!).toString();
       await this.orderLineService.getItems().then((o) => {
-        let ols = o.filter((x) => x.orderId == order.id);
+        let ols = o.filter((x) => x.orderId == order.id && (x.total ?? 0) > 0);
         order.orderLines = ols;
+        order.total = ols.reduce((sum, ol) => sum + (ol.total ?? 0), 0);
       });
     });
   }
@@ -113,5 +119,22 @@ export class ReportsComponent implements OnInit {
   }
   goBack() {
     this.router.navigate(['/']);
+  }
+
+  exportOrdersToExcel() {
+    this.orderService.exportOrdersToExcel(
+      this.filteredOrders,
+      [
+        {
+          header: 'Thời Gian',
+          key: 'checkOutTime',
+          transform: (v) => (v ? new Date(v).toLocaleString() : ''),
+        },
+        { header: 'Phòng', key: 'roomId' },
+        { header: 'Mã hóa đơn', key: 'id' },
+        { header: 'Thành tiền', key: 'total' },
+      ],
+      'BC_Doanh_thu',
+    );
   }
 }
