@@ -77,6 +77,7 @@ export class CustomerService extends CloudFirestoreService<Customer> {
       { header: 'Tên', key: 'name' },
       { header: 'Số giấy tờ', key: 'idNumber' },
       { header: 'Ngày sinh', key: 'birthDate' },
+      { header: 'Nơi cư trú', key: 'address' },
       { header: 'Phòng', key: 'room' },
       {
         header: 'Vào',

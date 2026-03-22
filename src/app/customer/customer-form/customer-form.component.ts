@@ -13,7 +13,6 @@ import {
   FormGroup,
   ReactiveFormsModule,
   FormsModule,
-  FormArray,
 } from '@angular/forms';
 import { Customer } from '../../models/customer';
 import {
@@ -37,7 +36,7 @@ import { OrderService } from '../../services/order.service';
 import { OrderLineService } from '../../services/order-line.service';
 import { NgxPrintModule } from 'ngx-print';
 import { RoomService } from '../../services/room.service';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 import { CustomerListComponent } from '../customer-list/customer-list.component';
 @Component({
   selector: 'customer-form',
@@ -80,6 +79,7 @@ export class CustomerFormComponent implements OnInit {
         this.birthDate,
         [Validators.required, this.birthDateAfter1900Validator],
       ],
+      address: ['', Validators.required],
       phone: [''],
       tagNumber: [''],
     });

@@ -39,12 +39,12 @@
 <form [formGroup]="customerForm">
   <div class="row row-cols-auto g-2">
     <div class="col">
-      <label for="lastName" class="form-label">Số giấy tờ</label>
+      <label for="lastName" class="form-label"  [ngClass]="customerForm.get('idNumber')?.invalid ? 'text-danger' : 'text-success'"><b>Số giấy tờ</b></label>
       <div class="input-group">
         <input
           type="text"
           class="form-control"
-          placeholder="Nhập số CCCD/Hộ chiếu"
+          placeholder="Nhập ID (Bắt buộc)"
           formControlName="idNumber"
           (ngModelChange)="valueChange($event)"
           autofocus
@@ -55,15 +55,9 @@
         </div>
         }
       </div>
-      <div
-        *ngIf="customerForm.get('idNumber')?.invalid"
-        class="form-text text-danger"
-      >
-        <b>Bắt buộc</b>
-      </div>
     </div>
     <div class="col">
-      <label for="lastName" class="form-label">Họ và Tên</label>
+      <label for="lastName" class="form-label" [ngClass]="customerForm.get('name')?.invalid ? 'text-danger' : 'text-success'"><b>Họ và Tên </b></label>
       <div class="input-group">
         <input
          #name
@@ -71,7 +65,7 @@
           type="text"
           (input)="name.value = name.value.toUpperCase()"
           class="form-control"
-          placeholder="Nhập tên khách"
+          placeholder="Nhập tên (Bắt buộc)"
           formControlName="name"
         />
         @if(customerForm.get('name')?.valid) {
@@ -80,15 +74,9 @@
         </div>
         }
       </div>
-      <div
-        *ngIf="customerForm.get('name')?.invalid"
-        class="form-text text-danger"
-      >
-        <b>Bắt buộc</b>
-      </div>
     </div>
     <div class="col">
-      <label for="birthDate" class="form-label">Ngày sinh</label>
+      <label for="birthDate" class="form-label"  [ngClass]="customerForm.get('birthDate')?.invalid ? 'text-danger' : 'text-success'"><b>Ngày sinh</b></label>
       <input
         type="date"
         lang="vi"
@@ -104,6 +92,15 @@
     </div>
 </div> 
 <div class="row row-cols-auto g-2 align-items-end">
+     <div class="col">
+      <label for="address" class="form-label">Nơi cư trú</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Bắt buộc"
+        formControlName="address"
+      />
+    </div>
     <div class="col">
       <label for="phone" class="form-label">Số điện thoại</label>
       <input
@@ -126,6 +123,7 @@
         formControlName="tagNumber"
       />
     </div>
+
     <div class="col">
       <label for="phone" class="form-label">&nbsp;</label>
       <button
@@ -137,6 +135,7 @@
       (click)="addCustomer()"
     >
     </button>
+    
     </div>
   </div>
 </form>

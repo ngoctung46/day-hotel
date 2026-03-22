@@ -8,6 +8,7 @@
       <th class="text-center">Phòng</th>
       <th scope="col" class="text-center">Tên khách</th>
       <th>Năm Sinh</th>
+      <th>Nơi cư trú</th>
       <th>TG vào</th>
       <th>SĐT</th>
       <th>Số xe</th>
@@ -23,6 +24,7 @@
       <td class="text-center">
         {{ c.birthDate | date : "dd/MM/yyyy" }}
       </td>
+      <td>{{ c.address }}</td>
       <td class="text-center">
         {{ c.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
       </td>
@@ -47,6 +49,7 @@
       <th class="text-center">Phòng</th>
       <th scope="col" class="text-center">Tên khách</th>
       <th>Năm Sinh</th>
+      <th>Nơi cư trú</th>
       <th>TG vào</th>
       <th>TG ra</th>
       <th>SĐT</th>
@@ -63,6 +66,7 @@
       <td class="text-center">
         {{ h.customer?.birthDate | date : "dd/MM/yyyy" }}
       </td>
+      <td>{{ h.customer?.address }}</td>
       <td class="text-center">
         {{ h.customer?.checkInTime | date : "dd/MM/yyyy HH:mm:ss" }}
       </td>

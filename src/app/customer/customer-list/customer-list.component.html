@@ -10,6 +10,7 @@
         <th>CCCD</th>
         <th scope="col">Tên</th>
         <th scope="col">Năm sinh</th>
+        <th scope="col">Nơi cư trú</th>
         <th scope="col">TG vào</th>
         @if (!active) {
         <th scope="col">TG ra</th>
@@ -67,6 +68,15 @@
             aria-label="name"
             aria-describedby="name-description"
             [(ngModel)]="customer.birthDate"
+          />
+                  <td>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập địa chỉ"
+            aria-label="address"
+            aria-describedby="Nhập địa chỉ"
+            [(ngModel)]="customer.address"
           />
         </td>
         <td style="vertical-align: middle; text-align: center">
